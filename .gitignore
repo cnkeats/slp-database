@@ -104,7 +104,7 @@ dist
 .tern-port
 
 
-# .net core
+# .NET Core
 ##########################################################################
 
 *.swp
@@ -146,9 +146,11 @@ msbuild.wrn
 .vs/
 
 
-# slippi
+# Slippi
 ##########################################################################
 
-# Slippi replays
+# Slippi Replays
 *.slp
+
+# Replay Cache
 replayCache.json

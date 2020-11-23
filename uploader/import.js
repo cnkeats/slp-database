@@ -3,10 +3,12 @@ const { default: SlippiGame } = require('@slippi/slippi-js');
 const readlineSync = require('readline-sync');
 const fs = require('fs');;
 const path = require('path');
-const pjson = require('../package.json');
-const jsonLock = require('../package-lock.json');
+const pjson = require('./package.json');
+const jsonLock = require('./package-lock.json');
 const crypto = require('crypto');
 const util = require('util');
+const fetch = require('node-fetch');
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 function log(obj) {
     console.log(util.inspect(obj, false, null, true));
@@ -44,8 +46,7 @@ files = [files[0]];
 
 files.forEach((file, i) => {
     const gameData = loadGameData(file, i);
-    const results = processGame(file, i, gameData);
-    //processResults(results)
+    submitGame(gameData);
 })
 
 function loadGameData(file, i) {
@@ -59,7 +60,6 @@ function loadGameData(file, i) {
 
         data.stats = game.getStats().overall.map((o) => o.killCount);
         data.latestFramePercents = game.getLatestFrame().players.map((p) => p.post.percent);
-        log(data);
         return data
     } catch(e) {
         console.log(`${i + 1}: Error reading metadata. Ignoring... (${file})`)
@@ -67,24 +67,29 @@ function loadGameData(file, i) {
         return
     }
 }
-function processGame(file, i, gameData) {
-    const util = require('util');
-    const { settings, metadata, stats, latestFramePercents } = gameData
-    let data = {}
-    num = i+1
+
+function submitGame(gameData) {
+
+    console.log(`submitting`);
+
     try {
-        game_seconds = Math.floor(metadata.lastFrame / 60)
-        game_length = Math.floor(game_seconds / 60) + ":" + (game_seconds % 60 ? (game_seconds % 60).toString().padStart(2, '0') : '00')
-        
-        data.gameframes = metadata.lastFrame
-        data.gamelength = game_length
-        data.total_seconds = game_seconds
-        data.stage_num = settings.stageId
+        fetch('https://localhost:44314/request/submitgame', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(gameData)
+            
+        }).then(
+            response => response.json()
+        )
+        .then(data => 
+            log(data)
+        );
     }
-    catch(e) {
-        console.log(`${num}: Error reading replay. Ignoring... (${file})`)
+    catch (e) {
         console.log(e);
-        return data
     }
-    
+
+
 }

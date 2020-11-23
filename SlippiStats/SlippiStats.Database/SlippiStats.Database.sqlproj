@@ -70,5 +70,6 @@
     <Build Include="Schema\Game\Game_Insert.sql" />
     <Build Include="Schema\Game\Game_Update.sql" />
     <Build Include="Schema\Character\Character.sql" />
+    <Build Include="Schema\Game\Game_GetByHash.sql" />
   </ItemGroup>
 </Project>

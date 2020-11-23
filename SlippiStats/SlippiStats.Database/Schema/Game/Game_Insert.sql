@@ -6,6 +6,7 @@
 	@startAt DATETIME,
 	@gameLength INT,
 	@hash VARCHAR(32),
+	@platform VARCHAR(32),
 	@created DATETIME,
 	@updated DATETIME,
 	@deleted DATETIME
@@ -22,6 +23,7 @@ INSERT INTO
 		StartAt,
 		GameLength,
 		Hash,
+		Platform,
 		Created,
 		Updated,
 		Deleted		
@@ -37,6 +39,7 @@ VALUES
 		@startAt,
 		@gameLength,
 		@hash,
+		@platform,
 		@created,
 		@updated,
 		@deleted

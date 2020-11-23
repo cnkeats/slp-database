@@ -15,8 +15,12 @@ namespace SlippiStats.Controllers
         [HttpPost]
         public string Submit([FromBody] SlpReplay gameReplay)
         {
-            Game game = new Game(gameReplay);
-            game.Save(Database.Connection);
+            Game game = Game.GetByHash(Database.Connection, gameReplay.Hash);
+            if (game == null)
+            {
+                game = new Game(gameReplay);
+                game.Save(Database.Connection);
+            }
 
             return JsonConvert.SerializeObject(game);
         }

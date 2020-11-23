@@ -7,6 +7,7 @@
 	@startAt DATETIME,
 	@gameLength INT,
 	@hash VARCHAR(32),
+	@platform VARCHAR(32),
 	@created DATETIME,
 	@updated DATETIME,
 	@deleted DATETIME
@@ -23,6 +24,7 @@ SET
 	StartAt = @startAt,
 	GameLength = @gameLength,
 	Hash = @hash,
+	Platform = @platform,
 	Created = @created,
 	Updated = @updated,
 	Deleted = @deleted

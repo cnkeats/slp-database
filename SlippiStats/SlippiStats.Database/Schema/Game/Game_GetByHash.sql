@@ -1,5 +1,5 @@
-﻿CREATE PROCEDURE Game_GetById
-	@id INT
+﻿CREATE PROCEDURE Game_GetByHash
+	@hash VARCHAR(32)
 
 AS
 
@@ -19,4 +19,4 @@ SELECT
 FROM
 	Game WITH (NOLOCK)
 WHERE
-	Id = @id
+	Hash = @hash

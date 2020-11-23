@@ -58,23 +58,16 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Schema" />
-    <Folder Include="Schema\Button" />
-  </ItemGroup>
-  <ItemGroup>
-    <Build Include="Schema\Button\Button.sql" />
-    <Build Include="Schema\Button\Button_GetById.sql" />
-    <Build Include="Schema\Button\Button_GetList.sql" />
-    <Build Include="Schema\Button\Button_Insert.sql" />
-    <Build Include="Schema\Button\Button_Update.sql" />
-    <Build Include="Schema\Button\Button_GetUnassignedList.sql" />
-    <Build Include="Schema\Button\Button_GetByButtonNumber.sql" />
-    <Build Include="Schema\Button\Button_GetListByFilters.sql" />
-    <Build Include="Schema\Button\Button_GetUnassignedByEndingDigits.sql" />
+    <Folder Include="Schema\Tables" />
+    <Folder Include="Schema\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare-Local.scmp" />
-    <None Include="Development.sql" />
-    <None Include="SetupTestData.sql" />
-    <None Include="SchemaCompare-Production.scmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Schema\Tables\Game.sql" />
+    <Build Include="Schema\Stored Procedures\Game_Update.sql" />
+    <Build Include="Schema\Stored Procedures\Game_Insert.sql" />
+    <Build Include="Schema\Stored Procedures\Game_GetById.sql" />
   </ItemGroup>
 </Project>

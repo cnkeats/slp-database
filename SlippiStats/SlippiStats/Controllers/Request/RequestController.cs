@@ -20,7 +20,11 @@ namespace SlippiStats.Controllers
         [HttpPost]
         public string SubmitGame([FromBody] SlpReplay gameReplay)
         {
-            return JsonConvert.SerializeObject(gameReplay);
+            Game game = new Game();
+            game.Player1 = gameReplay.MetaData.Players["0"].Names.Netplay;
+            game.Player2 = gameReplay.MetaData.Players["1"].Names.Netplay;
+            game.GameLength = gameReplay.MetaData.LastFrame;
+            return JsonConvert.SerializeObject(game);
         }
     }
 }

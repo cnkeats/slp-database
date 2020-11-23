@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SlippiStats.Authentication;
+using SlippiStats.Configuration;
 
 namespace SlippiStats
 {
@@ -19,6 +21,9 @@ namespace SlippiStats
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            ApplicationSettings settings = Configuration.AddApplicationSettings(services);
+            services.AddApplicationDatabase(settings.DatabaseConnectionString);
+            services.AddApplicationAuthentication();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,9 +41,8 @@ namespace SlippiStats
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

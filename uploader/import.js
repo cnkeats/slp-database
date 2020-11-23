@@ -42,7 +42,7 @@ if (files.length == 0) {
 
 //console.log(`${files.length} replays found.`);
 
-files = [files[0]];
+//files = [files[0]];
 
 files.forEach((file, i) => {
     const gameData = loadGameData(file, i);
@@ -73,7 +73,7 @@ function submitGame(gameData) {
     console.log(`submitting`);
 
     try {
-        fetch('https://localhost:44314/request/submitgame', {
+        fetch('https://localhost:44314/Request/SubmitGame', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

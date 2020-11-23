@@ -49,12 +49,15 @@ namespace SlippiStats.Models
         private void Insert(IDbConnection connection)
         {
             using IDbCommand command = connection.CreateStoredProcedure(
-                $"{nameof(SlpReplay)}_{nameof(Insert)}",
+                $"{nameof(Game)}_{nameof(Insert)}",
                 new
                 {
                     //SlpVersion,
                     //Player1Name,
                     //Player2Name,
+                    Player1,
+                    Player2,
+                    GameLength,
                     Created,
                     Updated,
                     Deleted
@@ -68,13 +71,16 @@ namespace SlippiStats.Models
             Updated = DateTime.UtcNow;
 
             using IDbCommand command = connection.CreateStoredProcedure(
-                $"{nameof(SlpReplay)}_{nameof(Update)}",
+                $"{nameof(Game)}_{nameof(Update)}",
                 new
                 {
                     Id,
                     //SlpVersion,
                     //Player1Name,
                     //Player2Name,
+                    Player1,
+                    Player2,
+                    GameLength,
                     Created,
                     Updated,
                     Deleted

@@ -14,9 +14,19 @@ namespace SlippiStats.Models
 
         public string Player2 { get; set; }
 
+        public string Player3 { get; set; }
+
+        public string Player4 { get; set; }
+
         public Character Character1 { get; set; }
 
         public Character Character2 { get; set; }
+
+        public Character Character3 { get; set; }
+
+        public Character Character4 { get; set; }
+
+        public int Winner { get; set; }
 
         public DateTime StartAt { get; set; }
 
@@ -48,11 +58,18 @@ namespace SlippiStats.Models
             GameLength = slpReplay.MetaData.LastFrame;
             Platform = slpReplay.MetaData.PlayedOn;
 
-            Player1 = slpReplay.MetaData.Players["0"].Names.Netplay;
-            Player2 = slpReplay.MetaData.Players["1"].Names.Netplay;
+            Player1 = slpReplay.MetaData.Players["0"]?.Names.Netplay;
+            Player2 = slpReplay.MetaData.Players["1"]?.Names.Netplay;
+            Player3 = slpReplay.MetaData.Players["2"]?.Names.Netplay;
+            Player4 = slpReplay.MetaData.Players["3"]?.Names.Netplay;
 
-            Character1 = (Character)slpReplay.Settings.Players[0].CharacterId;
-            Character2 = (Character)slpReplay.Settings.Players[1].CharacterId;
+            Character1 = (Character)slpReplay.Settings.Players[0]?.CharacterId;
+            Character2 = (Character)slpReplay.Settings.Players[1]?.CharacterId;
+            Character3 = (Character)slpReplay.Settings.Players[2]?.CharacterId;
+            Character4 = (Character)slpReplay.Settings.Players[3]?.CharacterId;
+
+            Winner = SlpReplay.DetermineWinner(slpReplay);
+
             Created = DateTime.UtcNow;
         }
 
@@ -110,8 +127,13 @@ namespace SlippiStats.Models
                 {
                     Player1,
                     Player2,
+                    Player3,
+                    Player4,
                     Character1,
                     Character2,
+                    Character3,
+                    Character4,
+                    Winner,
                     StartAt,
                     GameLength,
                     Hash,
@@ -135,8 +157,13 @@ namespace SlippiStats.Models
                     Id,
                     Player1,
                     Player2,
+                    Player3,
+                    Player4,
                     Character1,
                     Character2,
+                    Character3,
+                    Character4,
+                    Winner,
                     StartAt,
                     GameLength,
                     Hash,

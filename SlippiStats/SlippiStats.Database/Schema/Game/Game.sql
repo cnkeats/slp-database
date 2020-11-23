@@ -4,6 +4,7 @@
     Player2    VARCHAR (64) NULL,
     Character1 INT NULL,
     Character2 INT NULL,
+    Winner INT NULL,
     StartAt DATETIME NOT NULL,
     GameLength INT          NOT NULL,
     Hash VARCHAR(32) NOT NULL,

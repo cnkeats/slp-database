@@ -9,6 +9,7 @@ SELECT
 	Player2,
 	Character1,
 	Character2,
+	Winner,
 	StartAt,
 	GameLength,
 	Hash,

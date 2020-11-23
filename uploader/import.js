@@ -40,14 +40,14 @@ if (files.length == 0) {
     process.exit()
 }
 
-//console.log(`${files.length} replays found.`);
+console.log(`${files.length} replays found.`);
 
 //files = [files[0]];
 
-files.forEach((file, i) => {
+/*files.forEach((file, i) => {
     const gameData = loadGameData(file, i);
     submitGame(gameData);
-})
+})*/
 
 function loadGameData(file, i) {
     filename = path.basename(file);
@@ -70,7 +70,8 @@ function loadGameData(file, i) {
 
 function submitGame(gameData) {
 
-    console.log(`submitting`);
+    //console.log(`submitting`);
+    //log(gameData);
 
     try {
         fetch('https://localhost:44314/Game/Submit', {
@@ -90,6 +91,9 @@ function submitGame(gameData) {
     catch (e) {
         console.log(e);
     }
+}
 
-
+for (let i = 0; i < files.length; i++) {
+    submitGame(loadGameData(files[i], i));
+    console.log(`submitted game ${i+1} of ${files.length}`);
 }

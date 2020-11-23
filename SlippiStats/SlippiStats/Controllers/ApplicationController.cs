@@ -19,12 +19,9 @@ namespace SlippiStats.Controllers
 
         protected ApplicationDatabase Database { get; private set; }
 
-        protected TimeZoneInfo UserTimeZone { get; private set; }
-
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
-            //UserTimeZone = TimeZoneBusinessLogic.GetTimeZoneFromRequest(Request, Settings.DefaultTimeZone);
         }
     }
 }

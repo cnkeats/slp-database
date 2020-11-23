@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE slp.Game_GetById
+﻿CREATE PROCEDURE Game_GetById
 	@id INT
 
 AS

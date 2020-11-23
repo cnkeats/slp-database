@@ -1,3 +1,0 @@
-﻿CREATE SCHEMA [slp]
-    AUTHORIZATION [dbo];
-

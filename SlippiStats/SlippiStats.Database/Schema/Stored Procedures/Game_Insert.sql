@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE slp.Game_Insert
+﻿CREATE PROCEDURE [dbo].[Game_Insert]
 	@player1 VARCHAR(64),
 	@player2 VARCHAR(64),
 	@gameLength INT,

@@ -73,7 +73,7 @@ function submitGame(gameData) {
     console.log(`submitting`);
 
     try {
-        fetch('https://localhost:44314/Request/SubmitGame', {
+        fetch('https://localhost:44314/Game/Submit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

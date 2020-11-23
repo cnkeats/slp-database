@@ -8,11 +8,21 @@ namespace SlippiStats.Models
     {
         public int Id { get; private set; }
 
+        public string Hash { get; set; }
+
         public string Player1 { get; set; }
 
         public string Player2 { get; set; }
 
+        public int Character1 { get; set; }
+
+        public int Character2 { get; set; }
+
+        public DateTime StartAt { get; set; }
+
         public int GameLength { get; set; }
+
+        public string Platform { get; set; }
 
         public DateTime Created { get; set; }
 
@@ -28,6 +38,21 @@ namespace SlippiStats.Models
 
         public Game()
         {
+            Created = DateTime.UtcNow;
+        }
+
+        public Game(SlpReplay slpReplay)
+        {
+            Hash = slpReplay.Hash;
+            StartAt = slpReplay.MetaData.StartAt;
+            GameLength = slpReplay.MetaData.LastFrame;
+            Platform = slpReplay.MetaData.PlayedOn;
+
+            Player1 = slpReplay.MetaData.Players["0"].Names.Netplay;
+            Player2 = slpReplay.MetaData.Players["1"].Names.Netplay;
+
+            //Character1 = slpReplay.MetaData.Players["0"].Characters["1"];
+            //Character2 = slpReplay.MetaData.Players["1"].Characters["0"];
             Created = DateTime.UtcNow;
         }
 
@@ -49,12 +74,13 @@ namespace SlippiStats.Models
                 $"{nameof(Game)}_{nameof(Insert)}",
                 new
                 {
-                    //SlpVersion,
-                    //Player1Name,
-                    //Player2Name,
                     Player1,
                     Player2,
+                    Character1,
+                    Character2,
+                    StartAt,
                     GameLength,
+                    Hash,
                     Created,
                     Updated,
                     Deleted
@@ -72,12 +98,13 @@ namespace SlippiStats.Models
                 new
                 {
                     Id,
-                    //SlpVersion,
-                    //Player1Name,
-                    //Player2Name,
                     Player1,
                     Player2,
+                    Character1,
+                    Character2,
+                    StartAt,
                     GameLength,
+                    Hash,
                     Created,
                     Updated,
                     Deleted

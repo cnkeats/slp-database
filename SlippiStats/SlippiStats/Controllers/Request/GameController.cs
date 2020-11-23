@@ -15,10 +15,7 @@ namespace SlippiStats.Controllers
         [HttpPost]
         public string Submit([FromBody] SlpReplay gameReplay)
         {
-            Game game = new Game();
-            game.Player1 = gameReplay.MetaData.Players["0"].Names.Netplay;
-            game.Player2 = gameReplay.MetaData.Players["1"].Names.Netplay;
-            game.GameLength = gameReplay.MetaData.LastFrame;
+            Game game = new Game(gameReplay);
             game.Save(Database.Connection);
 
             return JsonConvert.SerializeObject(game);

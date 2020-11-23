@@ -4,14 +4,18 @@
 AS
 
 SELECT
-	Game.Id,
-	Game.Player1,
-	Game.Player2,
-	Game.GameLength,
-	Game.Created,
-	Game.Updated,
-	Game.Deleted	
+	Id,
+	Player1,
+	Player2,
+	Character1,
+	Character2,
+	StartAt,
+	GameLength,
+	Hash,
+	Created,
+	Updated,
+	Deleted	
 FROM
 	Game WITH (NOLOCK)
 WHERE
-	Game.Id = @id
+	Id = @id

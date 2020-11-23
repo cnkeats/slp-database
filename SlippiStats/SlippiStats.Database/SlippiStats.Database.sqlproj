@@ -58,16 +58,17 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Schema" />
-    <Folder Include="Schema\Tables" />
-    <Folder Include="Schema\Stored Procedures" />
+    <Folder Include="Schema\Game" />
+    <Folder Include="Schema\Character" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare-Local.scmp" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Schema\Tables\Game.sql" />
-    <Build Include="Schema\Stored Procedures\Game_Update.sql" />
-    <Build Include="Schema\Stored Procedures\Game_Insert.sql" />
-    <Build Include="Schema\Stored Procedures\Game_GetById.sql" />
+    <Build Include="Schema\Game\Game.sql" />
+    <Build Include="Schema\Game\Game_GetById.sql" />
+    <Build Include="Schema\Game\Game_Insert.sql" />
+    <Build Include="Schema\Game\Game_Update.sql" />
+    <Build Include="Schema\Character\Character.sql" />
   </ItemGroup>
 </Project>

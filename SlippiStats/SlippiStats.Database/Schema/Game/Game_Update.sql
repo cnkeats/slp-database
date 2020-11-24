@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE Game_Update
+﻿CREATE PROCEDURE dbo.Game_Update
 	@id INT,
 	@player1 VARCHAR(64),
 	@player2 VARCHAR(64),

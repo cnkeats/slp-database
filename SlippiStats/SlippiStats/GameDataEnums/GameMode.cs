@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace SlippiStats.GameDataEnums
 {
+    // These are incorrect
     public enum GameMode
     {
         TIME = 0,

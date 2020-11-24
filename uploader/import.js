@@ -73,6 +73,7 @@ function submitGame(gameData) {
 
     //console.log(`submitting`);
     console.log(gameData);
+    console.log(gameData.settings);
 
     try {
         fetch('https://localhost:44314/Game/Submit', {
@@ -85,7 +86,12 @@ function submitGame(gameData) {
         }).then(response => {
             //console.log(response);
             response.json().then((data => {
-                console.log(data);
+                //console.log(data);
+                //console.log(`Success: ${data.success}`);
+                console.log(`Message: ${data.message}`);
+                if (!data.success) {
+                    console.log(`Stack Trace: ${data.stackTrace}`);
+                }
             }));
         });
     }

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SlippiStats.Configuration;
+using SlippiStats.GameDataEnums;
 using SlippiStats.Models;
 using System;
 
@@ -14,21 +16,28 @@ namespace SlippiStats.Controllers
         }
 
         [HttpPost]
-        public string Submit([FromBody] SlpReplay gameReplay)
+        public GameSubmitResponse Submit([FromBody] SlpReplay gameReplay)
         {
+            GameSubmitResponse response = new GameSubmitResponse();
             if (gameReplay == null)
             {
-                return JsonConvert.SerializeObject("Replay was null.");
+                response.Success = false;
+                response.Message = "Replay was null.";
+                return response;
             }
 
             if (gameReplay.Settings.Players.Count != 2)
             {
-                return JsonConvert.SerializeObject("Support for games with more than 2 players is not currently available.");
+                response.Success = false;
+                response.Message = "Support for games with more than 2 players is not currently available.";
+                return response;
             }
 
             if (gameReplay.Stats.Count == 0)
             {
-                return JsonConvert.SerializeObject("Support for modes other than Stock is not currently available.");
+                response.Success = false;
+                response.Message = "Support for modes other than Stock is not currently available.";
+                return response;
             }
 
             try
@@ -38,18 +47,35 @@ namespace SlippiStats.Controllers
                 {
                     game = new Game(gameReplay);
                     game.Save(Database.Connection);
+                    
+                    response.Message = string.Format("New game #{0} saved.", game.Id);
                 }
-                return JsonConvert.SerializeObject(game);
+                else
+                {
+                    response.Message = string.Format("Existing game #{0} updated. // TODO", game.Id);
+                }
+
+                response.Success = true;
+                response.Game = game;
+
+                return response;
             }
             catch(Exception e)
             {
-                return JsonConvert.SerializeObject(new
-                {
-                    message = "There was an error processing your replay.",
-                    error = e.Message,
-                    stacktrace = e.StackTrace
-                });
+                response.Success = false;
+                response.Message = e.Message;
+                response.StackTrace = e.StackTrace;
             }
+
+            return response;
         }
+    }
+
+    public class GameSubmitResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public string StackTrace { get; set; }
+        public Game Game { get; set; }
     }
 }

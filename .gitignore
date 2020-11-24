@@ -155,3 +155,5 @@ msbuild.wrn
 # Replay Cache
 replayCache.json
 *.dbmdl
+
+*.jfm

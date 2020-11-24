@@ -16,10 +16,20 @@ namespace SlippiStats.Controllers
         [HttpPost]
         public string Submit([FromBody] SlpReplay gameReplay)
         {
+            if (gameReplay == null)
+            {
+                return JsonConvert.SerializeObject("Replay was null.");
+            }
+
+            if (gameReplay.Stats.Count == 0 && false)
+            {
+                return JsonConvert.SerializeObject("Support for modes other than Stock is not currently available.");
+            }
+
             try
             {
-                Game game = Game.GetByHash(Database.Connection, gameReplay.Hash);
-                if (game == null)
+                Game game = Game.GetByHash(Database.Connection, "");
+                if (game == null || true)
                 {
                     game = new Game(gameReplay);
                     game.Save(Database.Connection);
@@ -28,7 +38,7 @@ namespace SlippiStats.Controllers
             }
             catch(Exception e)
             {
-                return String.Format("There was an error processing your replay.\n{0}\n", e.Message, e.StackTrace);
+                return JsonConvert.SerializeObject(String.Format("There was an error processing your replay.\n{0}\n", e.Message, e.StackTrace));
             }
         }
     }

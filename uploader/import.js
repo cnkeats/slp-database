@@ -52,11 +52,12 @@ console.log(`${files.length} replays found.`);
 function loadGameData(file, i) {
     filename = path.basename(file);
     const hash = crypto.createHash('md5').update(filename).digest("hex");
-    let data = { hash }
+    let data = { hash, filename }
     try {
         const game = new SlippiGame(file);
         data.settings = game.getSettings();
         data.metadata = game.getMetadata();
+        data.gameend = game.getGameEnd();
 
         data.stats = game.getStats().overall.map((o) => o.killCount);
         data.latestFramePercents = game.getLatestFrame().players.map((p) => p.post.percent);
@@ -71,7 +72,7 @@ function loadGameData(file, i) {
 function submitGame(gameData) {
 
     //console.log(`submitting`);
-    //log(gameData);
+    console.log(gameData);
 
     try {
         fetch('https://localhost:44314/Game/Submit', {
@@ -81,12 +82,12 @@ function submitGame(gameData) {
             },
             body: JSON.stringify(gameData)
             
-        }).then(
-            response => response.json()
-        )
-        .then(data => 
-            log(data)
-        );
+        }).then(response => {
+            //console.log(response);
+            response.json().then((data => {
+                console.log(data);
+            }));
+        });
     }
     catch (e) {
         console.log(e);

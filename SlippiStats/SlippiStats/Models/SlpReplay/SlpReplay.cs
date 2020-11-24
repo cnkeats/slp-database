@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace SlippiStats.Models
 {
     public class SlpReplay
     {
         public int Id { get; private set; }
+
+        public string FileName { get; set; }
 
         public string Hash { get; set; }
 
@@ -14,45 +17,114 @@ namespace SlippiStats.Models
 
         public List<int> Stats { get; set; }
 
-        public List<float> LatestFramePercents { get; set; }
+        public List<float?> LatestFramePercents { get; set; }
 
-        public static int DetermineWinner(SlpReplay replay)
+        public SlpGameEnd GameEnd { get; set; }
+
+        public static string DetermineWinner(SlpReplay replay)
         {
-            bool p1LRAS = false;
-            bool p2LRAS = false;
-            int p1Stocks = replay.Stats[0];
-            int p2Stocks = replay.Stats[1];
-            float p1Percent = replay.LatestFramePercents[0];
-            float p2Percent = replay.LatestFramePercents[1];
 
-            if (p2LRAS)
+            SlpSettingsPlayer p1 = replay.Settings.Players.Count > 0 ? replay.Settings.Players[0] : null;
+            SlpSettingsPlayer p2 = replay.Settings.Players.Count > 1 ? replay.Settings.Players[1] : null;
+            SlpSettingsPlayer p3 = replay.Settings.Players.Count > 2 ? replay.Settings.Players[2] : null;
+            SlpSettingsPlayer p4 = replay.Settings.Players.Count > 3 ? replay.Settings.Players[3] : null;
+
+            List<SlpSettingsPlayer> players = new List<SlpSettingsPlayer>();
+            players.Add(p1);
+            players.Add(p2);
+            players.Add(p3);
+            players.Add(p4);
+
+            int?[] playerStocks = new int?[4];
+            playerStocks[0] = replay.Stats.Count > 0 ? replay.Stats[0] : (int?)null;
+            playerStocks[1] = replay.Stats.Count > 1 ? replay.Stats[1] : (int?)null;
+            playerStocks[2] = replay.Stats.Count > 2 ? replay.Stats[2] : (int?)null;
+            playerStocks[3] = replay.Stats.Count > 3 ? replay.Stats[3] : (int?)null;
+
+            if (replay.Settings.IsTeams)
             {
-                return 0;
+                return "TEAMS";
             }
-            else if (p1LRAS)
+
+            string output = "";
+            foreach (SlpSettingsPlayer player in players)
             {
-                return 1;
+                if (player == null)
+                {
+                    output += "X";
+                }
+                else
+                {
+                    output += "U";
+                }
             }
-            else if (p1Stocks > p2Stocks)
-            {
-                return 0;
+
+            char[] array = output.ToCharArray();
+            switch (replay.GameEnd.GameEndMethod) {
+                case GameEndMethod.NO_CONTEST:
+                    for (int i = 0; i < players.Count; i++)
+                    {
+                        if (replay.GameEnd.LRASInitiatorIndex != (LRAS)i)
+                        {
+                            array[i] = players[i] != null ? '1' : array[i];
+                        }
+                        else
+                        {
+                            array[i] = players[i] != null ? '0' : array[i];
+                        }
+                    }
+                    break;
+                case GameEndMethod.GAME:
+                    for (int i = 0; i < players.Count; i++)
+                    {
+                        array[i] = players[i] != null ? playerStocks[i] == players[i].StartStocks ? '1' : '0' : array[i];
+                    }
+                    break;
+                // Worry about this later
+                case GameEndMethod.TIME:
+                    /*List<int> highestStockPlayersIndexes = new List<int>();
+                    List<int> lowestPercentPlayersIndexes = new List<int>();
+                    int highestStock = (int)playerStocks.Max();
+
+                    for (int i = 0; i < players.Count; i++)
+                    {
+                        if (playerStocks[i] == highestStock)
+                        {
+                            highestStockPlayersIndexes.Add(i);
+                        }
+                    }
+
+                    float lowestPercent = 999.999f;
+                    foreach (int i in highestStockPlayersIndexes)
+                    {
+                        if (replay.LatestFramePercents[i] < lowestPercent)
+                        {
+                            lowestPercent = replay.LatestFramePercents[i] ?? lowestPercent;
+                        }
+                    }
+
+                    foreach (int i in highestStockPlayersIndexes)
+                    {
+                        if (replay.LatestFramePercents[i] == lowestPercent)
+                        {
+                            lowestPercentPlayersIndexes.Add(i);
+                        }
+                    }*/
+                    array[0] = 'T';
+                    array[1] = 'I';
+                    array[2] = 'M';
+                    array[3] = 'E';
+                    break;
+                default:
+                    array[0] = 'D';
+                    array[1] = 'F';
+                    array[2] = 'L';
+                    array[3] = 'T';
+                    break;
             }
-            else if (p1Stocks < p2Stocks)
-            {
-                return 1;
-            }
-            else if (p1Percent < p2Percent)
-            {
-                return 0;
-            }
-            else if (p1Percent > p2Percent)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
+            output = new string(array);
+
+            return output;
         }
 
     }

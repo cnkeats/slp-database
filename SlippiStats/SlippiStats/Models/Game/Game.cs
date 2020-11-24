@@ -30,7 +30,7 @@ namespace SlippiStats.Models
 
         public Stage Stage { get; set; }
 
-        public GameMode GameMode { get; set; }
+        public GameMode? GameMode { get; set; }
 
         public DateTime StartAt { get; set; }
 
@@ -56,7 +56,7 @@ namespace SlippiStats.Models
 
         public Game()
         {
-            Created = DateTime.UtcNow;
+            Created = DateTime.Now;
         }
 
         public Game(SlpReplay slpReplay)
@@ -67,19 +67,22 @@ namespace SlippiStats.Models
             GameLength = slpReplay.MetaData.LastFrame;
             Platform = slpReplay.MetaData.PlayedOn;
 
-            Player1 = GetPlayerName(slpReplay, 0);
-            Player2 = GetPlayerName(slpReplay, 1);
-            Player3 = GetPlayerName(slpReplay, 2);
-            Player4 = GetPlayerName(slpReplay, 3);
+            Player1 = Player.GetPlayerName(slpReplay, 0);
+            Player2 = Player.GetPlayerName(slpReplay, 1);
+            Player3 = Player.GetPlayerName(slpReplay, 2);
+            Player4 = Player.GetPlayerName(slpReplay, 3);
 
             Character1 = slpReplay.Settings.Players.Count > 0 ? slpReplay.Settings.Players[0]?.CharacterId : null;
             Character2 = slpReplay.Settings.Players.Count > 1 ? slpReplay.Settings.Players[1]?.CharacterId : null;
             Character3 = slpReplay.Settings.Players.Count > 2 ? slpReplay.Settings.Players[2]?.CharacterId : null;
             Character4 = slpReplay.Settings.Players.Count > 3 ? slpReplay.Settings.Players[3]?.CharacterId : null;
+
+            Stage = slpReplay.Settings.StageId;
+            GameMode = slpReplay.Settings.GameMode;
             
             Winner = SlpReplay.DetermineWinner(slpReplay);
 
-            Created = DateTime.UtcNow;
+            Created = DateTime.Now;
         }
 
         private Game(IDataReader dataReader)
@@ -94,8 +97,8 @@ namespace SlippiStats.Models
             Character3 = (Character?)dataReader.GetValue<int?>(nameof(Character3));
             Character4 = (Character?)dataReader.GetValue<int?>(nameof(Character4));
             Winner = dataReader.GetValue<string>(nameof(Winner));
-            Stage = dataReader.GetValue<Stage>(nameof(Stage));
-            GameMode = dataReader.GetValue<GameMode>(nameof(GameMode));
+            Stage = (Stage)dataReader.GetValue<int>(nameof(Stage));
+            GameMode = (GameMode?)dataReader.GetValue<int?>(nameof(GameMode));
             StartAt = dataReader.GetValue<DateTime>(nameof(StartAt));
             GameLength = dataReader.GetValue<int>(nameof(GameLength));
             FileName = dataReader.GetValue<string>(nameof(FileName));
@@ -197,30 +200,6 @@ namespace SlippiStats.Models
                 });
 
             command.ExecuteNonQuery();
-        }
-
-        private string GetPlayerName(SlpReplay slpReplay, int playerIndex)
-        {
-            IDictionary<string, SlpMetadataPlayer> players = slpReplay.MetaData.Players;
-            string key = playerIndex.ToString();
-
-            if (players.Keys.Contains(key))
-            {
-                if (players[key].Names.Netplay != null)
-                {
-                    return players[key].Names.Netplay;
-                }
-                else if (players[key].Names.Code != null)
-                {
-                    return players[key].Names.Code;
-                }
-                else
-                {
-                    return slpReplay.Settings.Players[0].Type == PlayerType.HUMAN ? "P" + (playerIndex+1) : "CPU" + (playerIndex+1);
-                }
-            }
-
-            return null;
         }
     }
 }

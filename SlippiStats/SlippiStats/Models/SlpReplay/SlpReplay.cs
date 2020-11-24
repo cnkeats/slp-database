@@ -59,8 +59,15 @@ namespace SlippiStats.Models
                 }
             }
 
+            // TODO: More robust default for older replays
+            GameEndMethod gameEndMethod = GameEndMethod.GAME;
+            if (replay.GameEnd != null && replay.GameEnd.GameEndMethod != null)
+            {
+                gameEndMethod = replay.GameEnd.GameEndMethod;
+            }
+
             char[] array = output.ToCharArray();
-            switch (replay.GameEnd.GameEndMethod) {
+            switch (gameEndMethod) {
                 case GameEndMethod.NO_CONTEST:
                     for (int i = 0; i < players.Count; i++)
                     {

@@ -60,7 +60,10 @@ function loadGameData(file, i) {
         data.gameend = game.getGameEnd();
 
         data.stats = game.getStats().overall.map((o) => o.killCount);
-        data.latestFramePercents = game.getLatestFrame().players.map((p) => p.post.percent);
+        const latestFrame = game.getLatestFrame();
+        if (latestFrame != null) {
+            data.latestFramePercents = latestFrame.players.map((p) => p.post.percent);
+        }
         return data
     } catch(e) {
         console.log(`${i + 1}: Error reading metadata. Ignoring... (${file})`)
@@ -100,7 +103,31 @@ function submitGame(gameData) {
     }
 }
 
-for (let i = 0; i < files.length; i++) {
-    submitGame(loadGameData(files[i], i));
-    console.log(`submitted game ${i+1} of ${files.length}`);
+let failedSubmissions = 0;
+let i = 0;
+let test = null;
+for (i = 0; i < files.length; i++) {
+    try {
+        submitGame(loadGameData(files[i], i));
+        failedSubmissions++;
+        console.log(`increment1 to ${failedSubmissions}`);
+        
+    }
+    catch (e) {
+        console.error(e);
+        failedSubmissions++;
+        console.log(`increment2 to ${failedSubmissions}`);
+    }
+    //console.log(`submitted game ${i+1} of ${files.length}`);
+}
+
+
+notify = false
+
+if (notify) {
+    notifier.notify({
+        title: `Finished processing`,
+        message: `${i} replays processed.\n${failedSubmissions} failed to submit.`,
+        icon: path.join(__dirname, 'slippi_icon.png')
+    });
 }

@@ -75,5 +75,6 @@
     <Build Include="Schema\Player\Player.sql" />
     <Build Include="Schema\Player\Player_Insert.sql" />
     <Build Include="Schema\Player\Player_Update.sql" />
+    <Build Include="Schema\Player\Player_GetByConnectCode.sql" />
   </ItemGroup>
 </Project>

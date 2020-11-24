@@ -15,8 +15,8 @@ namespace SlippiStats.Models
 
         public List<SlpSettingsPlayer> Players { get; set; }
 
-        public int Scene { get; set; }
+        public int? Scene { get; set; }
 
-        public GameMode GameMode { get; set; }
+        public GameMode? GameMode { get; set; }
     }
 }

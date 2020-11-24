@@ -10,6 +10,7 @@
     "@slippi/slippi-js": "^5.0.3",
     "glob": "^7.1.6",
     "node-fetch": "^2.6.1",
+    "node-notifier": "^8.0.0",
     "readline-sync": "^1.4.10"
   }
 }

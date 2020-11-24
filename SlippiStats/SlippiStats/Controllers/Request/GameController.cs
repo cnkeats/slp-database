@@ -5,6 +5,8 @@ using SlippiStats.Configuration;
 using SlippiStats.GameDataEnums;
 using SlippiStats.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SlippiStats.Controllers
 {
@@ -16,36 +18,69 @@ namespace SlippiStats.Controllers
         }
 
         [HttpPost]
-        public GameSubmitResponse Submit([FromBody] SlpReplay gameReplay)
+        public GameSubmitResponse Submit([FromBody] SlpReplay slpReplay)
         {
             GameSubmitResponse response = new GameSubmitResponse();
-            if (gameReplay == null)
-            {
-                response.Success = false;
-                response.Message = "Replay was null.";
-                return response;
-            }
-
-            if (gameReplay.Settings.Players.Count != 2)
-            {
-                response.Success = false;
-                response.Message = "Support for games with more than 2 players is not currently available.";
-                return response;
-            }
-
-            if (gameReplay.Stats.Count == 0)
-            {
-                response.Success = false;
-                response.Message = "Support for modes other than Stock is not currently available.";
-                return response;
-            }
 
             try
             {
-                Game game = Game.GetByHash(Database.Connection, gameReplay.Hash);
-                if (game == null || true)
+                if (slpReplay == null)
                 {
-                    game = new Game(gameReplay);
+                    response.Success = false;
+                    response.Message = "Replay was null.";
+                    return response;
+                }
+
+                if (slpReplay.Settings.Players.Count != 2)
+                {
+                    response.Success = false;
+                    response.Message = "Support for games with more than 2 players is not currently available.";
+                    return response;
+                }
+
+                if (slpReplay.Stats.Count == 0)
+                {
+                    response.Success = false;
+                    response.Message = "Support for modes other than Stock is not currently available.";
+                    return response;
+                }
+
+                if (slpReplay.MetaData != null)
+                {
+                    int playerIndex = 0;
+                    foreach (SlpMetadataPlayer playerMetadata in slpReplay.MetaData.GetPlayers())
+                    {
+                        Player player = Player.GetByConnectCode(Database.Connection, playerMetadata.Names.Code);
+
+                        if (player == null)
+                        {
+                            player = new Player();
+                            player.Name = Player.GetPlayerName(slpReplay, playerIndex);
+                            player.ConnectCode = playerMetadata.Names.Code;
+
+                            List<string> ignoredNames = new[] { "P1", "P2", "P3", "P4", "CPU1", "CPU2", "CPU3", "CPU4" }.ToList();
+                            if (!ignoredNames.Contains(player.Name))
+                            {
+                                player.Save(Database.Connection);
+                            }
+                        }
+
+                        playerIndex++;
+                    }
+                }
+
+                if (slpReplay.GameEnd == null)
+                {
+                    response.Success = false;
+                    response.Message = "Support for older replays that are missing GameEnd data is not currently available.";
+                    return response;
+                }
+
+                // TODO: Better duplication checking
+                Game game = Game.GetByHash(Database.Connection, slpReplay.Hash);
+                if (game == null)
+                {
+                    game = new Game(slpReplay);
                     game.Save(Database.Connection);
                     
                     response.Message = string.Format("New game #{0} saved.", game.Id);

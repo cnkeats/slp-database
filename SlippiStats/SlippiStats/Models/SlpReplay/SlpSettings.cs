@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SlippiStats.GameDataEnums;
+using System.Collections.Generic;
 
 namespace SlippiStats.Models
 {
@@ -10,12 +11,12 @@ namespace SlippiStats.Models
 
         public bool IsPal { get; set; }
 
-        public int StageId { get; set; }
+        public Stage StageId { get; set; }
 
         public List<SlpSettingsPlayer> Players { get; set; }
 
         public int Scene { get; set; }
 
-        public int GameMode { get; set; }
+        public GameMode GameMode { get; set; }
     }
 }

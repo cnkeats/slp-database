@@ -9,6 +9,8 @@
     Character3 INT NULL,
     Character4 INT NULL,
     Winner VARCHAR(4) NULL,
+    Stage INT NOT NULL,
+    GameMode INT NOT NULL,
     StartAt DATETIME NOT NULL,
     GameLength INT          NOT NULL,
     FileName VARCHAR(32) NULL,

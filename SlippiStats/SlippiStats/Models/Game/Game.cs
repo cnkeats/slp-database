@@ -1,5 +1,7 @@
-﻿using SlippiStats.Util;
+﻿using SlippiStats.GameDataEnums;
+using SlippiStats.Util;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace SlippiStats.Models
@@ -7,10 +9,6 @@ namespace SlippiStats.Models
     public class Game
     {
         public int Id { get; private set; }
-
-        public string FileName { get; set; }
-
-        public string Hash { get; set; }
 
         public string Player1 { get; set; }
 
@@ -30,9 +28,17 @@ namespace SlippiStats.Models
 
         public string Winner { get; set; }
 
+        public Stage Stage { get; set; }
+
+        public GameMode GameMode { get; set; }
+
         public DateTime StartAt { get; set; }
 
         public int GameLength { get; set; }
+
+        public string FileName { get; set; }
+
+        public string Hash { get; set; }
 
         public string Platform { get; set; }
 
@@ -60,80 +66,16 @@ namespace SlippiStats.Models
             StartAt = slpReplay.MetaData.StartAt;
             GameLength = slpReplay.MetaData.LastFrame;
             Platform = slpReplay.MetaData.PlayedOn;
-            
-            Player1 = slpReplay.MetaData.Players.Keys.Contains("0") ? slpReplay.MetaData.Players["0"]?.Names.Netplay : null;
-            Player2 = slpReplay.MetaData.Players.Keys.Contains("1") ? slpReplay.MetaData.Players["1"]?.Names.Netplay : null;
-            Player3 = slpReplay.MetaData.Players.Keys.Contains("2") ? slpReplay.MetaData.Players["2"]?.Names.Netplay : null;
-            Player4 = slpReplay.MetaData.Players.Keys.Contains("3") ? slpReplay.MetaData.Players["3"]?.Names.Netplay : null;
 
-            if (slpReplay.MetaData.Players.Keys.Contains("0"))
-            {
-                if (slpReplay.MetaData.Players["0"].Names.Netplay != null)
-                {
-                    Player1 = slpReplay.MetaData.Players["0"].Names.Netplay;
-                }
-                else if (slpReplay.MetaData.Players["0"].Names.Code != null)
-                {
-                    Player1 = slpReplay.MetaData.Players["0"].Names.Code;
-                }
-                else
-                {
-                    Player1 = slpReplay.Settings.Players[0].Type == 0 ? "P1" : "CPU1";
-                }
-            }
+            Player1 = GetPlayerName(slpReplay, 0);
+            Player2 = GetPlayerName(slpReplay, 1);
+            Player3 = GetPlayerName(slpReplay, 2);
+            Player4 = GetPlayerName(slpReplay, 3);
 
-            if (slpReplay.MetaData.Players.Keys.Contains("1"))
-            {
-                if (slpReplay.MetaData.Players["1"].Names.Netplay != null)
-                {
-                    Player2 = slpReplay.MetaData.Players["1"].Names.Netplay;
-                }
-                else if (slpReplay.MetaData.Players["1"].Names.Code != null)
-                {
-                    Player2 = slpReplay.MetaData.Players["1"].Names.Code;
-                }
-                else
-                {
-                    Player2 = slpReplay.Settings.Players[1].Type == 0 ? "P2" : "CPU2";
-                }
-            }
-
-            if (slpReplay.MetaData.Players.Keys.Contains("2"))
-            {
-                if (slpReplay.MetaData.Players["2"].Names.Netplay != null)
-                {
-                    Player3 = slpReplay.MetaData.Players["2"].Names.Netplay;
-                }
-                else if (slpReplay.MetaData.Players["2"].Names.Code != null)
-                {
-                    Player3 = slpReplay.MetaData.Players["2"].Names.Code;
-                }
-                else
-                {
-                    Player3 = slpReplay.Settings.Players[2].Type == 0 ? "P3" : "CPU3";
-                }
-            }
-
-            if (slpReplay.MetaData.Players.Keys.Contains("3"))
-            {
-                if (slpReplay.MetaData.Players["3"].Names.Netplay != null)
-                {
-                    Player4 = slpReplay.MetaData.Players["3"].Names.Netplay;
-                }
-                else if (slpReplay.MetaData.Players["3"].Names.Code != null)
-                {
-                    Player4 = slpReplay.MetaData.Players["3"].Names.Code;
-                }
-                else
-                {
-                    Player4 = slpReplay.Settings.Players[3].Type == 0 ? "P4" : "CPU4";
-                }
-            }
-
-            Character1 = (Character?)(slpReplay.Settings.Players.Count > 0 ? slpReplay.Settings.Players[0]?.CharacterId : null);
-            Character2 = (Character?)(slpReplay.Settings.Players.Count > 1 ? slpReplay.Settings.Players[1]?.CharacterId : null);
-            Character3 = (Character?)(slpReplay.Settings.Players.Count > 2 ? slpReplay.Settings.Players[2]?.CharacterId : null);
-            Character4 = (Character?)(slpReplay.Settings.Players.Count > 3 ? slpReplay.Settings.Players[3]?.CharacterId : null);
+            Character1 = slpReplay.Settings.Players.Count > 0 ? slpReplay.Settings.Players[0]?.CharacterId : null;
+            Character2 = slpReplay.Settings.Players.Count > 1 ? slpReplay.Settings.Players[1]?.CharacterId : null;
+            Character3 = slpReplay.Settings.Players.Count > 2 ? slpReplay.Settings.Players[2]?.CharacterId : null;
+            Character4 = slpReplay.Settings.Players.Count > 3 ? slpReplay.Settings.Players[3]?.CharacterId : null;
             
             Winner = SlpReplay.DetermineWinner(slpReplay);
 
@@ -143,15 +85,22 @@ namespace SlippiStats.Models
         private Game(IDataReader dataReader)
         {
             Id = dataReader.GetValue<int>(nameof(Id));
-            FileName = dataReader.GetValue<string>(nameof(FileName));
-            Hash = dataReader.GetValue<string>(nameof(Hash));
-            /*Player1 = dataReader.GetValue<string>(nameof(Player1));
+            Player1 = dataReader.GetValue<string>(nameof(Player1));
             Player2 = dataReader.GetValue<string>(nameof(Player2));
-            Character1 = (Character)dataReader.GetValue<int>(nameof(Character1));
-            Character2 = (Character)dataReader.GetValue<int>(nameof(Character2));
+            Player3 = dataReader.GetValue<string>(nameof(Player3));
+            Player4 = dataReader.GetValue<string>(nameof(Player4));
+            Character1 = (Character?)dataReader.GetValue<int?>(nameof(Character1));
+            Character2 = (Character?)dataReader.GetValue<int?>(nameof(Character2));
+            Character3 = (Character?)dataReader.GetValue<int?>(nameof(Character3));
+            Character4 = (Character?)dataReader.GetValue<int?>(nameof(Character4));
+            Winner = dataReader.GetValue<string>(nameof(Winner));
+            Stage = dataReader.GetValue<Stage>(nameof(Stage));
+            GameMode = dataReader.GetValue<GameMode>(nameof(GameMode));
             StartAt = dataReader.GetValue<DateTime>(nameof(StartAt));
             GameLength = dataReader.GetValue<int>(nameof(GameLength));
-            Platform = dataReader.GetValue<string>(nameof(Platform));*/
+            FileName = dataReader.GetValue<string>(nameof(FileName));
+            Hash = dataReader.GetValue<string>(nameof(Hash));
+            Platform = dataReader.GetValue<string>(nameof(Platform));
             Created = dataReader.GetValue<DateTime>(nameof(Created));
             Updated = dataReader.GetValue<DateTime?>(nameof(Updated));
             Deleted = dataReader.GetValue<DateTime?>(nameof(Deleted));
@@ -202,6 +151,8 @@ namespace SlippiStats.Models
                     Character3,
                     Character4,
                     Winner,
+                    Stage,
+                    GameMode,
                     StartAt,
                     GameLength,
                     FileName,
@@ -233,6 +184,8 @@ namespace SlippiStats.Models
                     Character3,
                     Character4,
                     Winner,
+                    Stage,
+                    GameMode,
                     StartAt,
                     GameLength,
                     FileName,
@@ -244,6 +197,30 @@ namespace SlippiStats.Models
                 });
 
             command.ExecuteNonQuery();
+        }
+
+        private string GetPlayerName(SlpReplay slpReplay, int playerIndex)
+        {
+            IDictionary<string, SlpMetadataPlayer> players = slpReplay.MetaData.Players;
+            string key = playerIndex.ToString();
+
+            if (players.Keys.Contains(key))
+            {
+                if (players[key].Names.Netplay != null)
+                {
+                    return players[key].Names.Netplay;
+                }
+                else if (players[key].Names.Code != null)
+                {
+                    return players[key].Names.Code;
+                }
+                else
+                {
+                    return slpReplay.Settings.Players[0].Type == PlayerType.HUMAN ? "P" + (playerIndex+1) : "CPU" + (playerIndex+1);
+                }
+            }
+
+            return null;
         }
     }
 }

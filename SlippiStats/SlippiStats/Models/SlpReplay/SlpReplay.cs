@@ -82,34 +82,6 @@ namespace SlippiStats.Models
                     break;
                 // Worry about this later
                 case GameEndMethod.TIME:
-                    /*List<int> highestStockPlayersIndexes = new List<int>();
-                    List<int> lowestPercentPlayersIndexes = new List<int>();
-                    int highestStock = (int)playerStocks.Max();
-
-                    for (int i = 0; i < players.Count; i++)
-                    {
-                        if (playerStocks[i] == highestStock)
-                        {
-                            highestStockPlayersIndexes.Add(i);
-                        }
-                    }
-
-                    float lowestPercent = 999.999f;
-                    foreach (int i in highestStockPlayersIndexes)
-                    {
-                        if (replay.LatestFramePercents[i] < lowestPercent)
-                        {
-                            lowestPercent = replay.LatestFramePercents[i] ?? lowestPercent;
-                        }
-                    }
-
-                    foreach (int i in highestStockPlayersIndexes)
-                    {
-                        if (replay.LatestFramePercents[i] == lowestPercent)
-                        {
-                            lowestPercentPlayersIndexes.Add(i);
-                        }
-                    }*/
                     array[0] = 'T';
                     array[1] = 'I';
                     array[2] = 'M';

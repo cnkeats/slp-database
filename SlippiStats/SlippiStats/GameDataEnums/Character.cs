@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SlippiStats.Util
+namespace SlippiStats.GameDataEnums
 {
     public enum Character
     {
@@ -34,6 +34,13 @@ namespace SlippiStats.Util
         DR_MARIO = 22,
         ROY = 23,
         PICHU = 24,
-        GANONDORF = 25
+        GANONDORF = 25,
+        MASTER_HAND = 26,
+        WIREFRAME_MALE = 27,
+        WIREFRAME_FEMALE = 28,
+        GIGA_BOWSER = 29,
+        CRAZY_HAND = 30,
+        SANDBAG = 31,
+        POPO = 32
     }
 }

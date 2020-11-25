@@ -7,6 +7,7 @@ const pjson = require('./package.json');
 const jsonLock = require('./package-lock.json');
 const crypto = require('crypto');
 const util = require('util');
+const notifier = require('node-notifier');
 const fetch = require('node-fetch');
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
@@ -32,27 +33,10 @@ const stages = [null, null, 'Fountain of Dreams', 'Pokémon Stadium', "Princess 
     'Mushroom Kingdom I', 'Mushroom Kingdom II', null, 'Venom', 'Poké Floats', 'Big Blue', 'Icicle Mountain',
     'Icetop', 'Flat Zone', 'Dream Land N64', "Yoshi's Island N64", 'Kongo Jungle N64', 'Battlefield', 'Final Destination'];
 
-
-let files = glob.sync("**/data/*.slp");
-
-if (files.length == 0) {
-    readlineSync.question("No replays found. Script should be ran in the same folder or a parent folder of the replays.");
-    process.exit()
-}
-
-console.log(`${files.length} replays found.`);
-
-//files = [files[0]];
-
-/*files.forEach((file, i) => {
-    const gameData = loadGameData(file, i);
-    submitGame(gameData);
-})*/
-
-function loadGameData(file, i) {
+function loadGameData(file) {
     filename = path.basename(file);
     const hash = crypto.createHash('md5').update(filename).digest("hex");
-    let data = { hash, filename }
+    let data = { filename, hash }
     try {
         const game = new SlippiGame(file);
         data.settings = game.getSettings();
@@ -66,68 +50,73 @@ function loadGameData(file, i) {
         }
         return data
     } catch(e) {
-        console.log(`${i + 1}: Error reading metadata. Ignoring... (${file})`)
+        console.log(`Error reading metadata. Ignoring... (${file})`)
         console.log(e);
         return
     }
 }
 
-function submitGame(gameData) {
-
-    //console.log(`submitting`);
-    console.log(gameData);
-    console.log(gameData.settings);
-
+async function submitGame(gameData) {    
     try {
-        fetch('https://localhost:44314/Game/Submit', {
+        return await fetch('https://localhost:44314/Game/Submit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(gameData)
             
-        }).then(response => {
-            //console.log(response);
-            response.json().then((data => {
-                //console.log(data);
-                //console.log(`Success: ${data.success}`);
-                console.log(`Message: ${data.message}`);
-                if (!data.success) {
-                    console.log(`Stack Trace: ${data.stackTrace}`);
-                }
-            }));
+        })
+        .then(responsePromise => {
+            return responsePromise.json()
+                .then(
+                    data => {
+                        if (!data.success) {
+                            console.log(`File: ${gameData.filename}`);
+                            console.log(`Message: ${data.message}`);
+                            console.log(`Stack Trace: ${data.stackTrace}`);
+                        }
+                        return data.success;
+                    }
+                )
         });
     }
     catch (e) {
         console.log(e);
+        return false;
     }
 }
 
-let failedSubmissions = 0;
-let i = 0;
-let test = null;
-for (i = 0; i < files.length; i++) {
-    try {
-        submitGame(loadGameData(files[i], i));
-        failedSubmissions++;
-        console.log(`increment1 to ${failedSubmissions}`);
-        
+async function processFiles(files) {
+    let goodFiles = 0;
+    let badFiles = 0;
+    for (const file of files) {
+        const gameData = loadGameData(file);
+        const success = await submitGame(gameData);
+
+        if (success) {
+            goodFiles++;
+        }
+        else {
+            badFiles++;
+        }
+        console.log(`${goodFiles + badFiles} of ${files.length} processed`);
     }
-    catch (e) {
-        console.error(e);
-        failedSubmissions++;
-        console.log(`increment2 to ${failedSubmissions}`);
+
+    notify = true
+    if (notify && files.length > 20) {
+        notifier.notify({
+            title: `Finished processing`,
+            message: `${goodFiles + badFiles} replays processed.\n${badFiles} failed to submit.`,
+            icon: path.join(__dirname, 'slippi_icon.png')
+        });
     }
-    //console.log(`submitted game ${i+1} of ${files.length}`);
+    console.log(`Finished processing`);
+    console.log(`${goodFiles + badFiles} replays processed.`);
+    if (badFiles > 0) {
+        console.log(`${badFiles} failed to submit.`);
+    }
 }
 
+const filePath = "D:/SlippiReplays/*/*.slp"
 
-notify = false
-
-if (notify) {
-    notifier.notify({
-        title: `Finished processing`,
-        message: `${i} replays processed.\n${failedSubmissions} failed to submit.`,
-        icon: path.join(__dirname, 'slippi_icon.png')
-    });
-}
+processFiles(glob.sync(filePath));

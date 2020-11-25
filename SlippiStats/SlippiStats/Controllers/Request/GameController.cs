@@ -31,7 +31,7 @@ namespace SlippiStats.Controllers
                     return response;
                 }
 
-                if (slpReplay.Settings.Players.Count != 2)
+                if (slpReplay.Settings?.Players?.Count != 2)
                 {
                     response.Success = false;
                     response.Message = "Support for games with more than 2 players is not currently available.";

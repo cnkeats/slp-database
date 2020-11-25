@@ -73,7 +73,9 @@ async function submitGame(gameData) {
                         if (!data.success) {
                             console.log(`File: ${gameData.filename}`);
                             console.log(`Message: ${data.message}`);
-                            console.log(`Stack Trace: ${data.stackTrace}`);
+                            if (data.stackTrace != null) {
+                                console.log(`Stack Trace: ${data.stackTrace}`);
+                            }
                         }
                         return data.success;
                     }

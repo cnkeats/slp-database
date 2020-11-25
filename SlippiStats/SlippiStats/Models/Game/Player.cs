@@ -51,11 +51,11 @@ namespace SlippiStats.Models
 
             if (players.Keys.Contains(key))
             {
-                if (players[key].Names.Netplay != null)
+                if (players[key].Names.Netplay != null && players[key].Names.Netplay.Trim().Length > 0)
                 {
                     return players[key].Names.Netplay;
                 }
-                else if (players[key].Names.Code != null)
+                else if (players[key].Names.Code != null && players[key].Names.Code.Trim().Length > 0)
                 {
                     return players[key].Names.Code;
                 }

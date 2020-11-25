@@ -6,7 +6,7 @@ using System.Data;
 
 namespace SlippiStats.Models
 {
-    public class Player
+    public class PlayerAlias
     {
         public int Id { get; private set; }
 
@@ -28,12 +28,12 @@ namespace SlippiStats.Models
             set => Deleted = value ? DateTime.UtcNow : (DateTime?)null;
         }
 
-        public Player()
+        public PlayerAlias()
         {
             Created = DateTime.Now;
         }
 
-        private Player(IDataReader dataReader)
+        private PlayerAlias(IDataReader dataReader)
         {
             Id = dataReader.GetValue<int>(nameof(Id));
             Name = dataReader.GetValue<string>(nameof(Name));
@@ -44,43 +44,19 @@ namespace SlippiStats.Models
             Deleted = dataReader.GetValue<DateTime?>(nameof(Deleted));
         }
 
-        public static string GetPlayerName(SlpReplay slpReplay, int playerIndex)
+        public static PlayerAlias GetByConnectCode(IDbConnection connection, string connectCode)
         {
-            IDictionary<string, SlpMetadataPlayer> players = slpReplay.MetaData.Players;
-            string key = playerIndex.ToString();
-
-            if (players.Keys.Contains(key))
-            {
-                if (players[key].Names.Netplay != null)
-                {
-                    return players[key].Names.Netplay;
-                }
-                else if (players[key].Names.Code != null)
-                {
-                    return players[key].Names.Code;
-                }
-                else
-                {
-                    return slpReplay.Settings.Players[0].Type == PlayerType.HUMAN ? "P" + (playerIndex + 1) : "CPU" + (playerIndex + 1);
-                }
-            }
-
-            return null;
-        }
-
-        public static Player GetByConnectCode(IDbConnection connection, string connectCode)
-        {
-            Player player = null;
+            PlayerAlias player = null;
 
             using IDbCommand command = connection.CreateStoredProcedure(
-                $"{nameof(Player)}_{nameof(GetByConnectCode)}",
+                $"{nameof(PlayerAlias)}_{nameof(GetByConnectCode)}",
                 new { connectCode });
 
             using IDataReader reader = command.ExecuteReader();
 
             if (reader.Read())
             {
-                player = new Player(reader);
+                player = new PlayerAlias(reader);
             }
 
             return player;
@@ -101,7 +77,7 @@ namespace SlippiStats.Models
         private void Insert(IDbConnection connection)
         {
             using IDbCommand command = connection.CreateStoredProcedure(
-                $"{nameof(Player)}_{nameof(Insert)}",
+                $"{nameof(PlayerAlias)}_{nameof(Insert)}",
                 new
                 {
                     Name,
@@ -120,7 +96,7 @@ namespace SlippiStats.Models
             Updated = DateTime.UtcNow;
 
             using IDbCommand command = connection.CreateStoredProcedure(
-                $"{nameof(Player)}_{nameof(Update)}",
+                $"{nameof(PlayerAlias)}_{nameof(Update)}",
                 new
                 {
                     Id,

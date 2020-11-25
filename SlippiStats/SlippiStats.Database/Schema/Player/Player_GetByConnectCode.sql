@@ -7,6 +7,7 @@ SELECT
 	Id,
 	Name,
 	ConnectCode,
+	DiscordCode,
 	Created,
 	Updated,
 	Deleted	

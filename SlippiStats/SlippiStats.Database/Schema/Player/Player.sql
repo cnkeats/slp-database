@@ -2,6 +2,7 @@
 	Id			INT          IDENTITY (1, 1) NOT NULL,
 	Name		VARCHAR(64)	NOT NULL,
 	ConnectCode VARCHAR(16)	NULL,
+	DiscordCode VARCHAR(16) NULL,
 	Created		DATETIME	NOT NULL,
 	Updated		DATETIME	NULL,
 	Deleted		DATETIME	NULL,

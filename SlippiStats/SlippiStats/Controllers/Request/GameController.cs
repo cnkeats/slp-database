@@ -72,7 +72,7 @@ namespace SlippiStats.Controllers
                 if (slpReplay.GameEnd == null)
                 {
                     response.Success = false;
-                    response.Message = "Support for older replays that are missing GameEnd data is not currently available.";
+                    response.Message = "Support for replays that are missing GameEnd data is not currently available.";
                     return response;
                 }
 

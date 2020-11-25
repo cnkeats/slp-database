@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE dbo.Player_Insert
 	@name VARCHAR(64),
 	@connectCode VARCHAR(16),
+	@discordCode VARCHAR(16),
 	@created DATETIME,
 	@updated DATETIME,
 	@deleted DATETIME
@@ -12,6 +13,7 @@ INSERT INTO
 	(
 		Name,
 		ConnectCode,
+		DiscordCode,
 		Created,
 		Updated,
 		Deleted		
@@ -22,6 +24,7 @@ VALUES
 	(
 		@name,
 		@connectCode,
+		@discordCode,
 		@created,
 		@updated,
 		@deleted

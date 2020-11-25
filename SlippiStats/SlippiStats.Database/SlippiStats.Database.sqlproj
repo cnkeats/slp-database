@@ -59,7 +59,7 @@
     <Folder Include="Properties" />
     <Folder Include="Schema" />
     <Folder Include="Schema\Game" />
-    <Folder Include="Schema\Character" />
+    <Folder Include="Schema\GameData" />
     <Folder Include="Schema\Player" />
   </ItemGroup>
   <ItemGroup>
@@ -70,11 +70,12 @@
     <Build Include="Schema\Game\Game_GetById.sql" />
     <Build Include="Schema\Game\Game_Insert.sql" />
     <Build Include="Schema\Game\Game_Update.sql" />
-    <Build Include="Schema\Character\Character.sql" />
+    <Build Include="Schema\GameData\Character.sql" />
     <Build Include="Schema\Game\Game_GetByHash.sql" />
     <Build Include="Schema\Player\Player.sql" />
     <Build Include="Schema\Player\Player_Insert.sql" />
     <Build Include="Schema\Player\Player_Update.sql" />
     <Build Include="Schema\Player\Player_GetByConnectCode.sql" />
+    <Build Include="Schema\GameData\Stage.sql" />
   </ItemGroup>
 </Project>

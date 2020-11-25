@@ -45,12 +45,14 @@ namespace SlippiStats.Controllers
                     return response;
                 }
 
+                List<Player> players = new List<Player>();
                 if (slpReplay.MetaData != null)
                 {
                     int playerIndex = 0;
                     foreach (SlpMetadataPlayer playerMetadata in slpReplay.MetaData.GetPlayers())
                     {
                         Player player = Player.GetByConnectCode(Database.Connection, playerMetadata.Names.Code);
+                        player = Player.GetByPlayerName(Database.Connection, Player.GetPlayerName(slpReplay, playerIndex));
 
                         if (player == null)
                         {
@@ -64,6 +66,8 @@ namespace SlippiStats.Controllers
                                 player.Save(Database.Connection);
                             }
                         }
+
+                        players.Add(player);
 
                         playerIndex++;
                     }
@@ -81,6 +85,12 @@ namespace SlippiStats.Controllers
                 if (game == null)
                 {
                     game = new Game(slpReplay);
+
+                    game.Player1Id = players.Count > 0 ? players[0]?.Id : null;
+                    game.Player2Id = players.Count > 1 ? players[1]?.Id : null;
+                    game.Player3Id = players.Count > 2 ? players[2]?.Id : null;
+                    game.Player4Id = players.Count > 3 ? players[3]?.Id : null;
+
                     game.Save(Database.Connection);
                     
                     response.Message = string.Format("New game #{0} saved.", game.Id);

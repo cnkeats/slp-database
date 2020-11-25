@@ -86,6 +86,24 @@ namespace SlippiStats.Models
             return player;
         }
 
+        public static Player GetByPlayerName(IDbConnection connection, string playerName)
+        {
+            Player player = null;
+
+            using IDbCommand command = connection.CreateStoredProcedure(
+                $"{nameof(Player)}_{nameof(GetByPlayerName)}",
+                new { playerName });
+
+            using IDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                player = new Player(reader);
+            }
+
+            return player;
+        }
+
         public void Save(IDbConnection connection)
         {
             if (Id == 0)

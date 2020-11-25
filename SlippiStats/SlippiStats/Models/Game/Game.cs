@@ -26,6 +26,14 @@ namespace SlippiStats.Models
 
         public Character? Character4 { get; set; }
 
+        public int? Player1Id { get; set; }
+
+        public int? Player2Id { get; set; }
+
+        public int? Player3Id { get; set; }
+
+        public int? Player4Id { get; set; }
+
         public string Winner { get; set; }
 
         public Stage Stage { get; set; }
@@ -96,6 +104,10 @@ namespace SlippiStats.Models
             Character2 = (Character?)dataReader.GetValue<int?>(nameof(Character2));
             Character3 = (Character?)dataReader.GetValue<int?>(nameof(Character3));
             Character4 = (Character?)dataReader.GetValue<int?>(nameof(Character4));
+            Player1Id = dataReader.GetValue<int?>(nameof(Player1Id));
+            Player2Id = dataReader.GetValue<int?>(nameof(Player2Id));
+            Player3Id = dataReader.GetValue<int?>(nameof(Player3Id));
+            Player4Id = dataReader.GetValue<int?>(nameof(Player4Id));
             Winner = dataReader.GetValue<string>(nameof(Winner));
             Stage = (Stage)dataReader.GetValue<int>(nameof(Stage));
             GameMode = (GameMode?)dataReader.GetValue<int?>(nameof(GameMode));
@@ -153,6 +165,10 @@ namespace SlippiStats.Models
                     Character2,
                     Character3,
                     Character4,
+                    Player1Id,
+                    Player2Id,
+                    Player3Id,
+                    Player4Id,
                     Winner,
                     Stage,
                     GameMode,
@@ -186,6 +202,10 @@ namespace SlippiStats.Models
                     Character2,
                     Character3,
                     Character4,
+                    Player1Id,
+                    Player2Id,
+                    Player3Id,
+                    Player4Id,
                     Winner,
                     Stage,
                     GameMode,

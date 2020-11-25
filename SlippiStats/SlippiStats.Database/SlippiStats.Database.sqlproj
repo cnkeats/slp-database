@@ -78,5 +78,7 @@
     <Build Include="Schema\Player\Player_GetByConnectCode.sql" />
     <Build Include="Schema\GameData\Stage.sql" />
     <Build Include="Schema\Player\Player_GetByPlayerName.sql" />
+    <Build Include="Schema\Game\Game_GetList.sql" />
+    <Build Include="Schema\Game\Game_GetListByFilters.sql" />
   </ItemGroup>
 </Project>

@@ -61,7 +61,7 @@ namespace SlippiStats.Models
 
             // TODO: More robust default for older replays
             GameEndMethod gameEndMethod = GameEndMethod.GAME;
-            if (replay.GameEnd != null && replay.GameEnd.GameEndMethod != null)
+            if (replay.GameEnd != null)
             {
                 gameEndMethod = replay.GameEnd.GameEndMethod;
             }

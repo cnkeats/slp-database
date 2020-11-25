@@ -1,4 +1,4 @@
-namespace SlippiStats.Models
+namespace SlippiStats.ViewModels
 {
     public class ErrorViewModel
     {

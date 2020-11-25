@@ -139,6 +139,41 @@ namespace SlippiStats.Models
             return user;
         }
 
+        public static List<Game> GetList(IDbConnection connection)
+        {
+            List<Game> games = new List<Game>();
+
+            using IDbCommand command = connection.CreateStoredProcedure(
+                $"{nameof(Game)}_{nameof(GetList)}");
+
+            using IDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                games.Add(new Game(reader));
+            }
+
+            return games;
+        }
+
+        public static List<Game> GetListByFilters(IDbConnection connection, string playerName1 = null, string playerName2 = null, string characterName1 = null, string characterName2 = null, string stageName = null)
+        {
+            List<Game> games = new List<Game>();
+
+            using IDbCommand command = connection.CreateStoredProcedure(
+                $"{nameof(Game)}_{nameof(GetListByFilters)}",
+                new { playerName1, playerName2, characterName1, characterName2, stageName });
+
+            using IDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                games.Add(new Game(reader));
+            }
+
+            return games;
+        }
+
         public void Save(IDbConnection connection)
         {
             if (Id == 0)

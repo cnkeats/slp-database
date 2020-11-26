@@ -21,6 +21,7 @@ SELECT
 	Stage,
 	GameMode,
 	StartAt,
+	StartingSeed,
 	GameLength,
 	FileName,
 	Hash,

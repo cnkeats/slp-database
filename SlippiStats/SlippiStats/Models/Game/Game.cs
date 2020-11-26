@@ -42,6 +42,8 @@ namespace SlippiStats.Models
 
         public DateTime StartAt { get; set; }
 
+        public long? StartingSeed { get; set; }
+
         public int GameLength { get; set; }
 
         public string FileName { get; set; }
@@ -72,6 +74,7 @@ namespace SlippiStats.Models
             FileName = slpReplay.FileName;
             Hash = slpReplay.Hash;
             StartAt = slpReplay.MetaData.StartAt;
+            StartingSeed = slpReplay.StartingSeed;
             GameLength = slpReplay.MetaData.LastFrame;
             Platform = slpReplay.MetaData.PlayedOn;
 
@@ -112,6 +115,7 @@ namespace SlippiStats.Models
             Stage = (Stage)dataReader.GetValue<int>(nameof(Stage));
             GameMode = (GameMode?)dataReader.GetValue<int?>(nameof(GameMode));
             StartAt = dataReader.GetValue<DateTime>(nameof(StartAt));
+            StartingSeed = dataReader.GetValue<long?>(nameof(StartingSeed));
             GameLength = dataReader.GetValue<int>(nameof(GameLength));
             FileName = dataReader.GetValue<string>(nameof(FileName));
             Hash = dataReader.GetValue<string>(nameof(Hash));
@@ -137,6 +141,24 @@ namespace SlippiStats.Models
             }
 
             return user;
+        }
+
+        public static Game GetDuplicateMatch(IDbConnection connection, Game game)
+        {
+            Game matchedGame = null;
+
+            using IDbCommand command = connection.CreateStoredProcedure(
+                $"{nameof(Game)}_{nameof(GetDuplicateMatch)}",
+                new { game.Player1, game.Player2, game.Character1, game.Character2, game.Stage, game.StartingSeed, game.GameLength });
+
+            using IDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                matchedGame = new Game(reader);
+            }
+
+            return matchedGame;
         }
 
         public static List<Game> GetList(IDbConnection connection)
@@ -208,6 +230,7 @@ namespace SlippiStats.Models
                     Stage,
                     GameMode,
                     StartAt,
+                    StartingSeed,
                     GameLength,
                     FileName,
                     Hash,
@@ -245,6 +268,7 @@ namespace SlippiStats.Models
                     Stage,
                     GameMode,
                     StartAt,
+                    StartingSeed,
                     GameLength,
                     FileName,
                     Hash,

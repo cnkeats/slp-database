@@ -44,7 +44,11 @@ function loadGameData(file) {
         data.gameend = game.getGameEnd();
 
         data.stats = game.getStats().overall.map((o) => o.killCount);
-        const latestFrame = game.getLatestFrame();
+
+        data.startingSeed = game.getFrames()[0].players[0].pre.seed
+        console.log(typeof (data.startingSeed));
+
+        const latestFrame = game.getLatestFrame();        
         if (latestFrame != null) {
             data.latestFramePercents = latestFrame.players.map((p) => p.post.percent);
         }
@@ -57,6 +61,9 @@ function loadGameData(file) {
 }
 
 async function submitGame(gameData) {    
+
+    console.log(gameData);
+    
     try {
         return await fetch('https://localhost:44314/Game/Submit', {
             method: 'POST',
@@ -91,6 +98,10 @@ async function submitGame(gameData) {
 async function processFiles(files) {
     let goodFiles = 0;
     let badFiles = 0;
+
+    //files.sort(() => .5 - Math.random());
+    //files = [files[files.length]];
+
     for (const file of files) {
         const gameData = loadGameData(file);
         const success = await submitGame(gameData);
@@ -119,6 +130,6 @@ async function processFiles(files) {
     }
 }
 
-const filePath = "D:/SlippiReplays/*/*.slp"
-
+const filePath = "D:/SlippiReplays/2020-*/*.slp"
+//console.log(glob.sync(filePath).length);
 processFiles(glob.sync(filePath));

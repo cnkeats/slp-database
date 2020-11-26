@@ -31,6 +31,7 @@ SELECT
 	Game.Stage,
 	Game.GameMode,
 	Game.StartAt,
+	Game.StartingSeed,
 	Game.GameLength,
 	Game.FileName,
 	Game.Hash,

@@ -81,7 +81,8 @@ namespace SlippiStats.Controllers
                 }
 
                 // TODO: Better duplication checking
-                Game game = Game.GetByHash(Database.Connection, slpReplay.Hash);
+                Game game = Game.GetDuplicateMatch(Database.Connection, new Game(slpReplay));
+                //game = game ?? Game.GetByHash(Database.Connection, slpReplay.Hash);
                 if (game == null)
                 {
                     game = new Game(slpReplay);
@@ -97,7 +98,15 @@ namespace SlippiStats.Controllers
                 }
                 else
                 {
-                    response.Message = string.Format("Existing game #{0} updated. // TODO", game.Id);
+                    game.FileName = slpReplay.FileName;
+                    game.Hash = slpReplay.Hash;
+                    game.StartAt = slpReplay.MetaData.StartAt;
+                    game.StartingSeed = slpReplay.StartingSeed;
+                    game.GameLength = slpReplay.MetaData.LastFrame;
+
+                    game.Save(Database.Connection);
+
+                    response.Message = string.Format("Existing game #{0} updated.", game.Id);
                 }
 
                 response.Success = true;

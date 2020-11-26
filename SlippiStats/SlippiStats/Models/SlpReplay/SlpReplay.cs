@@ -21,6 +21,8 @@ namespace SlippiStats.Models
 
         public SlpGameEnd GameEnd { get; set; }
 
+        public long? StartingSeed { get; set; }
+
         public static string DetermineWinner(SlpReplay replay)
         {
 

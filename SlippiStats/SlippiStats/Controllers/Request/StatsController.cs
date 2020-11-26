@@ -28,7 +28,7 @@ namespace SlippiStats.Controllers
        [HttpPost]
        public IActionResult Index(StatsIndexViewModel viewModel)
         {
-            viewModel.Games = Game.GetListByFilters(Database.Connection, viewModel.PlayerFilter, null, viewModel.CharacterFilter, null, viewModel.StageFilter);
+            viewModel.Games = Game.GetListByFilters(Database.Connection, viewModel.PlayerFilter1, viewModel.PlayerFilter2, viewModel.CharacterFilter1, viewModel.CharacterFilter2, viewModel.StageFilter);
             return View(viewModel);
         }
     }

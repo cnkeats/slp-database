@@ -8,23 +8,56 @@
     <h3>Stats Overview - @Model.Games.Count games found</h3>
     <form class="form-standard" method="post">
         <div class="form-standard-field">
-            <input name="PlayerFilter" placeholder="Player Tag or Code" type="text" value="@Model.PlayerFilter" />
+            <input name="PlayerFilter1" placeholder="Player Tag or Code" type="text" value="@Model.PlayerFilter1" />
         </div>
         <div class="form-standard-field">
-            <select name="CharacterFilter">
+            <input name="PlayerFilter2" placeholder="Player Tag or Code" type="text" value="@Model.PlayerFilter2" />
+        </div>
+        <div class="form-standard-field">
+            <select name="CharacterFilter1">
                 <option value="" selected="selected">Character</option>
                 @foreach (Character character in Model.Characters)
                 {
-                    <option>@character.GetDisplayName()</option>
+                    if (character ==Model.CharacterFilter1)
+                    {
+                        <option value="@character" selected="selected">@character.GetDisplayName()</option>
+                    }
+                    else
+                    {
+                        <option value="@character">@character.GetDisplayName()</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-standard-field">
+            <select name="CharacterFilter2">
+                <option value="" selected="selected">Character</option>
+                @foreach (Character character in Model.Characters)
+                {
+                    if (character == Model.CharacterFilter2)
+                    {
+                        <option value="@character" selected="selected">@character.GetDisplayName()</option>
+                    }
+                    else
+                    {
+                        <option value="@character">@character.GetDisplayName()</option>
+                    }
                 }
             </select>
         </div>
         <div class="form-standard-field">
             <select name="StageFilter">
-                <option value="" selected="selected">Stage</option>
+                <option selected="selected">Stage</option>
                 @foreach (Stage stage in Model.Stages)
                 {
-                    <option>@stage.GetDisplayName()</option>
+                    if (stage == Model.StageFilter)
+                    {
+                        <option value="@stage" selected="selected">@stage.GetDisplayName()</option>
+                    }
+                    else
+                    {
+                        <option value="@stage">@stage.GetDisplayName()</option>
+                    }
                 }
             </select>
         </div>

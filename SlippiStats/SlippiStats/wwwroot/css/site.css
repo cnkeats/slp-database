@@ -86,19 +86,19 @@ body {
 /*Global Variables*/
 :root {
     /*Colors*/
-    --color-primary: #187461; /*green*/
-    --color-primary-dark: #169D82; /*dark green*/
-    --color-secondary: #3498DB; /*blue*/
-    --color-secondary-dark: #1B76B2; /*dark blue*/
+    --color-primary: #a74182; /*green*/
+    --color-primary-dark: #8c2e5a; /*dark green*/
+    --color-secondary: #d87f3a; /*blue*/
+    --color-secondary-dark: #9e541b; /*dark blue*/
     --color-tertiary: #F39C12; /*orange*/
     --color-tertiary-30: rgba(243, 156, 18, .3);
     --color-text-primary: #717171; /*medium grey*/
     --color-text-secondary: #4A4A4A; /*dark grey*/
     --color-text-tertiary: #34495E; /*dark blue*/
     --color-text-light: #FFFFFF; /*white*/
-    --color-bg-primary: #1e142e;
-    --color-table-bg-primary: #8881ce; /*white*/
-    --color-table-bg-secondary: #afa0da; /*very light grey*/
+    --color-bg-primary: #ffffff;
+    --color-table-bg-primary: #ffffff; /*white*/
+    --color-table-bg-secondary: #F1F1F1; /*very light grey*/
     --color-table-bg-tertiary: #E3E3E3; /*medium grey*/
     /*Borders*/
     --border-radius: 4px;

@@ -1,17 +1,14 @@
 ﻿CREATE PROCEDURE Game_GetListByFilters
 	@playerName1 VARCHAR(64),
 	@playerName2 VARCHAR(64),
-	@characterName1 VARCHAR(32),
-	@characterName2 VARCHAR(32),
-	@stageName VARCHAR(32)
+	@character1 INT,
+	@character2 INT,
+	@stage INT
 
 AS
 
 SET @playerName1 = '%' + @playerName1 + '%'
 SET @playerName2 = '%' + @playerName2 + '%'
-SET @characterName1 = '%' + @characterName1 + '%'
-SET @characterName2 = '%' + @characterName2 + '%'
-SET @stageName = '%' + @stageName + '%'
 
 SELECT
 	Game.Id,
@@ -45,15 +42,9 @@ FROM
 		ON P1.Id = Game.Player1Id
 	INNER JOIN Player AS P2 WITH (NOLOCK)
 		ON P2.Id = Game.Player2Id
-	INNER JOIN Character AS C1 WITH (NOLOCK)
-		ON C1.Id = Game.Character1
-	INNER JOIN Character AS C2 WITH (NOLOCK)
-		ON C2.Id = Game.Character2
-	INNER JOIN Stage WITH (NOLOCK)
-		ON Stage.Id = Game.Stage
 WHERE
 	(@playerName1 IS NULL OR P1.Name LIKE @playerName1 OR P2.Name LIKE @playerName1 OR P1.ConnectCode LIKE @playerName1 OR P2.ConnectCode LIKE @playerName1)
 	AND (@playerName2 IS NULL OR P1.Name LIKE @playerName2 OR P2.Name LIKE @playerName2 OR P1.ConnectCode LIKE @playerName2 OR P2.ConnectCode LIKE @playerName2)
-	AND (@characterName1 IS NULL OR C1.Name LIKE @characterName1 OR C2.Name LIKE @characterName1)
-	AND (@characterName2 IS NULL OR C1.Name LIKE @characterName2 OR C2.Name LIKE @characterName2)
-	AND (@stageName IS NULL OR Stage.Name LIKE @stageName OR Stage.Name LIKE @stageName)
+	AND (@character1 IS NULL OR Game.Character1 = @character1 OR Game.Character2 = @character1)
+	AND (@character2 IS NULL OR Game.Character1 = @character2 OR Game.Character2 = @character2)
+	AND (@stage IS NULL OR Game.Stage = @stage)

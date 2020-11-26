@@ -178,13 +178,13 @@ namespace SlippiStats.Models
             return games;
         }
 
-        public static List<Game> GetListByFilters(IDbConnection connection, string playerName1 = null, string playerName2 = null, string characterName1 = null, string characterName2 = null, string stageName = null)
+        public static List<Game> GetListByFilters(IDbConnection connection, string playerName1 = null, string playerName2 = null, Character? character1 = null, Character? character2 = null, Stage? stage = null)
         {
             List<Game> games = new List<Game>();
 
             using IDbCommand command = connection.CreateStoredProcedure(
                 $"{nameof(Game)}_{nameof(GetListByFilters)}",
-                new { playerName1, playerName2, characterName1, characterName2, stageName });
+                new { playerName1, playerName2, character1, character2, stage });
 
             using IDataReader reader = command.ExecuteReader();
 

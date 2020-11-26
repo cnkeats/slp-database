@@ -17,7 +17,7 @@ namespace SlippiStats.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction(nameof(StatsController.Index), "Stats");
         }
 
         public IActionResult Privacy()

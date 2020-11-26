@@ -14,7 +14,7 @@ namespace SlippiStats.ViewModels
 
         public List<Game> Games { get; set; }
 
-        public StatsIndexViewModel()
+        public StatsIndexViewModel() : base()
         {
             Games = new List<Game>();
         }

@@ -4,46 +4,62 @@
     ViewData["Title"] = "Stats Page";
 }
 
-<div class="text-center">
+<div class="section-filters">
     <h3>Stats Overview - @Model.Games.Count games found</h3>
     <form class="form-standard" method="post">
         <div class="form-standard-field">
             <input name="PlayerFilter" placeholder="Player Tag or Code" type="text" value="@Model.PlayerFilter" />
         </div>
         <div class="form-standard-field">
-            <input name="CharacterFilter" placeholder="Character" type="text" value="@Model.CharacterFilter" />
+            <select name="CharacterFilter">
+                <option value="" selected="selected">Character</option>
+                @foreach (Character character in Model.Characters)
+                {
+                    <option>@character.GetDisplayName()</option>
+                }
+            </select>
         </div>
         <div class="form-standard-field">
-            <input name="StageFilter" placeholder="Stage" type="text" value="@Model.StageFilter" />
+            <select name="StageFilter">
+                <option value="" selected="selected">Stage</option>
+                @foreach (Stage stage in Model.Stages)
+                {
+                    <option>@stage.GetDisplayName()</option>
+                }
+            </select>
         </div>
         <div class="form-standard-field">
             <button class="button" type="submit">Filter</button>
         </div>
     </form>
-    <table class="table-primary">
-        <thead>
-            <tr>
-                <th class="align-left">Id</th>
-                <th class="align-left">Player1</th>
-                <th class="align-left"></th>
-                <th class="align-left">Player2</th>
-                <th class="align-left"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (Game game in Model.Games.Take(100))
-            {
-                <tr>
-                    <td class="align-left">@game.Id</td>
-                    <td class="align-left">@game.Player1</td>
-                    <td class="align-left">@game.Character1.GetDisplayName()</td>
-                    <td class="align-left">@game.Player2</td>
-                    <td class="align-left">@game.Character2.GetDisplayName()</td>
-                    <td class="align-left">@game.Stage.GetDisplayName()</td>
-                    <td class="align-left">@game.GameMode?.GetDisplayName()</td>
-                    <td class="align-left">@game.FileName</td>
-                </tr>
-            }
-        </tbody>
-    </table>
 </div>
+
+<table class="table-primary">
+    <thead>
+        <tr>
+            <th class="align-left">Id</th>
+            <th class="align-left">Player 1</th>
+            <th class="align-left"></th>
+            <th class="align-left">Player 2</th>
+            <th class="align-left"></th>
+            <th class="align-left">Stage</th>
+            <th class="align-left"></th>
+            <th class="align-left">File Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Game game in Model.Games.Take(100))
+        {
+            <tr>
+                <td class="align-left">@game.Id</td>
+                <td class="align-left">@game.Player1</td>
+                <td class="align-left">@game.Character1.GetDisplayName()</td>
+                <td class="align-left">@game.Player2</td>
+                <td class="align-left">@game.Character2.GetDisplayName()</td>
+                <td class="align-left">@game.Stage.GetDisplayName()</td>
+                <td class="align-left">@game.GameMode?.GetDisplayName()</td>
+                <td class="align-left">@game.FileName</td>
+            </tr>
+        }
+    </tbody>
+</table>

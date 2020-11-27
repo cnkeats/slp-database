@@ -1,0 +1,37 @@
+﻿@model  PlayerListViewModel
+
+@{
+    ViewData["Title"] = "Player List Page";
+}
+
+<div class="section-filters">
+    <h3>Stats Overview - @Model.Players.Count players found</h3>
+    <form class="form-standard" method="post">
+        <div class="form-standard-field">
+            <input name="PlayerFilter1" placeholder="Player Tag or Code" type="text" value="@Model.PlayerFilter1" />
+        </div>
+        <div class="form-standard-field">
+            <button class="button" type="submit">Filter</button>
+        </div>
+    </form>
+</div>
+
+<table class="table-primary">
+    <thead>
+        <tr>
+            <th class="align-left">Id</th>
+            <th class="align-left">Name</th>
+            <th class="align-left">Connect Code</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Player player in Model.Players.Take(100))
+        {
+            <tr onclick="location.href = '@(Url.Action("Profile", "Player", new { id = player.Id }))'">
+                <td class="align-left">@player.Id</td>
+                <td class="align-left">@player.Name</td>
+                <td class="align-left">@player.ConnectCode</td>
+            </tr>
+        }
+    </tbody>
+</table>

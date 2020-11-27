@@ -581,9 +581,9 @@ div[class^="section-"] {
     position: relative;
     z-index: 0;
     height: calc(100% - 105px);
-    height: -o-calc(100% - 105px); /* opera */
-    height: -webkit-calc(100% - 105px); /* google, safari */
-    height: -moz-calc(100% - 105px); /* firefox */
+    /*height: -o-calc(100% - 105px); /* opera */
+    /*height: -webkit-calc(100% - 105px); /* google, safari */
+    /*height: -moz-calc(100% - 105px); /* firefox */
 }
 .section-map-wrap {
     flex: 0 0 calc(100% - 350px);
@@ -747,6 +747,60 @@ div[class^="section-"] {
     opacity:.5;
 }
 
+
+/*Table Matchups*/
+.table-matchups {
+    border-collapse: collapse;
+    font-size: 14px;
+    width: 30%;
+    height: 30%;
+    /*background-color: #FFA74A;*/
+    border: solid;
+}
+.table-matchups .align-left {
+    text-align:left;
+}
+.table-matchups .align-right {
+    text-align:right;
+}
+.table-matchups .align-center {
+    text-align:center;
+}
+.table-matchups tbody tr {
+    transition-duration:.2s;
+    transition-property:outline, background-color;
+    transition-timing-function:ease-in-out;
+    border :solid;
+}
+.table-matchups tbody tr:nth-child(odd) {
+    background-color: var(--color-table-bg-primary);
+}
+.table-matchups tbody tr:nth-child(even) {
+    background-color: var(--color-table-bg-secondary);
+}
+.table-matchups tbody tr:hover {
+    background-color:var(--color-tertiary-30);
+    outline:1px solid var(--color-tertiary);
+    outline-offset:-2px;
+    cursor:pointer;
+}
+.table-matchups th,
+.table-matchups td {
+    border: solid;
+    border-width: 1px;
+    border-color: black;
+    text-align: center
+}
+.table-matchups th {
+    /*background-color: var(--color-secondary);*/
+    color:var(--color-text-light);
+    text-transform:uppercase;
+    font-size:12px;
+}
+.table-matchups th i {
+    opacity:.5;
+}
+
 /*Table Modifiers*/
 .table-box {
     border-radius: var(--border-radius);
@@ -779,4 +833,17 @@ div[class^="section-"] {
     background-color: var(--color-table-bg-secondary);
     outline: none;
     cursor: default;
+}
+
+
+
+.profile-overview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.profile-matchups {
+    height: 100%;
 }

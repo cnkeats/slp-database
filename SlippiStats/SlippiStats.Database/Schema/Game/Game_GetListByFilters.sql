@@ -3,7 +3,8 @@
 	@playerName2 VARCHAR(64),
 	@character1 INT,
 	@character2 INT,
-	@stage INT
+	@stage INT,
+	@includeAnonymous BIT
 
 AS
 
@@ -48,3 +49,27 @@ WHERE
 	AND (@character1 IS NULL OR Game.Character1 = @character1 OR Game.Character2 = @character1)
 	AND (@character2 IS NULL OR Game.Character1 = @character2 OR Game.Character2 = @character2)
 	AND (@stage IS NULL OR Game.Stage = @stage)
+	AND (@includeAnonymous = 1 OR
+		(
+			P1.Name <> 'P1'
+			AND P1.Name <> 'P2'
+			AND P1.Name <> 'P3'
+			AND P1.Name <> 'P4'
+			AND P1.Name <> 'CPU1'
+			AND P1.Name <> 'CPU2'
+			AND P1.Name <> 'CPU3'
+			AND P1.Name <> 'CPU4'
+		)
+	)
+	AND (@includeAnonymous = 1 OR
+		(
+			P2.Name <> 'P1'
+			AND P2.Name <> 'P2'
+			AND P2.Name <> 'P3'
+			AND P2.Name <> 'P4'
+			AND P2.Name <> 'CPU1'
+			AND P2.Name <> 'CPU2'
+			AND P2.Name <> 'CPU3'
+			AND P2.Name <> 'CPU4'
+		)
+	)

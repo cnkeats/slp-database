@@ -1,4 +1,5 @@
 ﻿CREATE PROCEDURE Game_GetList
+	@includeAnonymous BIT
 
 AS
 
@@ -30,3 +31,28 @@ SELECT
 	Deleted	
 FROM
 	Game WITH (NOLOCK)
+WHERE
+	(@includeAnonymous = 1 OR
+		(
+			Player1 <> 'P1'
+			AND Player1 <> 'P2'
+			AND Player1 <> 'P3'
+			AND Player1 <> 'P4'
+			AND Player1 <> 'CPU1'
+			AND Player1 <> 'CPU2'
+			AND Player1 <> 'CPU3'
+			AND Player1 <> 'CPU4'
+		)
+	)
+	AND (@includeAnonymous = 1 OR
+		(
+			Player2 <> 'P1'
+			AND Player2 <> 'P2'
+			AND Player2 <> 'P3'
+			AND Player2 <> 'P4'
+			AND Player2 <> 'CPU1'
+			AND Player2 <> 'CPU2'
+			AND Player2 <> 'CPU3'
+			AND Player2 <> 'CPU4'
+		)
+	)

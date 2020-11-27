@@ -18,7 +18,7 @@ namespace SlippiStats.ViewModels
 
         public SlippiStatsViewModel()
         {
-            Characters = Enum.GetValues(typeof(Character)).OfType<Character>().OrderBy(c => c.GetDisplayName()).ToList();
+            Characters = Enum.GetValues(typeof(Character)).OfType<Character>().OrderBy(c => c.GetTierPlacement()).ToList();
             Stages = Enum.GetValues(typeof(Stage)).OfType<Stage>().OrderBy(s => s.GetDisplayName()).ToList();
         }
     }

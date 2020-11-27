@@ -61,6 +61,7 @@
     <Folder Include="Schema\Game" />
     <Folder Include="Schema\GameData" />
     <Folder Include="Schema\Player" />
+    <Folder Include="Schema\MatchupResults" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare-Local.scmp" />
@@ -81,5 +82,10 @@
     <Build Include="Schema\Game\Game_GetList.sql" />
     <Build Include="Schema\Game\Game_GetListByFilters.sql" />
     <Build Include="Schema\Game\Game_GetDuplicateMatch.sql" />
+    <Build Include="Schema\Player\Player_GetList.sql" />
+    <Build Include="Schema\Player\Player_GetById.sql" />
+    <Build Include="Schema\Game\Game_GetListByPlayerId.sql" />
+    <Build Include="Schema\Player\Player_GetPlayedCharactersByPlayerId.sql" />
+    <Build Include="Schema\MatchupResults\MatchupResults_GetListByPlayerId.sql" />
   </ItemGroup>
 </Project>

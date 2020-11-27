@@ -161,12 +161,13 @@ namespace SlippiStats.Models
             return matchedGame;
         }
 
-        public static List<Game> GetList(IDbConnection connection)
+        public static List<Game> GetList(IDbConnection connection, bool includeAnonymous = false)
         {
             List<Game> games = new List<Game>();
 
             using IDbCommand command = connection.CreateStoredProcedure(
-                $"{nameof(Game)}_{nameof(GetList)}");
+                $"{nameof(Game)}_{nameof(GetList)}",
+                new { includeAnonymous });
 
             using IDataReader reader = command.ExecuteReader();
 
@@ -178,13 +179,31 @@ namespace SlippiStats.Models
             return games;
         }
 
-        public static List<Game> GetListByFilters(IDbConnection connection, string playerName1 = null, string playerName2 = null, Character? character1 = null, Character? character2 = null, Stage? stage = null)
+        public static List<Game> GetListByPlayerId(IDbConnection connection, int playerId)
+        {
+            List<Game> games = new List<Game>();
+
+            using IDbCommand command = connection.CreateStoredProcedure(
+                $"{nameof(Game)}_{nameof(GetListByPlayerId)}",
+                new { playerId });
+
+            using IDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                games.Add(new Game(reader));
+            }
+
+            return games;
+        }
+
+        public static List<Game> GetListByFilters(IDbConnection connection, string playerName1 = null, string playerName2 = null, Character? character1 = null, Character? character2 = null, Stage? stage = null, bool includeAnonymous = false)
         {
             List<Game> games = new List<Game>();
 
             using IDbCommand command = connection.CreateStoredProcedure(
                 $"{nameof(Game)}_{nameof(GetListByFilters)}",
-                new { playerName1, playerName2, character1, character2, stage });
+                new { playerName1, playerName2, character1, character2, stage, includeAnonymous });
 
             using IDataReader reader = command.ExecuteReader();
 

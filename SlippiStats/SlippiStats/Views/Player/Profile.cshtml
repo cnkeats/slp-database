@@ -1,0 +1,80 @@
+﻿@model PlayerProfileViewModel
+
+@{
+    ViewData["Title"] = "Player List Page";
+}
+
+<div class="section-filters">
+    <h3>Stats Overview - @Model.Player.Name - @Model.Player.ConnectCode</h3>
+    <form class="form-standard" method="post">
+    </form>
+</div>
+
+<div class="profile-overview">
+    <div class="profile-matchups">
+        <table class="table-matchups">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th />
+                    @foreach (Character character in Model.Characters)
+                    {
+                        if (true)
+                        {
+                            <th><img src="@character.GetStockIconPath()" /></th>
+                        }
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Character character in Model.PlayedCharacters)
+                {
+                    if (true)
+                    {
+                        <tr>
+                            <td>@Model.MatchupResults.Where(mr => mr.Character == character).Sum(mr => mr.GamesPlayed)</td>
+                            <td><img src="@character.GetStockIconPath()" /></td>
+                            @foreach (Character opponentCharacter in Model.Characters)
+                            {
+                                if (true)
+                                {
+                                    <td>@Model.MatchupResults.Where(mr => mr.Character == character && mr.OpponentCharacter == opponentCharacter).FirstOrDefault()?.GamesPlayed</td>
+                                }
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<table class="table-primary">
+    <thead>
+        <tr>
+            <th class="align-left">Id</th>
+            <th class="align-left">Player 1</th>
+            <th class="align-left"></th>
+            <th class="align-left">Player 2</th>
+            <th class="align-left"></th>
+            <th class="align-left">Stage</th>
+            <th class="align-left"></th>
+            <th class="align-left">File Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Game game in Model.Games.Take(100))
+        {
+            <tr>
+                <td class="align-left">@game.Id</td>
+                <td class="align-left">@game.Player1</td>
+                <td class="align-left">@game.Character1.GetDisplayName()</td>
+                <td class="align-left">@game.Player2</td>
+                <td class="align-left">@game.Character2.GetDisplayName()</td>
+                <td class="align-left">@game.Stage.GetDisplayName()</td>
+                <td class="align-left">@game.GameMode?.GetDisplayName()</td>
+                <td class="align-left">@game.FileName</td>
+            </tr>
+        }
+    </tbody>
+</table>

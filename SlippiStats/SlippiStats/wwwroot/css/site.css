@@ -1,56 +1,4 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
+﻿
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -72,17 +20,6 @@ body {
 
 
 
-/*=============================================================*/
-
-
-
-
-
-
-
-
-
-
 /*Global Variables*/
 :root {
     /*Colors*/
@@ -96,10 +33,10 @@ body {
     --color-text-secondary: #4A4A4A; /*dark grey*/
     --color-text-tertiary: #34495E; /*dark blue*/
     --color-text-light: #FFFFFF; /*white*/
-    --color-bg-primary: #ffffff;
-    --color-table-bg-primary: #ffffff; /*white*/
-    --color-table-bg-secondary: #F1F1F1; /*very light grey*/
-    --color-table-bg-tertiary: #E3E3E3; /*medium grey*/
+    --color-bg-primary: #666666;
+    --color-table-bg-primary: #666666; /*white*/
+    --color-table-bg-secondary: #727272; /*very light grey*/
+    --color-table-bg-tertiary: #747474; /*medium grey*/
     /*Borders*/
     --border-radius: 4px;
 }
@@ -748,59 +685,6 @@ div[class^="section-"] {
 }
 
 
-/*Table Matchups*/
-.table-matchups {
-    border-collapse: collapse;
-    font-size: 14px;
-    width: 30%;
-    height: 30%;
-    /*background-color: #FFA74A;*/
-    border: solid;
-}
-.table-matchups .align-left {
-    text-align:left;
-}
-.table-matchups .align-right {
-    text-align:right;
-}
-.table-matchups .align-center {
-    text-align:center;
-}
-.table-matchups tbody tr {
-    transition-duration:.2s;
-    transition-property:outline, background-color;
-    transition-timing-function:ease-in-out;
-    border :solid;
-}
-.table-matchups tbody tr:nth-child(odd) {
-    background-color: var(--color-table-bg-primary);
-}
-.table-matchups tbody tr:nth-child(even) {
-    background-color: var(--color-table-bg-secondary);
-}
-.table-matchups tbody tr:hover {
-    background-color:var(--color-tertiary-30);
-    outline:1px solid var(--color-tertiary);
-    outline-offset:-2px;
-    cursor:pointer;
-}
-.table-matchups th,
-.table-matchups td {
-    border: solid;
-    border-width: 1px;
-    border-color: black;
-    text-align: center
-}
-.table-matchups th {
-    /*background-color: var(--color-secondary);*/
-    color:var(--color-text-light);
-    text-transform:uppercase;
-    font-size:12px;
-}
-.table-matchups th i {
-    opacity:.5;
-}
-
 /*Table Modifiers*/
 .table-box {
     border-radius: var(--border-radius);
@@ -846,4 +730,59 @@ div[class^="section-"] {
 
 .profile-matchups {
     height: 100%;
+}
+
+
+
+/*Table Matchups*/
+.table-matchups {
+    border-collapse: collapse;
+    font-size: 14px;
+    width: 30%;
+    height: 30%;
+    /*background-color: #FFA74A;*/
+    border: solid;
+}
+.table-matchups .align-left {
+    text-align:left;
+}
+.table-matchups .align-right {
+    text-align:right;
+}
+.table-matchups .align-center {
+    text-align:center;
+}
+.table-matchups tbody tr {
+    transition-duration:.2s;
+    transition-property:outline, background-color;
+    transition-timing-function:ease-in-out;
+    border :solid;
+}
+.table-matchups tbody tr:nth-child(odd) {
+    /*background-color: var(--color-table-bg-primary);*/
+}
+.table-matchups tbody tr:nth-child(even) {
+    /*background-color: var(--color-table-bg-secondary);*/
+}
+.table-matchups tbody tr:hover {
+    background-color:var(--color-tertiary-30);
+    outline:1px solid var(--color-tertiary);
+    outline-offset:-2px;
+    cursor:pointer;
+}
+.table-matchups th,
+.table-matchups td {
+    border: solid;
+    border-width: 1px;
+    border-color: black;
+    text-align: center
+}
+.table-matchups th, .table-matchups td {
+    /*background-color: var(--color-secondary);*/
+    color:var(--color-text-light);
+    text-transform:uppercase;
+    font-size:12px;
+}
+.table-matchups th i {
+    opacity:.5;
 }

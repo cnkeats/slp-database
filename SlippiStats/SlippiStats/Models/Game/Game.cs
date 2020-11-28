@@ -1,4 +1,4 @@
-﻿using SlippiStats.GameDataEnums;
+using SlippiStats.GameDataEnums;
 using SlippiStats.Util;
 using System;
 using System.Collections.Generic;
@@ -9,14 +9,6 @@ namespace SlippiStats.Models
     public class Game
     {
         public int Id { get; private set; }
-
-        public string Player1 { get; set; }
-
-        public string Player2 { get; set; }
-
-        public string Player3 { get; set; }
-
-        public string Player4 { get; set; }
 
         public Character? Character1 { get; set; }
 
@@ -34,11 +26,19 @@ namespace SlippiStats.Models
 
         public int? Player4Id { get; set; }
 
-        public string Winner { get; set; }
+        public bool? Player1Victory { get; set; }
+
+        public bool? Player2Victory { get; set; }
+
+        public bool? Player3Victory { get; set; }
+
+        public bool? Player4Victory { get; set; }
 
         public Stage Stage { get; set; }
 
         public GameMode? GameMode { get; set; }
+
+        public GameEndMethod? GameEndMethod { get; set; }
 
         public DateTime StartAt { get; set; }
 
@@ -78,11 +78,6 @@ namespace SlippiStats.Models
             GameLength = slpReplay.MetaData.LastFrame;
             Platform = slpReplay.MetaData.PlayedOn;
 
-            Player1 = Player.GetPlayerName(slpReplay, 0);
-            Player2 = Player.GetPlayerName(slpReplay, 1);
-            Player3 = Player.GetPlayerName(slpReplay, 2);
-            Player4 = Player.GetPlayerName(slpReplay, 3);
-
             Character1 = slpReplay.Settings.Players.Count > 0 ? slpReplay.Settings.Players[0]?.CharacterId : null;
             Character2 = slpReplay.Settings.Players.Count > 1 ? slpReplay.Settings.Players[1]?.CharacterId : null;
             Character3 = slpReplay.Settings.Players.Count > 2 ? slpReplay.Settings.Players[2]?.CharacterId : null;
@@ -90,8 +85,11 @@ namespace SlippiStats.Models
 
             Stage = slpReplay.Settings.StageId;
             GameMode = slpReplay.Settings.GameMode;
-            
-            Winner = SlpReplay.DetermineWinner(slpReplay);
+            GameEndMethod = slpReplay?.GameEnd?.GameEndMethod;
+
+            bool?[] victories = SlpReplay.DetermineVictories(slpReplay);
+            Player1Victory = victories[0];
+            Player2Victory = victories[1];
 
             Created = DateTime.Now;
         }
@@ -99,21 +97,21 @@ namespace SlippiStats.Models
         private Game(IDataReader dataReader)
         {
             Id = dataReader.GetValue<int>(nameof(Id));
-            Player1 = dataReader.GetValue<string>(nameof(Player1));
-            Player2 = dataReader.GetValue<string>(nameof(Player2));
-            Player3 = dataReader.GetValue<string>(nameof(Player3));
-            Player4 = dataReader.GetValue<string>(nameof(Player4));
-            Character1 = (Character?)dataReader.GetValue<int?>(nameof(Character1));
-            Character2 = (Character?)dataReader.GetValue<int?>(nameof(Character2));
-            Character3 = (Character?)dataReader.GetValue<int?>(nameof(Character3));
-            Character4 = (Character?)dataReader.GetValue<int?>(nameof(Character4));
             Player1Id = dataReader.GetValue<int?>(nameof(Player1Id));
             Player2Id = dataReader.GetValue<int?>(nameof(Player2Id));
             Player3Id = dataReader.GetValue<int?>(nameof(Player3Id));
             Player4Id = dataReader.GetValue<int?>(nameof(Player4Id));
-            Winner = dataReader.GetValue<string>(nameof(Winner));
+            Character1 = (Character?)dataReader.GetValue<int?>(nameof(Character1));
+            Character2 = (Character?)dataReader.GetValue<int?>(nameof(Character2));
+            Character3 = (Character?)dataReader.GetValue<int?>(nameof(Character3));
+            Character4 = (Character?)dataReader.GetValue<int?>(nameof(Character4));
+            Player1Victory = dataReader.GetValue<bool?>(nameof(Player1Victory));
+            Player2Victory = dataReader.GetValue<bool?>(nameof(Player2Victory));
+            Player3Victory = dataReader.GetValue<bool?>(nameof(Player3Victory));
+            Player4Victory = dataReader.GetValue<bool?>(nameof(Player4Victory));
             Stage = (Stage)dataReader.GetValue<int>(nameof(Stage));
             GameMode = (GameMode?)dataReader.GetValue<int?>(nameof(GameMode));
+            GameEndMethod = (GameEndMethod?)dataReader.GetValue<int?>(nameof(GameEndMethod));
             StartAt = dataReader.GetValue<DateTime>(nameof(StartAt));
             StartingSeed = dataReader.GetValue<long?>(nameof(StartingSeed));
             GameLength = dataReader.GetValue<int>(nameof(GameLength));
@@ -141,24 +139,6 @@ namespace SlippiStats.Models
             }
 
             return user;
-        }
-
-        public static Game GetDuplicateMatch(IDbConnection connection, Game game)
-        {
-            Game matchedGame = null;
-
-            using IDbCommand command = connection.CreateStoredProcedure(
-                $"{nameof(Game)}_{nameof(GetDuplicateMatch)}",
-                new { game.Player1, game.Player2, game.Character1, game.Character2, game.Stage, game.StartingSeed, game.GameLength });
-
-            using IDataReader reader = command.ExecuteReader();
-
-            if (reader.Read())
-            {
-                matchedGame = new Game(reader);
-            }
-
-            return matchedGame;
         }
 
         public static List<Game> GetList(IDbConnection connection, bool includeAnonymous = false)
@@ -233,10 +213,6 @@ namespace SlippiStats.Models
                 $"{nameof(Game)}_{nameof(Insert)}",
                 new
                 {
-                    Player1,
-                    Player2,
-                    Player3,
-                    Player4,
                     Character1,
                     Character2,
                     Character3,
@@ -245,9 +221,13 @@ namespace SlippiStats.Models
                     Player2Id,
                     Player3Id,
                     Player4Id,
-                    Winner,
+                    Player1Victory,
+                    Player2Victory,
+                    Player3Victory,
+                    Player4Victory,
                     Stage,
                     GameMode,
+                    GameEndMethod,
                     StartAt,
                     StartingSeed,
                     GameLength,
@@ -271,10 +251,6 @@ namespace SlippiStats.Models
                 new
                 {
                     Id,
-                    Player1,
-                    Player2,
-                    Player3,
-                    Player4,
                     Character1,
                     Character2,
                     Character3,
@@ -283,9 +259,13 @@ namespace SlippiStats.Models
                     Player2Id,
                     Player3Id,
                     Player4Id,
-                    Winner,
+                    Player1Victory,
+                    Player2Victory,
+                    Player3Victory,
+                    Player4Victory,
                     Stage,
                     GameMode,
+                    GameEndMethod,
                     StartAt,
                     StartingSeed,
                     GameLength,

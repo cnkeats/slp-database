@@ -45,6 +45,13 @@ namespace SlippiStats.Controllers
                     return response;
                 }
 
+                if (slpReplay.GameEnd == null)
+                {
+                    response.Success = false;
+                    response.Message = "Support for games without GameEnd data is not currently available.";
+                    return response;
+                }
+
                 List<Player> players = new List<Player>();
                 if (slpReplay.MetaData != null)
                 {
@@ -81,8 +88,9 @@ namespace SlippiStats.Controllers
                 }
 
                 // TODO: Better duplication checking
-                Game game = Game.GetDuplicateMatch(Database.Connection, new Game(slpReplay));
+                //Game game = Game.GetDuplicateMatch(Database.Connection, new Game(slpReplay));
                 //game = game ?? Game.GetByHash(Database.Connection, slpReplay.Hash);
+                Game game = Game.GetByHash(Database.Connection, slpReplay.Hash);
                 if (game == null)
                 {
                     game = new Game(slpReplay);

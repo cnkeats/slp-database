@@ -4,55 +4,59 @@
 AS
 
 SELECT
-	Id,
-	Player1,
-	Player2,
-	Player3,
-	Player4,
-	Character1,
-	Character2,
-	Character3,
-	Character4,
-	Player1Id,
-	Player2Id,
-	Player3Id,
-	Player4Id,
-	Winner,
-	Stage,
-	GameMode,
-	StartAt,
-	StartingSeed,
-	GameLength,
-	FileName,
-	Hash,
-	Platform,
-	Created,
-	Updated,
-	Deleted	
+	Game.Id,
+	Game.Player1Id,
+	Game.Player2Id,
+	Game.Player3Id,
+	Game.Player4Id,
+	Game.Character1,
+	Game.Character2,
+	Game.Character3,
+	Game.Character4,
+	Game.Player1Victory,
+	Game.Player2Victory,
+	Game.Player3Victory,
+	Game.Player4Victory,
+	Game.Stage,
+	Game.GameMode,
+	Game.GameEndMethod,
+	Game.StartAt,
+	Game.StartingSeed,
+	Game.GameLength,
+	Game.FileName,
+	Game.Hash,
+	Game.Platform,
+	Game.Created,
+	Game.Updated,
+	Game.Deleted	
 FROM
 	Game WITH (NOLOCK)
+	INNER JOIN Player P1 WITH (NOLOCK)
+		ON P1.Id = Game.Player1Id
+	INNER JOIN Player P2 WITH (NOLOCK)
+		ON P2.Id = Game.Player2Id
 WHERE
 	(@includeAnonymous = 1 OR
 		(
-			Player1 <> 'P1'
-			AND Player1 <> 'P2'
-			AND Player1 <> 'P3'
-			AND Player1 <> 'P4'
-			AND Player1 <> 'CPU1'
-			AND Player1 <> 'CPU2'
-			AND Player1 <> 'CPU3'
-			AND Player1 <> 'CPU4'
+			P1.Name <> 'P1'
+			AND P1.Name <> 'P2'
+			AND P1.Name <> 'P3'
+			AND P1.Name <> 'P4'
+			AND P1.Name <> 'CPU1'
+			AND P1.Name <> 'CPU2'
+			AND P1.Name <> 'CPU3'
+			AND P1.Name <> 'CPU4'
 		)
 	)
 	AND (@includeAnonymous = 1 OR
 		(
-			Player2 <> 'P1'
-			AND Player2 <> 'P2'
-			AND Player2 <> 'P3'
-			AND Player2 <> 'P4'
-			AND Player2 <> 'CPU1'
-			AND Player2 <> 'CPU2'
-			AND Player2 <> 'CPU3'
-			AND Player2 <> 'CPU4'
+			P2.Name <> 'P1'
+			AND P2.Name <> 'P2'
+			AND P2.Name <> 'P3'
+			AND P2.Name <> 'P4'
+			AND P2.Name <> 'CPU1'
+			AND P2.Name <> 'CPU2'
+			AND P2.Name <> 'CPU3'
+			AND P2.Name <> 'CPU4'
 		)
 	)

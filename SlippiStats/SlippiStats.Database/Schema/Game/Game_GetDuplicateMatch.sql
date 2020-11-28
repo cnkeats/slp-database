@@ -10,36 +10,41 @@
 AS
 
 SELECT
-	Id,
-	Player1,
-	Player2,
-	Player3,
-	Player4,
-	Character1,
-	Character2,
-	Character3,
-	Character4,
-	Player1Id,
-	Player2Id,
-	Player3Id,
-	Player4Id,
-	Winner,
-	Stage,
-	GameMode,
-	StartAt,
-	StartingSeed,
-	GameLength,
-	FileName,
-	Hash,
-	Platform,
-	Created,
-	Updated,
-	Deleted	
+	Game.Id,
+	Game.Id,
+	Game.Player1Id,
+	Game.Player2Id,
+	Game.Player3Id,
+	Game.Player4Id,
+	Game.Character1,
+	Game.Character2,
+	Game.Character3,
+	Game.Character4,
+	Game.Player1Victory,
+	Game.Player2Victory,
+	Game.Player3Victory,
+	Game.Player4Victory,
+	Game.Stage,
+	Game.GameMode,
+	Game.GameEndMethod,
+	Game.StartAt,
+	Game.StartingSeed,
+	Game.GameLength,
+	Game.FileName,
+	Game.Hash,
+	Game.Platform,
+	Game.Created,
+	Game.Updated,
+	Game.Deleted
 FROM
 	Game WITH (NOLOCK)
+	INNER JOIN Player P1 WITH (NOLOCK)
+		ON P1.Id = Game.Player1Id
+	INNER JOIN Player P2 WITH (NOLOCK)
+		ON P2.Id = Game.Player2Id
 WHERE
-	(@player1 IS NULL OR @player1 = Player1)
-	AND (@player2 IS NULL OR @player2 = Player2)
+	(@player1 IS NULL OR @player1 = P1.Name)
+	AND (@player2 IS NULL OR @player2 = P2.Name)
 	AND (@character1 IS NULL OR @character1 = Character1)
 	AND (@character2 IS NULL OR @character2 = Character2)
 	AND (@stage IS NULL OR @stage = Stage)

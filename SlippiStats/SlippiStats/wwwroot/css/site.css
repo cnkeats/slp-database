@@ -23,20 +23,19 @@ body {
 /*Global Variables*/
 :root {
     /*Colors*/
-    --color-primary: #a74182; /*green*/
-    --color-primary-dark: #8c2e5a; /*dark green*/
-    --color-secondary: #d87f3a; /*blue*/
-    --color-secondary-dark: #9e541b; /*dark blue*/
-    --color-tertiary: #F39C12; /*orange*/
-    --color-tertiary-30: rgba(243, 156, 18, .3);
-    --color-text-primary: #717171; /*medium grey*/
-    --color-text-secondary: #4A4A4A; /*dark grey*/
-    --color-text-tertiary: #34495E; /*dark blue*/
-    --color-text-light: #FFFFFF; /*white*/
-    --color-bg-primary: #666666;
-    --color-table-bg-primary: #666666; /*white*/
-    --color-table-bg-secondary: #727272; /*very light grey*/
-    --color-table-bg-tertiary: #747474; /*medium grey*/
+    --color-primary: #BB86FC;
+    --color-primary-dark: #3700B3;
+    --color-secondary: #03DAC6;
+    --color-secondary-dark: #018786;
+    --color-background: #121212;
+    --color-surface: #121212;
+    --color-surface-dark: #0e0e0e;
+    --color-error: #CF6679;
+    --color-on-primary: #000000;
+    --color-on-secondary: #000000;
+    --color-on-background: #CCCCCC;
+    --color-on-surface: #CCCCCC;
+    --color-on-error: #000000;
     /*Borders*/
     --border-radius: 4px;
 }
@@ -48,11 +47,12 @@ body {
 
 body {
     font-family: Arial, sans-serif;
-    background-color: var(--color-bg-primary);
+    background-color: var(--color-background);
+    color: var(--color-on-background);
 }
 
 hr {
-    border-top: 1px solid var(--color-table-bg-secondary);
+    border-top: 1px solid var(--color-surface-dark);
 }
 
 /*Spacing and Alignment*/
@@ -77,7 +77,7 @@ input[type="email"],
 input[type="number"],
 input[type="password"],
 select {
-    background-color: var(--color-table-bg-secondary);
+    background-color: var(--color-surface-dark);
     border-radius: var(--border-radius);
     border: 2px solid var(--color-table-bg-tertiary);
     padding: 6px;
@@ -87,7 +87,7 @@ select {
 }
 
 textarea {
-    background-color: var(--color-table-bg-secondary);
+    background-color: var(--color-surface-dark);
     border-radius: var(--border-radius);
     border: 2px solid var(--color-table-bg-tertiary);
     padding: 6px;
@@ -143,7 +143,7 @@ a {
     text-decoration: none;
 }
 .button-primary {
-    background-color: var(--color-primary);
+    background-color: var(--color-primary-dark);
     border-color: var(--color-primary-dark);
     color: var(--color-text-light);
 }
@@ -153,7 +153,7 @@ a {
 .button-secondary {
     background-color: var(--color-table-bg-primary);
     border-color: var(--color-primary-dark);
-    color: var(--color-primary);
+    color: var(--color-primary-dark);
 }
 .button-secondary:hover {
     background-color: var(--color-table-bg-tertiary);
@@ -173,7 +173,7 @@ a {
     font-size:14px;
 }
 .button-simple:hover {
-    background-color: var(--color-table-bg-secondary);
+    background-color: var(--color-surface-dark);
 }
 .button-small {
     font-size: 14px;
@@ -202,7 +202,7 @@ a {
 header {
     align-content:center;
     align-items:center;
-    border-bottom:6px solid var(--color-primary);
+    border-bottom:6px solid var(--color-secondary-dark);
     display:flex;
     flex-wrap:wrap;
     justify-content:space-between;
@@ -275,7 +275,7 @@ header h1 a {
     display:inline-block;
 }
 .nav-super li a {
-    color:var(--color-text-primary);
+    color:var(--color-on-background);
     font-size:12px;
     font-weight:700;
     margin:0 0 0 10px;
@@ -302,7 +302,7 @@ header h1 a {
     position:relative;
 }
 .nav-main > li > a {
-    color:var(--color-secondary);
+    color:var(--color-secondary-dark);
     display:block;
     padding:10px 0;
     text-decoration:none;
@@ -314,7 +314,7 @@ header h1 a {
 .nav-main-sub {
     background-color:var(--color-table-bg-primary);
     box-shadow:0 0 6px rgba(0,0,0,.2); 
-    border:1px solid var(--color-primary-dark);
+    border:1px solid var(--color-secondary-dark);
     display:none;
     position:absolute;
     top:100%;
@@ -331,7 +331,7 @@ header h1 a {
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-bottom: 10px solid var(--color-primary-dark);
+    border-bottom: 10px solid var(--color-secondary-dark);
     position:absolute;
     top:-10px;
     right: 20px;
@@ -346,7 +346,7 @@ header h1 a {
     white-space: nowrap;
 }
 .nav-main-sub > li > a:hover {
-    background-color:var(--color-table-bg-secondary);
+    background-color:var(--color-surface-dark);
 }
 @media only screen and (max-width:1080px) {
     .nav-wrap {
@@ -397,7 +397,7 @@ div[class^="section-"] {
 .section-filters {
     align-content:center;
     align-items:center;
-    background-color: var(--color-primary);
+    background-color: var(--color-secondary-dark);
     color: #fff;
     display: flex!important;
     justify-content:flex-start;
@@ -418,7 +418,7 @@ div[class^="section-"] {
     margin: 0 5px 0 0;
 }
 .section-filters h3 {
-    color: var(--color-text-light);
+    color: var(--color-on-surface);
     margin: 0px;
     font-size: 16px;
     white-space: nowrap;
@@ -426,7 +426,7 @@ div[class^="section-"] {
 
 /*Section Summary*/
 .section-summary {
-    background-color:var(--color-table-bg-secondary);
+    background-color:var(--color-surface-dark);
     padding:20px;
 }
 .summary-wrap {
@@ -545,10 +545,10 @@ div[class^="section-"] {
     width:48%;
     flex:0 0 48%;
     margin:0 0 4% 0;
-    background-color:var(--color-table-bg-secondary);
+    background-color:var(--color-surface-dark);
     color:var(--color-secondary);
     border-radius:var(--border-radius);
-    border:1px solid var(--color-primary);
+    border:1px solid var(--color-primary-dark);
     padding:6%;
     text-decoration:none;
     font-size:22px;
@@ -643,6 +643,7 @@ div[class^="section-"] {
     border-collapse:collapse;
     font-size:14px;
     width:100%;
+    color: var(--color-on-surface);
 }
 .table-primary .align-left {
     text-align:left;
@@ -659,10 +660,10 @@ div[class^="section-"] {
     transition-timing-function:ease-in-out;
 }
 .table-primary tbody tr:nth-child(odd) {
-    background-color: var(--color-table-bg-primary);
+    background-color: var(--color-surface);
 }
 .table-primary tbody tr:nth-child(even) {
-    background-color: var(--color-table-bg-secondary);
+    background-color: var(--color-surface-dark);
 }
 .table-primary tbody tr:hover {
     background-color:var(--color-tertiary-30);
@@ -676,7 +677,7 @@ div[class^="section-"] {
 }
 .table-primary th {
     background-color: var(--color-secondary);
-    color:var(--color-text-light);
+    color:var(--color-on-secondary);
     text-transform:uppercase;
     font-size:12px;
 }
@@ -714,7 +715,7 @@ div[class^="section-"] {
     cursor: default;
 }
 .table-report tbody tr:nth-child(even):hover {
-    background-color: var(--color-table-bg-secondary);
+    background-color: var(--color-surface-dark);
     outline: none;
     cursor: default;
 }
@@ -762,7 +763,7 @@ div[class^="section-"] {
     /*background-color: var(--color-table-bg-primary);*/
 }
 .table-matchups tbody tr:nth-child(even) {
-    /*background-color: var(--color-table-bg-secondary);*/
+    /*background-color: var(--color-surface-dark);*/
 }
 .table-matchups tbody tr:hover {
     background-color:var(--color-tertiary-30);

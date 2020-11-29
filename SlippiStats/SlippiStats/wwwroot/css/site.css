@@ -30,6 +30,11 @@ body {
     --color-background: #121212;
     --color-surface: #121212;
     --color-surface-dark: #0e0e0e;
+    --color-surface-light: #1f1f1f;
+    --color-surface-lighter: #2b2b2b;
+    --color-matchup-table: #666666;
+    --color-matchup-table-light: #777777;
+    --color-matchup-table-dark: #555555;
     --color-error: #CF6679;
     --color-on-primary: #000000;
     --color-on-secondary: #000000;
@@ -662,10 +667,10 @@ div[class^="section-"] {
     transition-timing-function:ease-in-out;
 }
 .table-primary tbody tr:nth-child(odd) {
-    background-color: var(--color-surface);
+    background-color: var(--color-surface-light);
 }
 .table-primary tbody tr:nth-child(even) {
-    background-color: var(--color-surface-dark);
+    background-color: var(--color-surface-lighter);
 }
 .table-primary tbody tr:hover {
     background-color:var(--color-tertiary-30);
@@ -731,6 +736,23 @@ div[class^="section-"] {
     height: 100%;
 }
 
+.profile-header {
+    margin-right: 10%;
+    padding-top: 4%;
+    padding-bottom: 4%;
+    padding-left: 7%;
+    padding-right: 7%;
+    border-radius: 2px;
+    border: none;
+    background-color: var(--color-surface-light);
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.profile-header hr {
+    border-color: var(--color-on-surface);
+}
+
 .profile-matchups {
     height: 100%;
 }
@@ -743,8 +765,9 @@ div[class^="section-"] {
     font-size: 14px;
     width: 30%;
     height: 30%;
-    /*background-color: #FFA74A;*/
-    border: solid;
+    background-color: #666666;
+    margin-top: 5%;
+    margin-bottom: 5%;
 }
 .table-matchups .align-left {
     text-align:left;
@@ -759,16 +782,16 @@ div[class^="section-"] {
     transition-duration:.2s;
     transition-property:outline, background-color;
     transition-timing-function:ease-in-out;
-    border :solid;
 }
 .table-matchups tbody tr:nth-child(odd) {
-    /*background-color: var(--color-table-bg-primary);*/
+    background-color: var(--color-matchup-table-dark);
 }
 .table-matchups tbody tr:nth-child(even) {
-    /*background-color: var(--color-surface-dark);*/
+    background-color: var(--color-matchup-table);
 }
-.table-matchups tbody tr:hover {
-    background-color:var(--color-tertiary-30);
+
+.table-matchups tbody td:hover {
+    background-color: var(--color-error);
     outline:1px solid var(--color-tertiary);
     outline-offset:-2px;
     cursor:pointer;
@@ -780,6 +803,7 @@ div[class^="section-"] {
     border-color: black;
     text-align: center
 }
+
 .table-matchups th, .table-matchups td {
     /*background-color: var(--color-secondary);*/
     color:var(--color-text-light);
@@ -802,6 +826,10 @@ div[class^="section-"] {
     padding-right: 10px;
 }
 
-.stats-index-entry {
+.game-entry {
     font-size: 120%;
+}
+
+.table-game-entry {
+    
 }

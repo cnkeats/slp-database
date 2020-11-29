@@ -67,7 +67,7 @@
     </form>
 </div>
 
-<table class="table-primary">
+<table class="table-game-entry table-primary">
     <thead>
         <tr>
             <th class="align-left">Id</th>
@@ -86,7 +86,7 @@
             Game game = entry.Game;
             Player player1 = entry.Player1;
             Player player2 = entry.Player2;
-            <tr class="stats-index-entry">
+            <tr class="game-entry">
                 <td class="align-left">@game.Id</td>
                 <td class="align-left">@player1.ConnectCode - @player1.Name</td>
                 <td class="align-left"><img class="stock-icon" src="@game.Character1?.GetStockIconPath()" />@game.Character1.GetDisplayName()</td>

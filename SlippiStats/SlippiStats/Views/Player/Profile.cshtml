@@ -11,6 +11,13 @@
 </div>
 
 <div class="profile-overview">
+    <div class="profile-header">
+        <h3>Most-Played: <img class="stock-icon" src="@Character.DONKEY_KONG.GetStockIconPath()" /></h3>
+        <hr />
+        <h4>Winrate: 69.420%</h4>
+        <h6>Best matchup: <img class="stock-icon" src="@Character.FOX.GetStockIconPath()" />Fox</h6>
+        <h6>Worst matchup: <img class="stock-icon" src="@Character.FALCO.GetStockIconPath()" />Falco</h6>
+    </div>
     <div class="profile-matchups">
         <table class="table-matchups">
             <thead>
@@ -38,7 +45,7 @@
                             {
                                 if (opponentCharacter.GetTournamentLegality())
                                 {
-                                    <td id="@(character)-@(opponentCharacter)">@Model.MatchupResults.Where(mr => mr.Character == character && mr.OpponentCharacter == opponentCharacter).FirstOrDefault()?.GamesPlayed</td>
+                                    <td id="@(character)-@(opponentCharacter)" onclick="filterToMatchup('@character', '@opponentCharacter')" >@Model.MatchupResults.Where(mr => mr.Character == character && mr.OpponentCharacter == opponentCharacter).FirstOrDefault()?.GamesPlayed</td>
                                 }
                             }
                         </tr>
@@ -49,7 +56,7 @@
     </div>
 </div>
 
-<table class="table-primary">
+<table class="table-game-entry table-primary">
     <thead>
         <tr>
             <th class="align-left">Id</th>
@@ -68,7 +75,7 @@
             Game game = entry.Game;
             Player player1 = entry.Player1;
             Player player2 = entry.Player2;
-            <tr class="stats-index-entry">
+            <tr class="game-entry">
                 <td class="align-left">@game.Id</td>
                 <td class="align-left">@player1.ConnectCode - @player1.Name</td>
                 <td class="align-left"><img class="stock-icon" src="@game.Character1?.GetStockIconPath()" />@game.Character1.GetDisplayName()</td>
@@ -111,10 +118,16 @@
             if (Model.MatchupResults.Where(mr => mr.Character == character && mr.OpponentCharacter == opponentCharacter).FirstOrDefault() != null)
             {
             <text>
-                $('#@character-@opponentCharacter').css('background-color', getBlendedColor(@Model.MatchupResults.Where(mr => mr.Character == character && mr.OpponentCharacter == opponentCharacter).FirstOrDefault().GamesPlayed, mostCommonMatchup, '#00FF00'));
+                //$('#@character-@opponentCharacter').css('background-color', getBlendedColor(@Model.MatchupResults.Where(mr => mr.Character == character && mr.OpponentCharacter == opponentCharacter).FirstOrDefault().GamesPlayed, mostCommonMatchup, '#00FF00'));
             </text>
             }
         }
+    }
+
+    function filterToMatchup(character, opponentCharacter) {
+
+        let playerId = @Model.Player.Id;
+        window.location.href = '/Player/Profile/' + playerId + '?character=' + character + '&opponentCharacter=' + opponentCharacter;
     }
 
     </script>

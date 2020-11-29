@@ -39,7 +39,7 @@
                     if (character.GetTournamentLegality())
                     {
                         <tr>
-                            <td>@Model.MatchupResults.Where(mr => mr.Character == character).Sum(mr => mr.GamesPlayed)</td>
+                            <td style="min-width: 27px;">@Model.MatchupResults.Where(mr => mr.Character == character).Sum(mr => mr.GamesPlayed)</td>
                             <td><img src="@character.GetStockIconPath()" /></td>
                             @foreach (Character opponentCharacter in Model.Characters)
                             {

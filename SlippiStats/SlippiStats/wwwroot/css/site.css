@@ -27,6 +27,7 @@ body {
     --color-primary-dark: #3700B3;
     --color-secondary: #03DAC6;
     --color-secondary-dark: #018786;
+    --color-secondary-darker: #006464;
     --color-background: #121212;
     --color-surface: #121212;
     --color-surface-dark: #0e0e0e;
@@ -673,7 +674,7 @@ div[class^="section-"] {
     background-color: var(--color-surface-lighter);
 }
 .table-primary tbody tr:hover {
-    background-color:var(--color-tertiary-30);
+    background-color:var(--color-secondary-darker);
     outline:2px solid var(--color-tertiary);
     outline-offset:-2px;
     cursor:pointer;
@@ -791,7 +792,7 @@ div[class^="section-"] {
 }
 
 .table-matchups tbody td:hover {
-    background-color: var(--color-error);
+    background-color: var(--color-secondary-dark);
     outline:1px solid var(--color-tertiary);
     outline-offset:-2px;
     cursor:pointer;
@@ -831,5 +832,17 @@ div[class^="section-"] {
 }
 
 .table-game-entry {
-    
+
+}
+.table-game-entry tbody tr:nth-child(odd) {
+    background-color: var(--color-surface-light);
+}
+.table-game-entry tbody tr:nth-child(even) {
+    background-color: var(--color-surface-lighter);
+}
+.table-game-entry tbody tr:hover {
+    background-color:var(--color-secondary-darker);
+    outline:2px solid var(--color-tertiary);
+    outline-offset:-2px;
+    cursor:pointer;
 }

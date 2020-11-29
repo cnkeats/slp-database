@@ -87,5 +87,6 @@
     <Build Include="Schema\Game\Game_GetListByPlayerId.sql" />
     <Build Include="Schema\Player\Player_GetPlayedCharactersByPlayerId.sql" />
     <Build Include="Schema\MatchupResults\MatchupResults_GetListByPlayerId.sql" />
+    <Build Include="Schema\Game\Game_GetListByPlayerIdFilters.sql" />
   </ItemGroup>
 </Project>

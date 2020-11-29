@@ -64,7 +64,7 @@ async function submitGame(gameData) {
     //console.log(gameData);
     
     try {
-        return await fetch('https://localhost:44314/Game/Submit', {
+        return await fetch('http://slippi.ventechs.net:82/Game/Submit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -132,6 +132,7 @@ async function processFiles(files) {
     console.timeEnd('Processing');
 }
 
-const filePath = "D:/SlippiReplays/2020-*/*.slp"
+// File path for replays to be processed
+const filePath = "D:/SlippiReplays/2020-11/new/*.slp"
 
 processFiles(glob.sync(filePath));

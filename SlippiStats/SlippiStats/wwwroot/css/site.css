@@ -801,3 +801,7 @@ div[class^="section-"] {
     padding-left: 10px;
     padding-right: 10px;
 }
+
+.stats-index-entry {
+    font-size: 120%;
+}

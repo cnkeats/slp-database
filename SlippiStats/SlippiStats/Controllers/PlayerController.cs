@@ -33,7 +33,7 @@ namespace SlippiStats.Controllers
        [HttpPost]
        public IActionResult List(PlayerListViewModel viewModel)
         {
-
+            viewModel.Players = Player.GetList(Database.Connection);
             return View(viewModel);
         }
 
@@ -41,9 +41,21 @@ namespace SlippiStats.Controllers
         {
             PlayerProfileViewModel viewModel = new PlayerProfileViewModel();
             viewModel.Player = Player.GetById(Database.Connection, id);
-            viewModel.Games = Game.GetListByPlayerId(Database.Connection, id);
             viewModel.PlayedCharacters = Player.GetPlayedCharactersByPlayerId(Database.Connection, id);
             viewModel.MatchupResults = MatchupResults.GetListByPlayerId(Database.Connection, id);
+
+            List<Game> games = Game.GetList(Database.Connection);
+
+            viewModel.Entries = new List<GameEntryView>();
+            foreach (Game game in games)
+            {
+                GameEntryView entry = new GameEntryView();
+                entry.Game = game;
+                entry.Player1 = Player.GetById(Database.Connection, (int)game.Player1Id);
+                entry.Player2 = Player.GetById(Database.Connection, (int)game.Player2Id);
+
+                viewModel.Entries.Add(entry);
+            }
 
             return View(viewModel);
         }

@@ -24,10 +24,10 @@ namespace SlippiStats.Controllers
 
             List<Game> games = Game.GetList(Database.Connection);
 
-            viewModel.Entries = new List<StatsIndexViewModelEntry>();
+            viewModel.Entries = new List<GameEntryView>();
             foreach (Game game in games)
             {
-                StatsIndexViewModelEntry entry = new StatsIndexViewModelEntry();
+                GameEntryView entry = new GameEntryView();
                 entry.Game = game;
                 entry.Player1 = Player.GetById(Database.Connection, (int)game.Player1Id);
                 entry.Player2 = Player.GetById(Database.Connection, (int)game.Player2Id);
@@ -43,10 +43,10 @@ namespace SlippiStats.Controllers
         {
             List<Game> games = Game.GetListByFilters(Database.Connection, viewModel.PlayerFilter1, viewModel.PlayerFilter2, viewModel.CharacterFilter1, viewModel.CharacterFilter2, viewModel.StageFilter);
 
-            viewModel.Entries = new List<StatsIndexViewModelEntry>();
+            viewModel.Entries = new List<GameEntryView>();
             foreach (Game game in games)
             {
-                StatsIndexViewModelEntry entry = new StatsIndexViewModelEntry();
+                GameEntryView entry = new GameEntryView();
                 entry.Game = game;
                 entry.Player1 = Player.GetById(Database.Connection, (int)game.Player1Id);
                 entry.Player2 = Player.GetById(Database.Connection, (int)game.Player2Id);

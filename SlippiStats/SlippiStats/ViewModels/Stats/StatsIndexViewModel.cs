@@ -17,15 +17,15 @@ namespace SlippiStats.ViewModels
 
         public Stage? StageFilter { get; set; }
 
-        public List<StatsIndexViewModelEntry> Entries { get; set; }
+        public List<GameEntryView> Entries { get; set; }
 
         public StatsIndexViewModel() : base()
         {
-            Entries = new List<StatsIndexViewModelEntry>();
+            Entries = new List<GameEntryView>();
         }
     }
 
-    public class StatsIndexViewModelEntry
+    public class GameEntryView
     {
         public Game Game { get; set; }
 

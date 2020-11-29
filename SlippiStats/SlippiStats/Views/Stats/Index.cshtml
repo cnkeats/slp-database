@@ -81,12 +81,12 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (StatsIndexViewModelEntry entry in Model.Entries.Take(250))
+        @foreach (GameEntryView entry in Model.Entries.Take(250))
         {
             Game game = entry.Game;
             Player player1 = entry.Player1;
             Player player2 = entry.Player2;
-            <tr>
+            <tr class="stats-index-entry">
                 <td class="align-left">@game.Id</td>
                 <td class="align-left">@player1.ConnectCode - @player1.Name</td>
                 <td class="align-left"><img class="stock-icon" src="@game.Character1?.GetStockIconPath()" />@game.Character1.GetDisplayName()</td>

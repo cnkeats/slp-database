@@ -26,7 +26,16 @@ namespace SlippiStats.Extensions
 
             var attribute = GetAttribute<StockIconAttribute>(@enum);
 
-            return attribute.StockIcon;
+            return attribute?.StockIcon;
+        }
+
+        public static string GetStageIconPath(this Enum @enum)
+        {
+            Type enumType = @enum.GetType();
+
+            var attribute = GetAttribute<StageIconAttribute>(@enum);
+
+            return attribute?.StageIcon;
         }
 
         public static int GetTierPlacement(this Enum @enum)
@@ -87,6 +96,16 @@ namespace SlippiStats.Extensions
         public StockIconAttribute(string path)
         {
             this.StockIcon = path;
+        }
+    }
+
+    class StageIconAttribute : Attribute
+    {
+        public string StageIcon { get; private set; }
+
+        public StageIconAttribute(string path)
+        {
+            this.StageIcon = path;
         }
     }
 

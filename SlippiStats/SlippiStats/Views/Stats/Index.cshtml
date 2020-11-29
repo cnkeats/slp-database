@@ -5,7 +5,7 @@
 }
 
 <div class="section-filters">
-    <h3>Stats Overview - @Model.Games.Count games found</h3>
+    <h3>Stats Overview - @Model.Entries.Count games found</h3>
     <form class="form-standard" method="post">
         <div class="form-standard-field">
             <input name="PlayerFilter1" placeholder="Player Tag or Code" type="text" value="@Model.PlayerFilter1" />
@@ -18,7 +18,7 @@
                 <option value="" selected="selected">Character</option>
                 @foreach (Character character in Model.Characters)
                 {
-                    if (character ==Model.CharacterFilter1)
+                    if (character == Model.CharacterFilter1)
                     {
                         <option value="@character" selected="selected">@character.GetDisplayName()</option>
                     }
@@ -81,15 +81,18 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Game game in Model.Games.Take(100))
+        @foreach (StatsIndexViewModelEntry entry in Model.Entries.Take(250))
         {
+            Game game = entry.Game;
+            Player player1 = entry.Player1;
+            Player player2 = entry.Player2;
             <tr>
                 <td class="align-left">@game.Id</td>
-                <td class="align-left">@game.Player1Id</td>
-                <td class="align-left">@game.Character1.GetDisplayName()</td>
-                <td class="align-left">@game.Player2Id</td>
-                <td class="align-left">@game.Character2.GetDisplayName()</td>
-                <td class="align-left">@game.Stage.GetDisplayName()</td>
+                <td class="align-left">@player1.ConnectCode - @player1.Name</td>
+                <td class="align-left"><img class="stock-icon" src="@game.Character1?.GetStockIconPath()" />@game.Character1.GetDisplayName()</td>
+                <td class="align-left">@player2.ConnectCode - @player2.Name</td>
+                <td class="align-left"><img class="stock-icon" src="@game.Character2?.GetStockIconPath()" />@game.Character2.GetDisplayName()</td>
+                <td class="align-left"><img class="stage-icon" src="@game.Stage.GetStageIconPath()" />@game.Stage.GetDisplayName()</td>
                 <td class="align-left">@game.GameMode?.GetDisplayName()</td>
                 <td class="align-left">@game.FileName</td>
             </tr>

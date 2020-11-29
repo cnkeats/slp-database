@@ -21,14 +21,39 @@ namespace SlippiStats.Controllers
         public IActionResult Index()
         {
             StatsIndexViewModel viewModel = new StatsIndexViewModel();
-            viewModel.Games = Game.GetList(Database.Connection);
+
+            List<Game> games = Game.GetList(Database.Connection);
+
+            viewModel.Entries = new List<StatsIndexViewModelEntry>();
+            foreach (Game game in games)
+            {
+                StatsIndexViewModelEntry entry = new StatsIndexViewModelEntry();
+                entry.Game = game;
+                entry.Player1 = Player.GetById(Database.Connection, (int)game.Player1Id);
+                entry.Player2 = Player.GetById(Database.Connection, (int)game.Player2Id);
+
+                viewModel.Entries.Add(entry);
+            }
+
             return View(viewModel);
         }
 
        [HttpPost]
        public IActionResult Index(StatsIndexViewModel viewModel)
         {
-            viewModel.Games = Game.GetListByFilters(Database.Connection, viewModel.PlayerFilter1, viewModel.PlayerFilter2, viewModel.CharacterFilter1, viewModel.CharacterFilter2, viewModel.StageFilter);
+            List<Game> games = Game.GetListByFilters(Database.Connection, viewModel.PlayerFilter1, viewModel.PlayerFilter2, viewModel.CharacterFilter1, viewModel.CharacterFilter2, viewModel.StageFilter);
+
+            viewModel.Entries = new List<StatsIndexViewModelEntry>();
+            foreach (Game game in games)
+            {
+                StatsIndexViewModelEntry entry = new StatsIndexViewModelEntry();
+                entry.Game = game;
+                entry.Player1 = Player.GetById(Database.Connection, (int)game.Player1Id);
+                entry.Player2 = Player.GetById(Database.Connection, (int)game.Player2Id);
+
+                viewModel.Entries.Add(entry);
+            }
+
             return View(viewModel);
         }
     }

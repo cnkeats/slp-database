@@ -84,6 +84,7 @@ select {
     font-size: 14px;
     height: 40px;
     line-height: 40px;
+    color: var(--color-on-surface);
 }
 
 textarea {
@@ -594,6 +595,7 @@ div[class^="section-"] {
 .form-group textarea {
     margin:0 0 10px 0;
     width:100%;
+    color: var(--color-on-surface)
 }
 .form-group-checkbox {
     font-weight:700;
@@ -786,4 +788,16 @@ div[class^="section-"] {
 }
 .table-matchups th i {
     opacity:.5;
+}
+
+
+
+.stock-icon {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.stage-icon {
+    padding-left: 10px;
+    padding-right: 10px;
 }

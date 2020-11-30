@@ -23,8 +23,8 @@
             <h5>Games Played: @Model.PlayerProfile.GamesPlayed</h5>
             <h5>Games Won: @Model.PlayerProfile.GamesWon (@((100 * Model.PlayerProfile.GamesWon / (decimal)Model.PlayerProfile.GamesPlayed).ToString("#.##"))%)</h5>
             <span>
-                <h6>Quit Outs: @Model.PlayerProfile.QuitOuts</h6>
-                <h6>Quit Outs Against: @Model.PlayerProfile.QuitOutsAgainst</h6>
+                <h6>LRAS: @Model.PlayerProfile.QuitOuts</h6>
+                <h6>Opp. LRAS: @Model.PlayerProfile.QuitOutsAgainst</h6>
             </span>
             <h5>Total Playtime: @Model.PlayerProfile.FramesPlayed.ToString("N0") frames (@(Model.PlayerProfile.FramesPlayed / 60 / 60 / 60) hours)</h5>
             <h5>Favorite Character: <img src="@Model.PlayerProfile.FavoriteCharacter.GetStockIconPath()" /></h5>

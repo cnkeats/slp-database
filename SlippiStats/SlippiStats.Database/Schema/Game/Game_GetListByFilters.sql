@@ -11,7 +11,7 @@ AS
 SET @playerName1 = '%' + @playerName1 + '%'
 SET @playerName2 = '%' + @playerName2 + '%'
 
-SELECT
+SELECT TOP 500
 	Game.Id,
 	Game.Player1Id,
 	Game.Player2Id,

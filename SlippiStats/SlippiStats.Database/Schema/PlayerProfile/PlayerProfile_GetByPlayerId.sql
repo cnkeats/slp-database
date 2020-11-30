@@ -45,7 +45,38 @@ SELECT
 			Opponent.Id
 		ORDER BY
 			COUNT(*) DESC
-	) AS FavoriteOpponent
+	) AS FavoriteOpponent,
+	(
+		SELECT TOP 1
+			StartAt
+		FROM
+			Player WITH (NOLOCK)
+			INNER JOIN Game WITH (NOLOCK)
+				ON Game.Player1Id = Player.Id
+				OR Game.Player2Id = Player.Id
+		WHERE
+			Player.Id = @playerId
+		ORDER BY
+			Game.StartAt
+	) AS FirstSpotted,
+	(
+		SELECT
+			COUNT(U.Id)
+		FROM
+		(SELECT DISTINCT
+			Opponent.Id
+		FROM
+			Player WITH (NOLOCK)
+			INNER JOIN Game WITH (NOLOCK)
+				ON Game.Player1Id = Player.Id
+				OR Game.Player2Id = Player.Id
+			INNER JOIN Player Opponent WITH (NOLOCK)
+				ON Opponent.Id = Game.Player1Id
+				OR Opponent.Id = Game.Player2Id
+		WHERE
+			Player.Id = @playerId
+			AND Opponent.Id <> @playerId) AS U
+	) AS UniqueOpponents
 FROM
 	Player WITH (NOLOCK)
 	INNER JOIN Game WITH (NOLOCK)

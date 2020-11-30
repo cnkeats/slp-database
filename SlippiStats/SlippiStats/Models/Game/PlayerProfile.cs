@@ -1,5 +1,6 @@
 ﻿using SlippiStats.GameDataEnums;
 using SlippiStats.Util;
+using System;
 using System.Data;
 
 namespace SlippiStats.Models
@@ -7,6 +8,8 @@ namespace SlippiStats.Models
     public class PlayerProfile
     {
         public Player Player { get; set; }
+
+        public DateTime FirstSpotted { get; set; }
 
         public int GamesPlayed { get; set; }
 
@@ -20,6 +23,8 @@ namespace SlippiStats.Models
 
         public Player FavoriteOpponent { get; set; }
 
+        public int UniqueOpponents { get; set; }
+
         public PlayerProfile()
         {
 
@@ -27,11 +32,13 @@ namespace SlippiStats.Models
 
         private PlayerProfile(IDataReader dataReader)
         {
+            FirstSpotted = dataReader.GetValue<DateTime>(nameof(FirstSpotted));
             GamesPlayed = dataReader.GetValue<int>(nameof(GamesPlayed));
             GamesWon = dataReader.GetValue<int>(nameof(GamesWon));
             FramesPlayed = dataReader.GetValue<int>(nameof(FramesPlayed));
             FavoriteCharacter = (Character)dataReader.GetValue<int>(nameof(FavoriteCharacter));
             FavoriteOpponentId = dataReader.GetValue<int>(nameof(FavoriteOpponent));
+            UniqueOpponents = dataReader.GetValue<int>(nameof(UniqueOpponents));
         }
 
         public static PlayerProfile GetByPlayerId(IDbConnection connection, int playerId)

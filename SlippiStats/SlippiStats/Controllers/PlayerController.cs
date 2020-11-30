@@ -33,7 +33,7 @@ namespace SlippiStats.Controllers
        [HttpPost]
        public IActionResult List(PlayerListViewModel viewModel)
         {
-            viewModel.Players = Player.GetList(Database.Connection);
+            viewModel.Players = Player.GetListByFilters(Database.Connection, viewModel.PlayerFilter);
             return View(viewModel);
         }
 
@@ -41,6 +41,12 @@ namespace SlippiStats.Controllers
         {
             PlayerProfileViewModel viewModel = new PlayerProfileViewModel();
             viewModel.Player = Player.GetById(Database.Connection, id);
+
+            if (viewModel.Player == null)
+            {
+                return RedirectToAction(nameof(List));
+            }
+
             viewModel.PlayedCharacters = Player.GetPlayedCharactersByPlayerId(Database.Connection, id);
             viewModel.MatchupResults = MatchupResults.GetListByPlayerId(Database.Connection, id);
 

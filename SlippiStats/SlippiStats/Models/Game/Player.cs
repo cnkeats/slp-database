@@ -140,6 +140,24 @@ namespace SlippiStats.Models
             return players;
         }
 
+        public static List<Player> GetListByFilters(IDbConnection connection, string playerFilter)
+        {
+            List<Player> players = new List<Player>();
+
+            using IDbCommand command = connection.CreateStoredProcedure(
+                $"{nameof(Player)}_{nameof(GetListByFilters)}",
+                new { playerFilter });
+
+            using IDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                players.Add(new Player(reader));
+            }
+
+            return players;
+        }
+
         public static List<Character> GetPlayedCharactersByPlayerId(IDbConnection connection, int playerId)
         {
             List<Character> characters = new List<Character>();

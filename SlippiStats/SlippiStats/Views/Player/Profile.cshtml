@@ -12,19 +12,30 @@
 
 <div class="profile-overview">
     <div class="profile-header">
-        <h2>@Model.Player.Name (@Model.Player.ConnectCode)</h2>
-        @if (Model.Player.DiscordCode != null) {
-            <h7><img src="/images/media_icons/DiscordIcon.png" /> @Model.Player.DiscordCode</h7>
-        }
-        <hr />
-        <h5>First Spotted: @Model.PlayerProfile.FirstSpotted</h5>
-        <h5>Games Played: @Model.PlayerProfile.GamesPlayed</h5>
-        <h5>Games Won: @Model.PlayerProfile.GamesWon</h5>
-        <h5>Total Playtime: @Model.PlayerProfile.FramesPlayed.ToString("N0") frames</h5>
-        <h5>Favorite Character: <img src="@Model.PlayerProfile.FavoriteCharacter.GetStockIconPath()" /></h5>
-        <h5>Favorite Opponent: <label class="player-profile-opponent-name" onclick="goToProfile('@Model.PlayerProfile.FavoriteOpponent.Id')">@Model.PlayerProfile.FavoriteOpponent.Name (@Model.PlayerProfile.FavoriteOpponent.ConnectCode)</label></h5>
-        <h5>Unique Opponents: @Model.PlayerProfile.UniqueOpponents</h5>
-        <hr />
+        <div class="profile-header-content">
+            <h2>@Model.Player.Name (@Model.Player.ConnectCode)</h2>
+            @if (Model.Player.DiscordCode != null) {
+                <h7><img src="/images/media_icons/DiscordIcon.png" /> @Model.Player.DiscordCode</h7>
+            }
+        </div>
+        <hr class="profile-header-row" />
+        <div class="profile-header-content">
+            <h5>Games Played: @Model.PlayerProfile.GamesPlayed</h5>
+            <h5>Games Won: @Model.PlayerProfile.GamesWon (@((100 * Model.PlayerProfile.GamesWon / (decimal)Model.PlayerProfile.GamesPlayed).ToString("#.##"))%)</h5>
+            <span>
+                <h6>Quit Outs: @Model.PlayerProfile.QuitOuts</h6>
+                <h6>Quit Outs Against: @Model.PlayerProfile.QuitOutsAgainst</h6>
+            </span>
+            <h5>Total Playtime: @Model.PlayerProfile.FramesPlayed.ToString("N0") frames (@(Model.PlayerProfile.FramesPlayed / 60 / 60 / 60) hours)</h5>
+            <h5>Favorite Character: <img src="@Model.PlayerProfile.FavoriteCharacter.GetStockIconPath()" /></h5>
+            <h5>Favorite Opponent: <label class="player-profile-opponent-name" onclick="goToProfile('@Model.PlayerProfile.FavoriteOpponent.Id')">@Model.PlayerProfile.FavoriteOpponent.Name (@Model.PlayerProfile.FavoriteOpponent.ConnectCode)</label></h5>
+            <h5>Unique Opponents: @Model.PlayerProfile.UniqueOpponents</h5>
+            <h5>4-Stocks: @Model.PlayerProfile.FourStocks</h5>
+        </div>
+        <hr class="profile-header-row" />
+        <div class="profile-header-content">
+            <h6>First Spotted: @Model.PlayerProfile.FirstSpotted</h6>
+        </div>
     </div>
     <div class="profile-matchups">
         <table class="table-matchups">

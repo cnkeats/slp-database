@@ -38,7 +38,19 @@ namespace SlippiStats.Models
 
         public GameMode? GameMode { get; set; }
 
+        public int? GameSettingsId { get; set; }
+
+        public int? Player1EndingStocks { get; set; }
+
+        public int? Player2EndingStocks { get; set; }
+
+        public int? Player3EndingStocks { get; set; }
+
+        public int? Player4EndingStocks { get; set; }
+
         public GameEndMethod? GameEndMethod { get; set; }
+
+        public LRAS? LRASInitiatorIndex { get; set; }
 
         public DateTime StartAt { get; set; }
 
@@ -85,7 +97,15 @@ namespace SlippiStats.Models
 
             Stage = slpReplay.Settings.StageId;
             GameMode = slpReplay.Settings.GameMode;
+
+            //GameSettingsId
+            Player1EndingStocks = slpReplay.Settings.Players[0].StartStocks - slpReplay.Stats[1];
+            Player2EndingStocks = slpReplay.Settings.Players[1].StartStocks - slpReplay.Stats[0];
+            //Player3EndingStocks
+            //Player4EndingStocks
+
             GameEndMethod = slpReplay?.GameEnd?.GameEndMethod;
+            LRASInitiatorIndex = slpReplay?.GameEnd.LRASInitiatorIndex;
 
             bool?[] victories = SlpReplay.DetermineVictories(slpReplay);
             Player1Victory = victories[0];
@@ -111,7 +131,13 @@ namespace SlippiStats.Models
             Player4Victory = dataReader.GetValue<bool?>(nameof(Player4Victory));
             Stage = (Stage)dataReader.GetValue<int>(nameof(Stage));
             GameMode = (GameMode?)dataReader.GetValue<int?>(nameof(GameMode));
+            GameSettingsId = dataReader.GetValue<int?>(nameof(GameSettingsId));
+            Player1EndingStocks = dataReader.GetValue<int?>(nameof(Player1EndingStocks));
+            Player2EndingStocks = dataReader.GetValue<int?>(nameof(Player2EndingStocks));
+            Player3EndingStocks = dataReader.GetValue<int?>(nameof(Player3EndingStocks));
+            Player4EndingStocks = dataReader.GetValue<int?>(nameof(Player4EndingStocks));
             GameEndMethod = (GameEndMethod?)dataReader.GetValue<int?>(nameof(GameEndMethod));
+            LRASInitiatorIndex = (LRAS?)dataReader.GetValue<int?>(nameof(LRASInitiatorIndex));
             StartAt = dataReader.GetValue<DateTime>(nameof(StartAt));
             StartingSeed = dataReader.GetValue<long?>(nameof(StartingSeed));
             GameLength = dataReader.GetValue<int>(nameof(GameLength));
@@ -231,21 +257,27 @@ namespace SlippiStats.Models
                 $"{nameof(Game)}_{nameof(Insert)}",
                 new
                 {
-                    Character1,
-                    Character2,
-                    Character3,
-                    Character4,
                     Player1Id,
                     Player2Id,
                     Player3Id,
                     Player4Id,
+                    Character1,
+                    Character2,
+                    Character3,
+                    Character4,
                     Player1Victory,
                     Player2Victory,
                     Player3Victory,
                     Player4Victory,
                     Stage,
                     GameMode,
+                    GameSettingsId,
+                    Player1EndingStocks,
+                    Player2EndingStocks,
+                    Player3EndingStocks,
+                    Player4EndingStocks,
                     GameEndMethod,
+                    LRASInitiatorIndex,
                     StartAt,
                     StartingSeed,
                     GameLength,
@@ -269,21 +301,27 @@ namespace SlippiStats.Models
                 new
                 {
                     Id,
-                    Character1,
-                    Character2,
-                    Character3,
-                    Character4,
                     Player1Id,
                     Player2Id,
                     Player3Id,
                     Player4Id,
+                    Character1,
+                    Character2,
+                    Character3,
+                    Character4,
                     Player1Victory,
                     Player2Victory,
                     Player3Victory,
                     Player4Victory,
                     Stage,
                     GameMode,
+                    GameSettingsId,
+                    Player1EndingStocks,
+                    Player2EndingStocks,
+                    Player3EndingStocks,
+                    Player4EndingStocks,
                     GameEndMethod,
+                    LRASInitiatorIndex,
                     StartAt,
                     StartingSeed,
                     GameLength,

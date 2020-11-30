@@ -11,7 +11,6 @@ AS
 
 SELECT
 	Game.Id,
-	Game.Id,
 	Game.Player1Id,
 	Game.Player2Id,
 	Game.Player3Id,
@@ -26,7 +25,13 @@ SELECT
 	Game.Player4Victory,
 	Game.Stage,
 	Game.GameMode,
+	Game.GameSettingsId,
+	Game.Player1EndingStocks,
+	Game.Player2EndingStocks,
+	Game.Player3EndingStocks,
+	Game.Player4EndingStocks,
 	Game.GameEndMethod,
+	Game.LRASInitiatorIndex,
 	Game.StartAt,
 	Game.StartingSeed,
 	Game.GameLength,

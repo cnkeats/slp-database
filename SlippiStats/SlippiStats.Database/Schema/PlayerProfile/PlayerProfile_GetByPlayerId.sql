@@ -6,9 +6,10 @@ AS
 SELECT
 	Player.Id,
 	Player.Name,
-	COUNT(*) AS GamesPlayed,
+	COUNT(Game.Id) AS GamesPlayed,
 	SUM(CASE WHEN Player1Id = @playerId THEN CAST(Player1Victory AS INT) ELSE CAST(Player2Victory AS INT) END) AS GamesWon,
 	SUM(Game.GameLength) AS FramesPlayed,
+	SUM(Game.GameLength) / COUNT(Game.Id) / 60 AS AverageGameDuration,
 	(
 		SELECT TOP 1
 			Character.Id
@@ -76,7 +77,55 @@ SELECT
 		WHERE
 			Player.Id = @playerId
 			AND Opponent.Id <> @playerId) AS U
-	) AS UniqueOpponents
+	) AS UniqueOpponents,
+	(
+		SELECT
+			COUNT(*)
+		FROM
+			Player WITH (NOLOCK)
+			INNER JOIN Game WITH (NOLOCK)
+				ON (Game.Player1Id = @playerId
+					AND Game.Player1Victory = 1
+						AND Game.Player1EndingStocks = 4
+					)
+				OR (Game.Player2Id = @playerId
+					AND Game.Player2Victory = 1
+					AND Game.Player2EndingStocks = 4
+				)
+		WHERE
+			Player.Id = @playerId
+			AND Game.LRASInitiatorIndex = -1
+	) AS FourStocks,
+	(
+		SELECT
+			COUNT(*)
+		FROM
+			Player WITH (NOLOCK)
+			INNER JOIN Game WITH (NOLOCK)
+				ON (Game.Player1Id = @playerId
+					AND LRASInitiatorIndex = 0
+					)
+				OR (Game.Player2Id = @playerId
+					AND LRASInitiatorIndex = 1
+				)
+		WHERE
+			Player.Id = @playerId
+	) AS QuitOuts,
+	(
+		SELECT
+			COUNT(*)
+		FROM
+			Player WITH (NOLOCK)
+			INNER JOIN Game WITH (NOLOCK)
+				ON (Game.Player1Id = @playerId
+					AND LRASInitiatorIndex = 1
+					)
+				OR (Game.Player2Id = @playerId
+					AND LRASInitiatorIndex = 0
+				)
+		WHERE
+			Player.Id = @playerId
+	) AS QuitOutsAgainst
 FROM
 	Player WITH (NOLOCK)
 	INNER JOIN Game WITH (NOLOCK)

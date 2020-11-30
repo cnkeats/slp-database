@@ -19,7 +19,13 @@ SELECT TOP 500
 	Game.Player4Victory,
 	Game.Stage,
 	Game.GameMode,
+	Game.GameSettingsId,
+	Game.Player1EndingStocks,
+	Game.Player2EndingStocks,
+	Game.Player3EndingStocks,
+	Game.Player4EndingStocks,
 	Game.GameEndMethod,
+	Game.LRASInitiatorIndex,
 	Game.StartAt,
 	Game.StartingSeed,
 	Game.GameLength,
@@ -28,7 +34,7 @@ SELECT TOP 500
 	Game.Platform,
 	Game.Created,
 	Game.Updated,
-	Game.Deleted	
+	Game.Deleted
 FROM
 	Game WITH (NOLOCK)
 	INNER JOIN Player P1 WITH (NOLOCK)

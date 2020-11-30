@@ -23,7 +23,13 @@ namespace SlippiStats.Models
 
         public Player FavoriteOpponent { get; set; }
 
+        public int FourStocks { get; set; }
+
         public int UniqueOpponents { get; set; }
+
+        public int QuitOuts { get; set; }
+
+        public int QuitOutsAgainst { get; set; }
 
         public PlayerProfile()
         {
@@ -39,6 +45,9 @@ namespace SlippiStats.Models
             FavoriteCharacter = (Character)dataReader.GetValue<int>(nameof(FavoriteCharacter));
             FavoriteOpponentId = dataReader.GetValue<int>(nameof(FavoriteOpponent));
             UniqueOpponents = dataReader.GetValue<int>(nameof(UniqueOpponents));
+            QuitOuts = dataReader.GetValue<int>(nameof(QuitOuts));
+            QuitOutsAgainst = dataReader.GetValue<int>(nameof(QuitOutsAgainst));
+            FourStocks = dataReader.GetValue<int>(nameof(FourStocks));
         }
 
         public static PlayerProfile GetByPlayerId(IDbConnection connection, int playerId)

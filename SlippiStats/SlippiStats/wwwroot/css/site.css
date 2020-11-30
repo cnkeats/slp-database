@@ -1,4 +1,4 @@
-﻿
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -741,10 +741,10 @@ div[class^="section-"] {
 
 .profile-header {
     margin-right: 10%;
-    padding-top: 4%;
-    padding-bottom: 4%;
-    padding-left: 7%;
-    padding-right: 7%;
+    padding-top: 3%;
+    padding-bottom: 2%;
+    padding-left: 5%;
+    padding-right: 5%;
     border-radius: 2px;
     border: none;
     background-color: var(--color-surface-light);
@@ -754,6 +754,16 @@ div[class^="section-"] {
 
 .profile-header hr {
     border-color: var(--color-on-surface);
+}
+
+.profile-header-content h5,
+.profile-header-content h6 {
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.profile-header-content h6 {
+    text-indent: 5%;
 }
 
 .profile-matchups {
@@ -858,4 +868,5 @@ div[class^="section-"] {
 .player-profile-opponent-name {
     color: #96c3d8;
     cursor: pointer;
+    margin: 0px;
 }

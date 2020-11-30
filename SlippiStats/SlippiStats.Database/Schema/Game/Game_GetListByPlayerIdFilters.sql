@@ -51,3 +51,6 @@ WHERE
 		AND (@stage IS NULL OR Game.Stage = @stage)
 		AND (@opponentPlayerId IS NULL OR Game.Player1Id = @opponentPlayerId)
 	)
+ORDER BY
+	Game.StartAt DESC,
+	Game.Id

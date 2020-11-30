@@ -38,3 +38,6 @@ FROM
 WHERE
 	Game.Player1Id = @playerId
 	OR Game.Player2Id = @playerId
+ORDER BY
+	Game.StartAt DESC,
+	Game.Id

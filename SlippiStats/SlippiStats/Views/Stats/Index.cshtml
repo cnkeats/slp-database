@@ -70,12 +70,13 @@
 <table class="table-game-entry table-primary">
     <thead>
         <tr>
-            <th class="align-left">Id</th>
+            <th class="align-left">Game Id</th>
             <th class="align-left">Player 1</th>
             <th class="align-left"></th>
             <th class="align-left">Player 2</th>
             <th class="align-left"></th>
             <th class="align-left">Stage</th>
+            <th class="align-left">Date</th>
             <th class="align-left"></th>
             <th class="align-left">File Name</th>
         </tr>
@@ -93,6 +94,7 @@
                 <td class="align-left">@player2.ConnectCode - @player2.Name</td>
                 <td class="align-left"><img class="stock-icon" src="@game.Character2?.GetStockIconPath()" />@game.Character2.GetDisplayName()</td>
                 <td class="align-left"><img class="stage-icon" src="@game.Stage.GetStageIconPath()" />@game.Stage.GetDisplayName()</td>
+                <td class="align-left">@game.StartAt.ToString("MM/dd/yy - HH:mm")</td>
                 <td class="align-left">@game.GameMode?.GetDisplayName()</td>
                 <td class="align-left">@game.FileName</td>
             </tr>

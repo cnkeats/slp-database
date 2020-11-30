@@ -60,3 +60,6 @@ WHERE
 			AND P2.Name <> 'CPU4'
 		)
 	)
+ORDER BY
+	Game.StartAt DESC,
+	Game.Id

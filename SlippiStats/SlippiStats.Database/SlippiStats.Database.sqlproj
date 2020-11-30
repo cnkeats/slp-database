@@ -63,6 +63,7 @@
     <Folder Include="Schema\Player" />
     <Folder Include="Schema\MatchupResults" />
     <Folder Include="Security\" />
+    <Folder Include="Schema\PlayerProfile" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare-Local.scmp" />
@@ -91,5 +92,6 @@
     <Build Include="Schema\Game\Game_GetListByPlayerIdFilters.sql" />
     <Build Include="Schema\Player\Player_GetListByFilters.sql" />
     <Build Include="Security\db_executor.sql" />
+    <Build Include="Schema\PlayerProfile\PlayerProfile_GetByPlayerId.sql" />
   </ItemGroup>
 </Project>

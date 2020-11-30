@@ -12,7 +12,6 @@
 	@player2Victory BIT,
 	@player3Victory BIT,
 	@player4Victory BIT,
-	@winner VARCHAR(4),
 	@stage INT,
 	@gameMode INT,
 	@gameEndMethod INT,

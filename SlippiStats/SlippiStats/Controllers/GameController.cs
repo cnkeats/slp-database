@@ -59,7 +59,7 @@ namespace SlippiStats.Controllers
                     foreach (SlpMetadataPlayer playerMetadata in slpReplay.MetaData.GetPlayers())
                     {
                         Player player = Player.GetByConnectCode(Database.Connection, playerMetadata.Names.Code);
-                        player = Player.GetByPlayerName(Database.Connection, Player.GetPlayerName(slpReplay, playerIndex));
+                        player = player ?? Player.GetByPlayerName(Database.Connection, Player.GetPlayerName(slpReplay, playerIndex));
 
                         if (player == null)
                         {

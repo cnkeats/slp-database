@@ -12,11 +12,13 @@
 
 <div class="profile-overview">
     <div class="profile-header">
-        <h3>Most-Played: <img class="stock-icon" src="@Character.DONKEY_KONG.GetStockIconPath()" /></h3>
+        <h2>@Model.Player.Name (@Model.Player.ConnectCode)</h2>
         <hr />
-        <h4>Winrate: 69.420%</h4>
-        <h6>Best matchup: <img class="stock-icon" src="@Character.FOX.GetStockIconPath()" />Fox</h6>
-        <h6>Worst matchup: <img class="stock-icon" src="@Character.FALCO.GetStockIconPath()" />Falco</h6>
+        <h5>Games Played: @Model.PlayerProfile.GamesPlayed</h5>
+        <h5>Games Won: @Model.PlayerProfile.GamesWon</h5>
+        <h5>Total Playtime: @Model.PlayerProfile.FramesPlayed.ToString("N0") frames</h5>
+        <h5>Favorite Character: <img src="@Character.DONKEY_KONG.GetStockIconPath()" /></h5>
+        <hr />
     </div>
     <div class="profile-matchups">
         <table class="table-matchups">
@@ -60,14 +62,15 @@
     <thead>
         <tr>
             <th class="align-left">Game Id</th>
-            <th class="align-left">Player 1</th>
+            <th class="align-center">Result</th>
             <th class="align-left"></th>
-            <th class="align-left">Player 2</th>
+            <th class="align-left"></th>
+            <th class="align-left"></th>
             <th class="align-left"></th>
             <th class="align-left">Stage</th>
-            <th class="align-left"></th>
             <th class="align-left">Date</th>
-            <th class="align-left">File Name</th>
+            <th class="align-left"></th>
+            <th class="align-left" hidden>File Name</th>
         </tr>
     </thead>
     <tbody>
@@ -78,14 +81,32 @@
             Player player2 = entry.Player2;
             <tr class="game-entry">
                 <td class="align-left">@game.Id</td>
-                <td class="align-left">@player1.ConnectCode - @player1.Name</td>
-                <td class="align-left"><img class="stock-icon" src="@game.Character1?.GetStockIconPath()" />@game.Character1.GetDisplayName()</td>
-                <td class="align-left">@player2.ConnectCode - @player2.Name</td>
-                <td class="align-left"><img class="stock-icon" src="@game.Character2?.GetStockIconPath()" />@game.Character2.GetDisplayName()</td>
+                @if (((bool)game.Player1Victory && game.Player1Id == Model.Player.Id) || ((bool)game.Player2Victory && game.Player2Id == Model.Player.Id))
+                {
+                    <td class="result-victory align-left"></td>
+                }
+                else
+                {
+                    <td class="result-defeat align-left"></td>
+                }
+                @if (Model.Player.Id == game.Player1Id)
+                {
+                    <td class="align-center">@player1.Name</td>
+                    <td class="align-left"><img class="stock-icon" src="@game.Character1?.GetStockIconPath()" />@game.Character1.GetDisplayName()</td>
+                    <td class="align-left">@player2.Name (@player2.ConnectCode)</td>
+                    <td class="align-left"><img class="stock-icon" src="@game.Character2?.GetStockIconPath()" />@game.Character2.GetDisplayName()</td>
+                }
+                else
+                {
+                    <td class="align-center">@player2.Name</td>
+                    <td class="align-left"><img class="stock-icon" src="@game.Character2?.GetStockIconPath()" />@game.Character2.GetDisplayName()</td>
+                    <td class="align-left">@player1.Name (@player1.ConnectCode)</td>
+                    <td class="align-left"><img class="stock-icon" src="@game.Character1?.GetStockIconPath()" />@game.Character1.GetDisplayName()</td>
+                }
                 <td class="align-left"><img class="stage-icon" src="@game.Stage.GetStageIconPath()" />@game.Stage.GetDisplayName()</td>
                 <td class="align-left">@game.StartAt.ToString("MM/dd/yy - HH:mm")</td>
                 <td class="align-left">@game.GameMode?.GetDisplayName()</td>
-                <td class="align-left">@game.FileName</td>
+                <td class="align-left" hidden>@game.FileName</td>
             </tr>
         }
     </tbody>
@@ -112,7 +133,7 @@
         return blendedColor;
     }
 
-    let mostCommonMatchup = @Model.MatchupResults.OrderByDescending(mr => mr.GamesPlayed).First().GamesPlayed;
+    let mostCommonMatchup = @Model.MatchupResults.OrderByDescending(mr => mr.GamesPlayed).FirstOrDefault()?.GamesPlayed;
     @foreach (Character character in Model.Characters)
     {
         foreach (Character opponentCharacter in Model.Characters)

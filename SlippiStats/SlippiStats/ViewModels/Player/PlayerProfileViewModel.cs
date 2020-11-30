@@ -9,6 +9,8 @@ namespace SlippiStats.ViewModels
     {
         public Player Player { get; set; }
 
+        public PlayerProfile PlayerProfile { get; set; }
+
         public string PlayerFilter { get; set; }
 
         public Character? CharacterFilter1 { get; set; }

@@ -37,6 +37,8 @@ body {
     --color-matchup-table-light: #777777;
     --color-matchup-table-dark: #555555;
     --color-error: #CF6679;
+    --color-victory: #004311;
+    --color-defeat: #540000;
     --color-on-primary: #000000;
     --color-on-secondary: #000000;
     --color-on-background: #CCCCCC;
@@ -845,4 +847,10 @@ div[class^="section-"] {
     outline:2px solid var(--color-tertiary);
     outline-offset:-2px;
     cursor:pointer;
+}
+.result-victory {
+    background-color: var(--color-victory)
+}
+.result-defeat {
+    background-color: var(--color-defeat)
 }

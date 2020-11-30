@@ -41,6 +41,7 @@ namespace SlippiStats.Controllers
         {
             PlayerProfileViewModel viewModel = new PlayerProfileViewModel();
             viewModel.Player = Player.GetById(Database.Connection, id);
+            viewModel.PlayerProfile = PlayerProfile.GetByPlayerId(Database.Connection, id);
 
             if (viewModel.Player == null)
             {

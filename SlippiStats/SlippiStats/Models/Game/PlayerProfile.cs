@@ -16,6 +16,12 @@ namespace SlippiStats.Models
 
         public int FramesPlayed { get; set; }
 
+        public Character FavoriteCharacter { get; set; }
+
+        public int FavoriteOpponentId { get; set; }
+
+        public Player FavoriteOpponent { get; set; }
+
         public PlayerProfile()
         {
 
@@ -26,6 +32,8 @@ namespace SlippiStats.Models
             GamesPlayed = dataReader.GetValue<int>(nameof(GamesPlayed));
             GamesWon = dataReader.GetValue<int>(nameof(GamesWon));
             FramesPlayed = dataReader.GetValue<int>(nameof(FramesPlayed));
+            FavoriteCharacter = (Character)dataReader.GetValue<int>(nameof(FavoriteCharacter));
+            FavoriteOpponentId = dataReader.GetValue<int>(nameof(FavoriteOpponent));
         }
 
         public static PlayerProfile GetByPlayerId(IDbConnection connection, int playerId)

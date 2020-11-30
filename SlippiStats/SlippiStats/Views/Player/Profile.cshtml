@@ -17,7 +17,8 @@
         <h5>Games Played: @Model.PlayerProfile.GamesPlayed</h5>
         <h5>Games Won: @Model.PlayerProfile.GamesWon</h5>
         <h5>Total Playtime: @Model.PlayerProfile.FramesPlayed.ToString("N0") frames</h5>
-        <h5>Favorite Character: <img src="@Character.DONKEY_KONG.GetStockIconPath()" /></h5>
+        <h5>Favorite Character: <img src="@Model.PlayerProfile.FavoriteCharacter.GetStockIconPath()" /></h5>
+        <h5>Favorite Opponent: <label class="player-profile-opponent-name" onclick="goToProfile('@Model.PlayerProfile.FavoriteOpponent.Id')">@Model.PlayerProfile.FavoriteOpponent.Name (@Model.PlayerProfile.FavoriteOpponent.ConnectCode)</label></h5>
         <hr />
     </div>
     <div class="profile-matchups">
@@ -93,14 +94,14 @@
                 {
                     <td class="align-center">@player1.Name</td>
                     <td class="align-left"><img class="stock-icon" src="@game.Character1?.GetStockIconPath()" />@game.Character1.GetDisplayName()</td>
-                    <td class="align-left">@player2.Name (@player2.ConnectCode)</td>
+                    <td class="align-left player-profile-opponent-name" onclick="goToProfile('@player2.Id')">@player2.Name (@player2.ConnectCode)</td>
                     <td class="align-left"><img class="stock-icon" src="@game.Character2?.GetStockIconPath()" />@game.Character2.GetDisplayName()</td>
                 }
                 else
                 {
                     <td class="align-center">@player2.Name</td>
                     <td class="align-left"><img class="stock-icon" src="@game.Character2?.GetStockIconPath()" />@game.Character2.GetDisplayName()</td>
-                    <td class="align-left">@player1.Name (@player1.ConnectCode)</td>
+                    <td class="align-left player-profile-opponent-name" onclick="goToProfile('@player1.Id')">@player1.Name (@player1.ConnectCode)</td>
                     <td class="align-left"><img class="stock-icon" src="@game.Character1?.GetStockIconPath()" />@game.Character1.GetDisplayName()</td>
                 }
                 <td class="align-left"><img class="stage-icon" src="@game.Stage.GetStageIconPath()" />@game.Stage.GetDisplayName()</td>
@@ -148,9 +149,12 @@
     }
 
     function filterToMatchup(character, opponentCharacter) {
-
         let playerId = @Model.Player.Id;
         window.location.href = '/Player/Profile/' + playerId + '?character=' + character + '&opponentCharacter=' + opponentCharacter;
+    }
+
+    function goToProfile(id) {
+        window.location.href = '/Player/Profile/' + id;
     }
 
     </script>

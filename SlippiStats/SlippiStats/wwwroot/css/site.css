@@ -311,7 +311,7 @@ header h1 a {
     position:relative;
 }
 .nav-main > li > a {
-    color:var(--color-secondary-dark);
+    color:var(--color-secondary);
     display:block;
     padding:10px 0;
     text-decoration:none;
@@ -846,11 +846,16 @@ div[class^="section-"] {
     background-color:var(--color-secondary-darker);
     outline:2px solid var(--color-tertiary);
     outline-offset:-2px;
-    cursor:pointer;
+    cursor: auto;
 }
 .result-victory {
     background-color: var(--color-victory)
 }
 .result-defeat {
     background-color: var(--color-defeat)
+}
+
+.player-profile-opponent-name {
+    color: #96c3d8;
+    cursor: pointer;
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SlippiStats.Models
+﻿namespace SlippiStats.Models
 {
     // https://github.com/project-slippi/slippi-wiki/blob/master/SPEC.md#game-end-method
     public enum GameEndMethod

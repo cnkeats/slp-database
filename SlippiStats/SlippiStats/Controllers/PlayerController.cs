@@ -1,13 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
 using SlippiStats.Configuration;
 using SlippiStats.GameDataEnums;
 using SlippiStats.Models;
 using SlippiStats.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SlippiStats.Controllers
 {
@@ -30,8 +26,8 @@ namespace SlippiStats.Controllers
             return View(viewModel);
         }
 
-       [HttpPost]
-       public IActionResult List(PlayerListViewModel viewModel)
+        [HttpPost]
+        public IActionResult List(PlayerListViewModel viewModel)
         {
             viewModel.Players = Player.GetListByFilters(Database.Connection, viewModel.PlayerFilter);
             return View(viewModel);

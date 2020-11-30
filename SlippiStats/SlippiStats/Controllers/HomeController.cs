@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SlippiStats.Models;
 using SlippiStats.ViewModels;
 using System.Diagnostics;
 

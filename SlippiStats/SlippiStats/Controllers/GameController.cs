@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
 using SlippiStats.Configuration;
-using SlippiStats.GameDataEnums;
 using SlippiStats.Models;
 using System;
 using System.Collections.Generic;
@@ -101,7 +98,7 @@ namespace SlippiStats.Controllers
                     game.Player4Id = players.Count > 3 ? players[3]?.Id : null;
 
                     game.Save(Database.Connection);
-                    
+
                     response.Message = string.Format("New game #{0} saved.", game.Id);
                 }
                 else
@@ -122,7 +119,7 @@ namespace SlippiStats.Controllers
 
                 return response;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 response.Success = false;
                 response.Message = e.Message;

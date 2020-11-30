@@ -1,10 +1,4 @@
-﻿
-using SlippiStats.Models;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SlippiStats.GameDataEnums
 {
@@ -16,7 +10,7 @@ namespace SlippiStats.GameDataEnums
         _COIN = 2,
         _BONUS = 3,
 
-        [Display(Name="Stock")]
+        [Display(Name = "Stock")]
         STOCK = 8
     }
 }

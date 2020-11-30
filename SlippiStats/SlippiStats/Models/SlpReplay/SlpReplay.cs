@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace SlippiStats.Models
 {
@@ -39,8 +38,8 @@ namespace SlippiStats.Models
 
             // Games that don't contain game end mthod data are not supported
             GameEndMethod gameEndMethod = slpReplay.GameEnd.GameEndMethod;
-            
-            switch(gameEndMethod)
+
+            switch (gameEndMethod)
             {
                 // Someone did LRAS or something else weird happened
                 case GameEndMethod.NO_CONTEST:

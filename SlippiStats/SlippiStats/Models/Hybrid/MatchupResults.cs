@@ -1,6 +1,5 @@
 ﻿using SlippiStats.GameDataEnums;
 using SlippiStats.Util;
-using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -17,7 +16,7 @@ namespace SlippiStats.Models
         public int Victories { get; set; }
 
         public int Losses { get; set; }
-    
+
 
         public MatchupResults()
         {

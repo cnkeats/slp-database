@@ -1,11 +1,6 @@
 ﻿
 using SlippiStats.Extensions;
-using SlippiStats.Models;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace SlippiStats.GameDataEnums
 {

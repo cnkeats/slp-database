@@ -93,5 +93,6 @@
     <Build Include="Schema\Player\Player_GetListByFilters.sql" />
     <Build Include="Security\db_executor.sql" />
     <Build Include="Schema\PlayerProfile\PlayerProfile_GetByPlayerId.sql" />
+    <Build Include="Schema\MatchupResults\MatchupResults_GetListByPlayerIdFilters.sql" />
   </ItemGroup>
 </Project>

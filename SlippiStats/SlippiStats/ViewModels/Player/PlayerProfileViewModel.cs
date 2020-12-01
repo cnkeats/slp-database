@@ -11,7 +11,7 @@ namespace SlippiStats.ViewModels
 
         public PlayerProfile PlayerProfile { get; set; }
 
-        public string PlayerFilter { get; set; }
+        public string OpponentFilter { get; set; }
 
         public Character? CharacterFilter1 { get; set; }
 

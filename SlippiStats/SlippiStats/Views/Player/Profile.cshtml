@@ -7,7 +7,9 @@
 <div class="section-filters">
     <h3>Stats Overview - @Model.Player.Name - @Model.Player.ConnectCode</h3>
     <form class="form-standard" method="post">
+        <input name="opponentFilter" placeholder="Opponent Tag or Code" />
     </form>
+    <button type="submit">Filter</button>
 </div>
 
 <div class="profile-overview">
@@ -80,7 +82,7 @@
                 {
                     if (character.GetTournamentLegality())
                     {
-                        <tr class="matchup-row @(Model.PlayerProfile.CharacterFilter == character ? "matchup-cell-colored-sticky" : "")">
+                        <tr class="matchup-row @(Model.PlayerProfile.CharacterFilter == character && Model.PlayerProfile.OpponentCharacterFilter == null ? "matchup-cell-colored-sticky" : "")">
                             <td class="matchup-row-header" style="min-width: 27px;" onmouseover="hoverRow(@row)" onmouseout="unhoverRow(@row)" onclick="filterToMatchup('@character', null)">@Model.MatchupResults.Where(mr => mr.Character == character).Sum(mr => mr.GamesPlayed)</td>
                             <td class="matchup-row-header" onmouseover="hoverRow(@row)" onmouseout="unhoverRow(@row)" onclick="filterToMatchup('@character', null)"><img src="@character.GetStockIconPath()" /></td>
                             @{int col = 3;}
@@ -88,7 +90,11 @@
                             {
                                 if (opponentCharacter.GetTournamentLegality())
                                 {
-                                    <td class="matchup-cell @(Model.PlayerProfile.CharacterFilter == character || Model.PlayerProfile.OpponentCharacterFilter == opponentCharacter ? "matchup-cell-colored-sticky" : "")" id="@(character)-@(opponentCharacter)" onmouseover="hoverCell(@row, @col)" onmouseout="unhoverCell(@row, @col)" onclick="filterToMatchup('@character', '@opponentCharacter')" >@Model.MatchupResults.Where(mr => mr.Character == character && mr.OpponentCharacter == opponentCharacter).FirstOrDefault()?.GamesPlayed</td>
+                                    <td class="matchup-cell @(
+                                        (Model.PlayerProfile.CharacterFilter == character && Model.PlayerProfile.OpponentCharacterFilter == opponentCharacter)
+                                        || (Model.PlayerProfile.CharacterFilter == null && Model.PlayerProfile.OpponentCharacterFilter == opponentCharacter)
+                                        || (Model.PlayerProfile.CharacterFilter == character && Model.PlayerProfile.OpponentCharacterFilter == null)
+                                        ? "matchup-cell-colored-sticky" : "")" id="@(character)-@(opponentCharacter)" onmouseover="hoverCell(@row, @col)" onmouseout="unhoverCell(@row, @col)" onclick="filterToMatchup('@character', '@opponentCharacter')" >@Model.MatchupResults.Where(mr => mr.Character == character && mr.OpponentCharacter == opponentCharacter).FirstOrDefault()?.GamesPlayed</td>
                                 }
                             col++;
                             }

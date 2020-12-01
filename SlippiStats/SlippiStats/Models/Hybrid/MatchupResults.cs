@@ -47,5 +47,23 @@ namespace SlippiStats.Models
 
             return matchupResults;
         }
+
+        public static List<MatchupResults> GetListByPlayerIdFilters(IDbConnection connection, int playerId, Character? characterFilter = null, string opponentFilter = null, Character? opponentCharacterFilter = null)
+        {
+            List<MatchupResults> matchupResults = new List<MatchupResults>();
+
+            using IDbCommand command = connection.CreateStoredProcedure(
+                $"{nameof(MatchupResults)}_{nameof(GetListByPlayerIdFilters)}",
+                new { playerId, characterFilter, opponentFilter, opponentCharacterFilter });
+
+            using IDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                matchupResults.Add(new MatchupResults(reader));
+            }
+
+            return matchupResults;
+        }
     }
 }

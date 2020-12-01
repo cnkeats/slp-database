@@ -1,11 +1,14 @@
 ﻿CREATE PROCEDURE Game_GetListByPlayerIdFilters
 	@playerId INT,
 	@character INT,
+	@opponentFilter VARCHAR(32),
 	@opponentCharacter INT,
 	@stage INT,
 	@opponentPlayerId INT
 
 AS
+
+SET @opponentFilter = '%' + @opponentFilter + '%'
 
 SELECT TOP 500
 	Game.Id,
@@ -41,10 +44,14 @@ SELECT TOP 500
 	Game.Deleted
 FROM
 	Game WITH (NOLOCK)
+	INNER JOIN Player Opponent WITH (NOLOCK)
+		ON (Opponent.Id = Game.Player1Id AND Game.Player1Id <> @playerId)
+		OR (Opponent.Id = Game.Player2Id AND Game.Player2Id <> @playerId)
 WHERE
 	(
 		Game.Player1Id = @playerId
 		AND (@character IS NULL OR Game.Character1 = @character)
+		AND (@opponentFilter IS NULL OR Opponent.Name LIKE @opponentFilter OR Opponent.ConnectCode LIKE @opponentFilter)
 		AND (@opponentCharacter IS NULL OR Game.Character2 = @opponentCharacter)
 		AND (@stage IS NULL OR Game.Stage = @stage)
 		AND (@opponentPlayerId IS NULL OR Game.Player2Id = @opponentPlayerId)
@@ -53,6 +60,7 @@ WHERE
 	(
 		Game.Player2Id = @playerId
 		AND (@character IS NULL OR Game.Character2 = @character)
+		AND (@opponentFilter IS NULL OR Opponent.Name LIKE @opponentFilter OR Opponent.ConnectCode LIKE @opponentFilter)
 		AND (@opponentCharacter IS NULL OR Game.Character1 = @opponentCharacter)
 		AND (@stage IS NULL OR Game.Stage = @stage)
 		AND (@opponentPlayerId IS NULL OR Game.Player1Id = @opponentPlayerId)

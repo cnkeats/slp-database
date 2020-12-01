@@ -33,6 +33,8 @@ namespace SlippiStats.Models
 
         public Character? CharacterFilter { get; set; }
 
+        public string OpponentFilter { get; set; }
+
         public Character? OpponentCharacterFilter { get; set; }
 
         public PlayerProfile()
@@ -53,16 +55,17 @@ namespace SlippiStats.Models
             OpponentLRASCount = dataReader.GetValue<int>(nameof(OpponentLRASCount));
             FourStocks = dataReader.GetValue<int>(nameof(FourStocks));
             CharacterFilter = (Character?)dataReader.GetValue<int?>(nameof(CharacterFilter));
+            OpponentFilter = dataReader.GetValue<string>(nameof(OpponentFilter));
             OpponentCharacterFilter = (Character?)dataReader.GetValue<int?>(nameof(OpponentCharacterFilter));
         }
 
-        public static PlayerProfile GetByPlayerId(IDbConnection connection, int playerId, Character? characterFilter = null, Character? opponentCharacterFilter = null)
+        public static PlayerProfile GetByPlayerId(IDbConnection connection, int playerId, Character? characterFilter = null, string opponentFilter = null, Character? opponentCharacterFilter = null)
         {
             PlayerProfile playerProfile = null;
 
             using IDbCommand command = connection.CreateStoredProcedure(
                 $"{nameof(PlayerProfile)}_{nameof(GetByPlayerId)}",
-                new { playerId, characterFilter, opponentCharacterFilter });
+                new { playerId, characterFilter, opponentFilter, opponentCharacterFilter });
 
             using IDataReader reader = command.ExecuteReader();
 

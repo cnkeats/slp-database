@@ -33,17 +33,16 @@ namespace SlippiStats.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Profile(int id, Character? character = null, Character? opponentCharacter = null, Stage? stage = null, int? opponentPlayerId = null)
+        public IActionResult Profile(int id, Character? character = null, string opponentFilter = null, Character? opponentCharacter = null, Stage? stage = null, int? opponentPlayerId = null)
         {
             PlayerProfileViewModel viewModel = new PlayerProfileViewModel();
             viewModel.Player = Player.GetById(Database.Connection, id);
-            viewModel.PlayerProfile = PlayerProfile.GetByPlayerId(Database.Connection, id, character, opponentCharacter);
+            viewModel.PlayerProfile = PlayerProfile.GetByPlayerId(Database.Connection, id, character, opponentFilter, opponentCharacter);
 
             if (viewModel.PlayerProfile != null)
             {
                 viewModel.PlayerProfile.FavoriteOpponent = Player.GetById(Database.Connection, viewModel.PlayerProfile.FavoriteOpponentId);
             }
-
 
             if (viewModel.Player == null)
             {
@@ -51,9 +50,10 @@ namespace SlippiStats.Controllers
             }
 
             viewModel.PlayedCharacters = Player.GetPlayedCharactersByPlayerId(Database.Connection, id);
-            viewModel.MatchupResults = MatchupResults.GetListByPlayerId(Database.Connection, id);
+            //viewModel.MatchupResults = MatchupResults.GetListByPlayerId(Database.Connection, id);
+            viewModel.MatchupResults = MatchupResults.GetListByPlayerIdFilters(Database.Connection, id, character, opponentFilter, opponentCharacter);
 
-            List<Game> games = Game.GetListByPlayerIdFilters(Database.Connection, id, character, opponentCharacter, stage, opponentPlayerId);
+            List<Game> games = Game.GetListByPlayerIdFilters(Database.Connection, id, character, opponentFilter, opponentCharacter, stage, opponentPlayerId);
 
             viewModel.Entries = new List<GameEntryView>();
             foreach (Game game in games)

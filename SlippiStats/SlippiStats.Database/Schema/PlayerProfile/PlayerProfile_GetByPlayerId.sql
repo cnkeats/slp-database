@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE PlayerProfile_GetByPlayerId
 	@playerId INT,
 	@characterFilter INT,
+	@opponentFilter VARCHAR(32),
 	@opponentCharacterFilter INT
 
 AS
@@ -23,8 +24,12 @@ SELECT
 			INNER JOIN Character WITH (NOLOCK)
 				ON (Character.Id = Game.Character1 AND Player.Id = Game.Player1Id)
 				OR (Character.Id = Game.Character2 AND Player.Id = Game.Player2Id)
+			INNER JOIN Player Opponent WITH (NOLOCK)
+				ON (Opponent.Id = Game.Player1Id AND Game.Player1Id <> @playerId)
+				OR (Opponent.Id = Game.Player2Id AND Game.Player2Id <> @playerId)
 		WHERE
 			Player.Id = @playerId
+			AND (@opponentFilter IS NULL OR Opponent.Name LIKE @opponentFilter OR Opponent.ConnectCode LIKE @opponentFilter)
 			AND (
 				@characterFilter IS NULL
 				OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)
@@ -49,11 +54,11 @@ SELECT
 				ON Game.Player1Id = Player.Id
 				OR Game.Player2Id = Player.Id
 			INNER JOIN Player Opponent WITH (NOLOCK)
-				ON Opponent.Id = Game.Player1Id
-				OR Opponent.Id = Game.Player2Id
+				ON (Opponent.Id = Game.Player1Id AND Game.Player1Id <> @playerId)
+				OR (Opponent.Id = Game.Player2Id AND Game.Player2Id <> @playerId)
 		WHERE
 			Player.Id = @playerId
-			AND Opponent.Id <> @playerId
+			AND (@opponentFilter IS NULL OR Opponent.Name LIKE @opponentFilter OR Opponent.ConnectCode LIKE @opponentFilter)
 			AND (
 				@characterFilter IS NULL
 				OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)
@@ -77,8 +82,12 @@ SELECT
 			INNER JOIN Game WITH (NOLOCK)
 				ON Game.Player1Id = Player.Id
 				OR Game.Player2Id = Player.Id
+			INNER JOIN Player Opponent WITH (NOLOCK)
+				ON (Opponent.Id = Game.Player1Id AND Game.Player1Id <> @playerId)
+				OR (Opponent.Id = Game.Player2Id AND Game.Player2Id <> @playerId)
 		WHERE
 			Player.Id = @playerId
+			AND (@opponentFilter IS NULL OR Opponent.Name LIKE @opponentFilter OR Opponent.ConnectCode LIKE @opponentFilter)
 			AND (
 				@characterFilter IS NULL
 				OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)
@@ -104,11 +113,11 @@ SELECT
 					ON Game.Player1Id = Player.Id
 					OR Game.Player2Id = Player.Id
 				INNER JOIN Player Opponent WITH (NOLOCK)
-					ON Opponent.Id = Game.Player1Id
-					OR Opponent.Id = Game.Player2Id
+					ON (Opponent.Id = Game.Player1Id AND Game.Player1Id <> @playerId)
+					OR (Opponent.Id = Game.Player2Id AND Game.Player2Id <> @playerId)
 			WHERE
 				Player.Id = @playerId
-				AND Opponent.Id <> @playerId
+				AND (@opponentFilter IS NULL OR Opponent.Name LIKE @opponentFilter OR Opponent.ConnectCode LIKE @opponentFilter)
 				AND (
 					@characterFilter IS NULL
 					OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)
@@ -135,9 +144,13 @@ SELECT
 					AND Game.Player2Victory = 1
 					AND Game.Player2EndingStocks = 4
 				)
+			INNER JOIN Player Opponent WITH (NOLOCK)
+				ON (Opponent.Id = Game.Player1Id AND Game.Player1Id <> @playerId)
+				OR (Opponent.Id = Game.Player2Id AND Game.Player2Id <> @playerId)
 		WHERE
 			Player.Id = @playerId
 			AND Game.LRASInitiatorIndex = -1
+			AND (@opponentFilter IS NULL OR Opponent.Name LIKE @opponentFilter OR Opponent.ConnectCode LIKE @opponentFilter)
 			AND (
 				@characterFilter IS NULL
 				OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)
@@ -161,8 +174,12 @@ SELECT
 				OR (Game.Player2Id = @playerId
 					AND LRASInitiatorIndex = 1
 				)
+			INNER JOIN Player Opponent WITH (NOLOCK)
+				ON (Opponent.Id = Game.Player1Id AND Game.Player1Id <> @playerId)
+				OR (Opponent.Id = Game.Player2Id AND Game.Player2Id <> @playerId)
 		WHERE
 			Player.Id = @playerId
+			AND (@opponentFilter IS NULL OR Opponent.Name LIKE @opponentFilter OR Opponent.ConnectCode LIKE @opponentFilter)
 			AND (
 				@characterFilter IS NULL
 				OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)
@@ -186,8 +203,12 @@ SELECT
 				OR (Game.Player2Id = @playerId
 					AND LRASInitiatorIndex = 0
 				)
+			INNER JOIN Player Opponent WITH (NOLOCK)
+				ON (Opponent.Id = Game.Player1Id AND Game.Player1Id <> @playerId)
+				OR (Opponent.Id = Game.Player2Id AND Game.Player2Id <> @playerId)
 		WHERE
 			Player.Id = @playerId
+			AND (@opponentFilter IS NULL OR Opponent.Name LIKE @opponentFilter OR Opponent.ConnectCode LIKE @opponentFilter)
 			AND (
 				@characterFilter IS NULL
 				OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)
@@ -200,14 +221,19 @@ SELECT
 			)
 	) AS OpponentLRASCount,
 	@characterFilter AS CharacterFilter,
-	@opponentCharacterFilter AS OpponentCharacterFilter
+	@opponentCharacterFilter AS OpponentCharacterFilter,
+	@opponentFilter AS OpponentFilter
 FROM
 	Player WITH (NOLOCK)
 	INNER JOIN Game WITH (NOLOCK)
 		ON Game.Player1Id = Player.Id
 		OR Game.Player2Id = Player.Id
+	INNER JOIN Player Opponent WITH (NOLOCK)
+		ON (Opponent.Id = Game.Player1Id AND Game.Player1Id <> @playerId)
+		OR (Opponent.Id = Game.Player2Id AND Game.Player2Id <> @playerId)
 WHERE
 	Player.Id = @playerId
+	AND (@opponentFilter IS NULL OR Opponent.Name LIKE @opponentFilter OR Opponent.ConnectCode LIKE @opponentFilter)
 	AND (
 			@characterFilter IS NULL
 			OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)

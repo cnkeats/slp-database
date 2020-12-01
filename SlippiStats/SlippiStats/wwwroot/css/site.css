@@ -801,6 +801,7 @@ div[class^="section-"] {
     background-color: var(--color-matchup-table);
 }
 
+.matchup-cell-colored-sticky,
 .matchup-cell-colored {
     background-color: var(--color-secondary-dark) !important;
     outline:1px solid var(--color-tertiary);

@@ -19,36 +19,56 @@
             }
         </div>
         <hr class="profile-header-row" />
+        @if (Model.PlayerProfile.CharacterFilter != null) {
+            <img src="@Model.PlayerProfile.CharacterFilter.GetStockIconPath()" />
+            if (Model.PlayerProfile.OpponentCharacterFilter != null) {
+                <text>vs </text><img src="@Model.PlayerProfile.OpponentCharacterFilter.GetStockIconPath()" />
+            }
+            else {
+                <text>vs ALL</text>
+            }
+        }
+        else if (Model.PlayerProfile.OpponentCharacterFilter != null) {
+            <text>ALL vs </text><img src="@Model.PlayerProfile.OpponentCharacterFilter.GetStockIconPath()" />
+        }
         <div class="profile-header-content">
             <h5>Games Played: @Model.PlayerProfile.GamesPlayed</h5>
-            <h5>Games Won: @Model.PlayerProfile.GamesWon (@((100 * Model.PlayerProfile.GamesWon / (decimal)Model.PlayerProfile.GamesPlayed).ToString("#.##"))%)</h5>
-            <span>
-                <h6>LRAS: @Model.PlayerProfile.QuitOuts</h6>
-                <h6>Opp. LRAS: @Model.PlayerProfile.QuitOutsAgainst</h6>
-            </span>
-            <h5>Total Playtime: @Model.PlayerProfile.FramesPlayed.ToString("N0") frames (@(Model.PlayerProfile.FramesPlayed / 60 / 60 / 60) hours)</h5>
-            <h5>Favorite Character: <img src="@Model.PlayerProfile.FavoriteCharacter.GetStockIconPath()" /></h5>
-            <h5>Favorite Opponent: <label class="player-profile-opponent-name" onclick="goToProfile('@Model.PlayerProfile.FavoriteOpponent.Id')">@Model.PlayerProfile.FavoriteOpponent.Name (@Model.PlayerProfile.FavoriteOpponent.ConnectCode)</label></h5>
-            <h5>Unique Opponents: @Model.PlayerProfile.UniqueOpponents</h5>
-            <h5>4-Stocks: @Model.PlayerProfile.FourStocks</h5>
+            @if (Model.PlayerProfile.GamesPlayed > 0) {
+                <h5>Games Won: @Model.PlayerProfile.GamesWon (@(Model.PlayerProfile.GamesPlayed > 0 ? (100 * Model.PlayerProfile.GamesWon / (decimal)Model.PlayerProfile.GamesPlayed).ToString("#.##") : "0")%)</h5>
+                <span>
+                    <h6>LRAS: @Model.PlayerProfile.LRASCount</h6>
+                    <h6>Opp. LRAS: @Model.PlayerProfile.OpponentLRASCount</h6>
+                </span>
+                <h5>Total Playtime: @Model.PlayerProfile.FramesPlayed.ToString("N0") frames (@(Model.PlayerProfile.FramesPlayed / 60 / 60 / 60) hours)</h5>
+                @if (Model.PlayerProfile.CharacterFilter == null) {
+                    <h5>Favorite Character: <img src="@Model.PlayerProfile.FavoriteCharacter.GetStockIconPath()" /></h5>
+                }
+                @if (Model.PlayerProfile.FavoriteOpponent != null) {
+                    <h5>Favorite Opponent: <label class="player-profile-opponent-name" onclick="goToProfile('@Model.PlayerProfile.FavoriteOpponent.Id')">@Model.PlayerProfile.FavoriteOpponent.Name (@Model.PlayerProfile.FavoriteOpponent.ConnectCode)</label></h5>
+                }
+                <h5>Unique Opponents: @Model.PlayerProfile.UniqueOpponents</h5>
+                <h5>4-Stocks: @Model.PlayerProfile.FourStocks</h5>
+            }
         </div>
         <hr class="profile-header-row" />
         <div class="profile-header-content">
-            <h6>First Spotted: @Model.PlayerProfile.FirstSpotted</h6>
+            @if (Model.PlayerProfile.GamesPlayed > 0) {
+                <h6>First Spotted: @Model.PlayerProfile.FirstSpotted</h6>
+            }
         </div>
     </div>
     <div class="profile-matchups">
         <table class="table-matchups">
             <thead>
                 <tr>
-                    <th />
-                    <th />
+                    <th onclick="clearFilter()" onmouseover="hoverTable()" onmouseout="unhoverTable()" />
+                    <th onclick="clearFilter()" onmouseover="hoverTable()" onmouseout="unhoverTable()" />
                     @{int i = 3;}
                     @foreach (Character character in Model.Characters)
                     {
                         if (character.GetTournamentLegality())
                         {
-                            <th onmouseover="hoverColumn(@i)" onmouseout="unhoverColumn(@i)" onclick="filterToMatchup(null, '@character')"><img src="@character.GetStockIconPath()" /></th>
+                            <th class="@(Model.PlayerProfile.OpponentCharacterFilter == character ? "matchup-cell-colored-sticky" : "test")" onmouseover="hoverColumn(@i)" onmouseout="unhoverColumn(@i)" onclick="filterToMatchup(null, '@character')"><img src="@character.GetStockIconPath()" /></th>
                         }
                     i++;
                     }
@@ -60,7 +80,7 @@
                 {
                     if (character.GetTournamentLegality())
                     {
-                        <tr class="matchup-row">
+                        <tr class="matchup-row @(Model.PlayerProfile.CharacterFilter == character ? "matchup-cell-colored-sticky" : "")">
                             <td class="matchup-row-header" style="min-width: 27px;" onmouseover="hoverRow(@row)" onmouseout="unhoverRow(@row)" onclick="filterToMatchup('@character', null)">@Model.MatchupResults.Where(mr => mr.Character == character).Sum(mr => mr.GamesPlayed)</td>
                             <td class="matchup-row-header" onmouseover="hoverRow(@row)" onmouseout="unhoverRow(@row)" onclick="filterToMatchup('@character', null)"><img src="@character.GetStockIconPath()" /></td>
                             @{int col = 3;}
@@ -68,7 +88,7 @@
                             {
                                 if (opponentCharacter.GetTournamentLegality())
                                 {
-                                    <td class="matchup-cell" id="@(character)-@(opponentCharacter)" onmouseover="hoverCell(@row, @col)" onmouseout="unhoverCell(@row, @col)" onclick="filterToMatchup('@character', '@opponentCharacter')" >@Model.MatchupResults.Where(mr => mr.Character == character && mr.OpponentCharacter == opponentCharacter).FirstOrDefault()?.GamesPlayed</td>
+                                    <td class="matchup-cell @(Model.PlayerProfile.CharacterFilter == character || Model.PlayerProfile.OpponentCharacterFilter == opponentCharacter ? "matchup-cell-colored-sticky" : "")" id="@(character)-@(opponentCharacter)" onmouseover="hoverCell(@row, @col)" onmouseout="unhoverCell(@row, @col)" onclick="filterToMatchup('@character', '@opponentCharacter')" >@Model.MatchupResults.Where(mr => mr.Character == character && mr.OpponentCharacter == opponentCharacter).FirstOrDefault()?.GamesPlayed</td>
                                 }
                             col++;
                             }
@@ -162,6 +182,19 @@
 
         function unhoverCell(rowNum, colNum) {
             $(".table-matchups tbody tr:nth-child(" + rowNum + ") td:nth-child(" + colNum + ")").removeClass('matchup-cell-colored');
+        }
+
+        function hoverTable() {
+            $(".table-matchups").find('*').addClass('matchup-cell-colored');
+        }
+
+        function unhoverTable() {
+            $(".table-matchups").find('*').removeClass('matchup-cell-colored');
+        }
+
+        function clearFilter() {
+            let playerId = @Model.Player.Id;
+            window.location.href = '/Player/Profile/' + playerId;
         }
 
         function filterToMatchup(character, opponentCharacter) {

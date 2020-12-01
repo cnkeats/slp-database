@@ -1,5 +1,7 @@
 ﻿CREATE PROCEDURE PlayerProfile_GetByPlayerId
-	@playerId INT
+	@playerId INT,
+	@characterFilter INT,
+	@opponentCharacterFilter INT
 
 AS
 
@@ -23,6 +25,16 @@ SELECT
 				OR (Character.Id = Game.Character2 AND Player.Id = Game.Player2Id)
 		WHERE
 			Player.Id = @playerId
+			AND (
+				@characterFilter IS NULL
+				OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)
+				OR (Game.Character2 = @characterFilter AND Game.Player2Id = Player.Id)
+			)
+			AND (
+				@opponentCharacterFilter IS NULL
+				OR (Game.Character1 = @opponentCharacterFilter AND Game.Player1Id <> Player.Id)
+				OR (Game.Character2 = @opponentCharacterFilter AND Game.Player2Id <> Player.Id)
+			)
 		GROUP BY
 			Character.Id
 		ORDER BY
@@ -42,6 +54,16 @@ SELECT
 		WHERE
 			Player.Id = @playerId
 			AND Opponent.Id <> @playerId
+			AND (
+				@characterFilter IS NULL
+				OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)
+				OR (Game.Character2 = @characterFilter AND Game.Player2Id = Player.Id)
+			)
+			AND (
+				@opponentCharacterFilter IS NULL
+				OR (Game.Character1 = @opponentCharacterFilter AND Game.Player1Id <> Player.Id)
+				OR (Game.Character2 = @opponentCharacterFilter AND Game.Player2Id <> Player.Id)
+			)
 		GROUP BY
 			Opponent.Id
 		ORDER BY
@@ -57,6 +79,16 @@ SELECT
 				OR Game.Player2Id = Player.Id
 		WHERE
 			Player.Id = @playerId
+			AND (
+				@characterFilter IS NULL
+				OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)
+				OR (Game.Character2 = @characterFilter AND Game.Player2Id = Player.Id)
+			)
+			AND (
+				@opponentCharacterFilter IS NULL
+				OR (Game.Character1 = @opponentCharacterFilter AND Game.Player1Id <> Player.Id)
+				OR (Game.Character2 = @opponentCharacterFilter AND Game.Player2Id <> Player.Id)
+			)
 		ORDER BY
 			Game.StartAt
 	) AS FirstSpotted,
@@ -64,19 +96,30 @@ SELECT
 		SELECT
 			COUNT(U.Id)
 		FROM
-		(SELECT DISTINCT
-			Opponent.Id
-		FROM
-			Player WITH (NOLOCK)
-			INNER JOIN Game WITH (NOLOCK)
-				ON Game.Player1Id = Player.Id
-				OR Game.Player2Id = Player.Id
-			INNER JOIN Player Opponent WITH (NOLOCK)
-				ON Opponent.Id = Game.Player1Id
-				OR Opponent.Id = Game.Player2Id
-		WHERE
-			Player.Id = @playerId
-			AND Opponent.Id <> @playerId) AS U
+			(SELECT DISTINCT
+				Opponent.Id
+			FROM
+				Player WITH (NOLOCK)
+				INNER JOIN Game WITH (NOLOCK)
+					ON Game.Player1Id = Player.Id
+					OR Game.Player2Id = Player.Id
+				INNER JOIN Player Opponent WITH (NOLOCK)
+					ON Opponent.Id = Game.Player1Id
+					OR Opponent.Id = Game.Player2Id
+			WHERE
+				Player.Id = @playerId
+				AND Opponent.Id <> @playerId
+				AND (
+					@characterFilter IS NULL
+					OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)
+					OR (Game.Character2 = @characterFilter AND Game.Player2Id = Player.Id)
+				)
+				AND (
+					@opponentCharacterFilter IS NULL
+					OR (Game.Character1 = @opponentCharacterFilter AND Game.Player1Id <> Player.Id)
+					OR (Game.Character2 = @opponentCharacterFilter AND Game.Player2Id <> Player.Id)
+				)
+			) AS U
 	) AS UniqueOpponents,
 	(
 		SELECT
@@ -95,6 +138,16 @@ SELECT
 		WHERE
 			Player.Id = @playerId
 			AND Game.LRASInitiatorIndex = -1
+			AND (
+				@characterFilter IS NULL
+				OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)
+				OR (Game.Character2 = @characterFilter AND Game.Player2Id = Player.Id)
+			)
+			AND (
+				@opponentCharacterFilter IS NULL
+				OR (Game.Character1 = @opponentCharacterFilter AND Game.Player1Id <> Player.Id)
+				OR (Game.Character2 = @opponentCharacterFilter AND Game.Player2Id <> Player.Id)
+			)
 	) AS FourStocks,
 	(
 		SELECT
@@ -110,7 +163,17 @@ SELECT
 				)
 		WHERE
 			Player.Id = @playerId
-	) AS QuitOuts,
+			AND (
+				@characterFilter IS NULL
+				OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)
+				OR (Game.Character2 = @characterFilter AND Game.Player2Id = Player.Id)
+			)
+			AND (
+				@opponentCharacterFilter IS NULL
+				OR (Game.Character1 = @opponentCharacterFilter AND Game.Player1Id <> Player.Id)
+				OR (Game.Character2 = @opponentCharacterFilter AND Game.Player2Id <> Player.Id)
+			)
+	) AS LRASCount,
 	(
 		SELECT
 			COUNT(*)
@@ -125,7 +188,19 @@ SELECT
 				)
 		WHERE
 			Player.Id = @playerId
-	) AS QuitOutsAgainst
+			AND (
+				@characterFilter IS NULL
+				OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)
+				OR (Game.Character2 = @characterFilter AND Game.Player2Id = Player.Id)
+			)
+			AND (
+				@opponentCharacterFilter IS NULL
+				OR (Game.Character1 = @opponentCharacterFilter AND Game.Player1Id <> Player.Id)
+				OR (Game.Character2 = @opponentCharacterFilter AND Game.Player2Id <> Player.Id)
+			)
+	) AS OpponentLRASCount,
+	@characterFilter AS CharacterFilter,
+	@opponentCharacterFilter AS OpponentCharacterFilter
 FROM
 	Player WITH (NOLOCK)
 	INNER JOIN Game WITH (NOLOCK)
@@ -133,6 +208,16 @@ FROM
 		OR Game.Player2Id = Player.Id
 WHERE
 	Player.Id = @playerId
+	AND (
+			@characterFilter IS NULL
+			OR (Game.Character1 = @characterFilter AND Game.Player1Id = Player.Id)
+			OR (Game.Character2 = @characterFilter AND Game.Player2Id = Player.Id)
+		)
+		AND (
+			@opponentCharacterFilter IS NULL
+			OR (Game.Character1 = @opponentCharacterFilter AND Game.Player1Id <> Player.Id)
+			OR (Game.Character2 = @opponentCharacterFilter AND Game.Player2Id <> Player.Id)
+		)
 GROUP BY
 	Player.Id,
 	Player.Name

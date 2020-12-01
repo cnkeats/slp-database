@@ -27,9 +27,13 @@ namespace SlippiStats.Models
 
         public int UniqueOpponents { get; set; }
 
-        public int QuitOuts { get; set; }
+        public int LRASCount { get; set; }
 
-        public int QuitOutsAgainst { get; set; }
+        public int OpponentLRASCount { get; set; }
+
+        public Character? CharacterFilter { get; set; }
+
+        public Character? OpponentCharacterFilter { get; set; }
 
         public PlayerProfile()
         {
@@ -45,18 +49,20 @@ namespace SlippiStats.Models
             FavoriteCharacter = (Character)dataReader.GetValue<int>(nameof(FavoriteCharacter));
             FavoriteOpponentId = dataReader.GetValue<int>(nameof(FavoriteOpponent));
             UniqueOpponents = dataReader.GetValue<int>(nameof(UniqueOpponents));
-            QuitOuts = dataReader.GetValue<int>(nameof(QuitOuts));
-            QuitOutsAgainst = dataReader.GetValue<int>(nameof(QuitOutsAgainst));
+            LRASCount = dataReader.GetValue<int>(nameof(LRASCount));
+            OpponentLRASCount = dataReader.GetValue<int>(nameof(OpponentLRASCount));
             FourStocks = dataReader.GetValue<int>(nameof(FourStocks));
+            CharacterFilter = (Character?)dataReader.GetValue<int?>(nameof(CharacterFilter));
+            OpponentCharacterFilter = (Character?)dataReader.GetValue<int?>(nameof(OpponentCharacterFilter));
         }
 
-        public static PlayerProfile GetByPlayerId(IDbConnection connection, int playerId)
+        public static PlayerProfile GetByPlayerId(IDbConnection connection, int playerId, Character? characterFilter = null, Character? opponentCharacterFilter = null)
         {
             PlayerProfile playerProfile = null;
 
             using IDbCommand command = connection.CreateStoredProcedure(
                 $"{nameof(PlayerProfile)}_{nameof(GetByPlayerId)}",
-                new { playerId });
+                new { playerId, characterFilter, opponentCharacterFilter });
 
             using IDataReader reader = command.ExecuteReader();
 
@@ -65,7 +71,7 @@ namespace SlippiStats.Models
                 playerProfile = new PlayerProfile(reader);
             }
 
-            return playerProfile;
+            return playerProfile ?? new PlayerProfile() { CharacterFilter = characterFilter, OpponentCharacterFilter = opponentCharacterFilter };
         }
     }
 }

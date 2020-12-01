@@ -62,7 +62,7 @@ function loadGameData(file) {
 async function submitGame(gameData) {    
 
     //console.log(gameData);
-    
+    //console.log(gameData.settings);
     try {
         return await fetch('http://slippi.ventechs.net:82/Game/Submit', {
         //return await fetch('https://localhost:44314/Game/Submit', {
@@ -113,8 +113,10 @@ async function processFiles(files) {
         else {
             badFiles++;
         }
-        console.log(`${goodFiles + badFiles} of ${files.length} processed`);
-        console.timeLog('Processing');
+        if ((goodFiles + badFiles) % 10 == 0) {
+            console.log(`${goodFiles + badFiles} of ${files.length} processed`);
+            console.timeLog('Processing');
+        }
     }
 
     notify = true
@@ -134,6 +136,10 @@ async function processFiles(files) {
 }
 
 // File path for replays to be processed
-const filePath = "D:/SlippiReplays/replayDumps/yashichi/*.slp"
+//const filePath = "D:/SlippiReplays/replayDumps/yashichi/*.slp"
+//const filePath = "D:/SlippiReplays/testing/*.slp"
+const filePath = "D:/SlippiReplays/replayDumps/@(gotshun)/**/*.slp"
+
+console.log(`${glob.sync(filePath).length} files in glob`);
 
 processFiles(glob.sync(filePath));

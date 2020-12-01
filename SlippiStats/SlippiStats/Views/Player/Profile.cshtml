@@ -6,10 +6,12 @@
 
 <div class="section-filters">
     <h3>Stats Overview - @Model.Player.Name - @Model.Player.ConnectCode</h3>
-    <form class="form-standard" method="post">
-        <input name="opponentFilter" placeholder="Opponent Tag or Code" />
+    <form class="form-standard" method="post" id="filterForm">
+        <input id="opponentFilter" name="opponentFilter" placeholder="Opponent Tag or Code" value="@Model.OpponentFilter" />
+        <input id="characterFilter" name="character" hidden />
+        <input id="opponentCharacterFilter" name="opponentCharacter" hidden />
+        <button type="submit">Filter</button>
     </form>
-    <button type="submit">Filter</button>
 </div>
 
 <div class="profile-overview">
@@ -34,9 +36,10 @@
             <text>ALL vs </text><img src="@Model.PlayerProfile.OpponentCharacterFilter.GetStockIconPath()" />
         }
         <div class="profile-header-content">
-            <h5>Games Played: @Model.PlayerProfile.GamesPlayed</h5>
+            <h5 hidden>Games Played: @Model.PlayerProfile.GamesPlayed</h5>
             @if (Model.PlayerProfile.GamesPlayed > 0) {
-                <h5>Games Won: @Model.PlayerProfile.GamesWon (@(Model.PlayerProfile.GamesPlayed > 0 ? (100 * Model.PlayerProfile.GamesWon / (decimal)Model.PlayerProfile.GamesPlayed).ToString("#.##") : "0")%)</h5>
+                <h5 hidden>Games Won: @Model.PlayerProfile.GamesWon (@(Model.PlayerProfile.GamesPlayed > 0 ? (100 * Model.PlayerProfile.GamesWon / (decimal)Model.PlayerProfile.GamesPlayed).ToString("#.##") : "0")%)</h5>
+                <h5>Winrate: @(Model.PlayerProfile.GamesPlayed > 0 ? (100 * Model.PlayerProfile.GamesWon / (decimal)Model.PlayerProfile.GamesPlayed).ToString("#.##") : "0")% (@Model.PlayerProfile.GamesWon / @Model.PlayerProfile.GamesPlayed)</h5>
                 <span>
                     <h6>LRAS: @Model.PlayerProfile.LRASCount</h6>
                     <h6>Opp. LRAS: @Model.PlayerProfile.OpponentLRASCount</h6>
@@ -199,13 +202,15 @@
         }
 
         function clearFilter() {
-            let playerId = @Model.Player.Id;
-            window.location.href = '/Player/Profile/' + playerId;
+            $("#characterFilter").val(null);
+            $("#opponentCharacterFilter").val(null);
+            $("#filterForm").submit();
         }
 
         function filterToMatchup(character, opponentCharacter) {
-            let playerId = @Model.Player.Id;
-            window.location.href = '/Player/Profile/' + playerId + '?character=' + character + '&opponentCharacter=' + opponentCharacter;
+            $("#characterFilter").val(character);
+            $("#opponentCharacterFilter").val(opponentCharacter);
+            $("#filterForm").submit();
         }
 
         function goToProfile(id) {

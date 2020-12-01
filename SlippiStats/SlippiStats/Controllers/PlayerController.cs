@@ -36,6 +36,7 @@ namespace SlippiStats.Controllers
         public IActionResult Profile(int id, Character? character = null, string opponentFilter = null, Character? opponentCharacter = null, Stage? stage = null, int? opponentPlayerId = null)
         {
             PlayerProfileViewModel viewModel = new PlayerProfileViewModel();
+            viewModel.OpponentFilter = opponentFilter;
             viewModel.Player = Player.GetById(Database.Connection, id);
             viewModel.PlayerProfile = PlayerProfile.GetByPlayerId(Database.Connection, id, character, opponentFilter, opponentCharacter);
 
@@ -51,7 +52,7 @@ namespace SlippiStats.Controllers
 
             viewModel.PlayedCharacters = Player.GetPlayedCharactersByPlayerId(Database.Connection, id);
             //viewModel.MatchupResults = MatchupResults.GetListByPlayerId(Database.Connection, id);
-            viewModel.MatchupResults = MatchupResults.GetListByPlayerIdFilters(Database.Connection, id, character, opponentFilter, opponentCharacter);
+            viewModel.MatchupResults = MatchupResults.GetListByPlayerIdFilters(Database.Connection, id, null, opponentFilter, null);
 
             List<Game> games = Game.GetListByPlayerIdFilters(Database.Connection, id, character, opponentFilter, opponentCharacter, stage, opponentPlayerId);
 

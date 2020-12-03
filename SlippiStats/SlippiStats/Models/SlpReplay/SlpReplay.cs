@@ -10,6 +10,8 @@ namespace SlippiStats.Models
 
         public string Hash { get; set; }
 
+        public string FileSource { get; set; }
+
         public SlpSettings Settings { get; set; }
 
         public SlpMetadata MetaData { get; set; }

@@ -34,19 +34,31 @@ const stages = [null, null, 'Fountain of Dreams', 'Pokémon Stadium', "Princess 
     'Icetop', 'Flat Zone', 'Dream Land N64', "Yoshi's Island N64", 'Kongo Jungle N64', 'Battlefield', 'Final Destination'];
 
 function loadGameData(file) {
-    filename = path.basename(file);
-    const hash = crypto.createHash('md5').update(filename).digest("hex");
-    let data = { filename, hash }
+
+    const fileSource = 'Krohnos';
+
+    let data = { fileSource }
     try {
         const game = new SlippiGame(file);
         data.settings = game.getSettings();
         data.metadata = game.getMetadata();
         data.gameend = game.getGameEnd();
-
+        
         data.stats = game.getStats().overall.map((o) => o.killCount);
-
+        
         data.startingSeed = game.getFrames()[0].players[0].pre.seed
+        data.filename = path.basename(file);
 
+        const p1Character = `${data.settings.players[0].characterId}_${data.settings.players[0].characterColor}`;
+        const p2Character = `${data.settings.players[1].characterId}_${data.settings.players[1].characterColor}`;
+        const startingSeed = data.startingSeed;
+        const stageId = data.settings.stageId;
+        const gameLength = data.metadata.lastFrame;
+        const gameMode = data.settings.gameMode;
+        const scene = data.settings.scene;
+
+        data.hash = crypto.createHash('md5').update(`${p1Character}_${p2Character}_${startingSeed}_${stageId}_${gameLength}_${gameMode}_${scene}`).digest("hex");
+        
         const latestFrame = game.getLatestFrame();        
         if (latestFrame != null) {
             data.latestFramePercents = latestFrame.players.map((p) => p.post.percent);
@@ -59,10 +71,10 @@ function loadGameData(file) {
     }
 }
 
-async function submitGame(gameData) {    
+async function submitGame(gameData) {
 
     //console.log(gameData);
-    //console.log(gameData.settings);
+
     try {
         return await fetch('http://slippi.ventechs.net:82/Game/Submit', {
         //return await fetch('https://localhost:44314/Game/Submit', {
@@ -100,7 +112,6 @@ async function processFiles(files) {
     let goodFiles = 0;
     let badFiles = 0;
 
-    //files.sort(() => .5 - Math.random());
     //files = [files[0]];
 
     for (const file of files) {
@@ -136,9 +147,7 @@ async function processFiles(files) {
 }
 
 // File path for replays to be processed
-//const filePath = "D:/SlippiReplays/replayDumps/yashichi/*.slp"
-//const filePath = "D:/SlippiReplays/testing/*.slp"
-const filePath = "D:/SlippiReplays/replayDumps/@(gotshun)/**/*.slp"
+const filePath = "D:/SlippiReplays/@(2020-*|replayDumps)/**/*.slp"
 
 console.log(`${glob.sync(filePath).length} files in glob`);
 

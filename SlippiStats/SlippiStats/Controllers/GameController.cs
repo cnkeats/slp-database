@@ -49,14 +49,21 @@ namespace SlippiStats.Controllers
                     return response;
                 }
 
+                List<string> ignoredNames = new[] { "P1", "P2", "P3", "P4", "CPU1", "CPU2", "CPU3", "CPU4" }.ToList();
                 List<Player> players = new List<Player>();
                 if (slpReplay.MetaData != null)
                 {
                     int playerIndex = 0;
                     foreach (SlpMetadataPlayer playerMetadata in slpReplay.MetaData.GetPlayers())
                     {
+                        if (playerMetadata.Names == null)
+                        {
+                            response.Success = false;
+                            response.Message = "Support for games without player name is not currently available. This is likely a spectated game and this issue should be taken care of soon.";
+                            return response;
+                        }
+
                         Player player = Player.GetByConnectCode(Database.Connection, playerMetadata.Names.Code);
-                        player = player ?? Player.GetByPlayerName(Database.Connection, Player.GetPlayerName(slpReplay, playerIndex));
 
                         if (player == null)
                         {
@@ -64,10 +71,13 @@ namespace SlippiStats.Controllers
                             player.Name = Player.GetPlayerName(slpReplay, playerIndex);
                             player.ConnectCode = playerMetadata.Names.Code;
 
-                            List<string> ignoredNames = new[] { "P1", "P2", "P3", "P4", "CPU1", "CPU2", "CPU3", "CPU4" }.ToList();
                             if (!ignoredNames.Contains(player.Name))
                             {
                                 player.Save(Database.Connection);
+                            }
+                            else
+                            {
+                                player = Player.GetByPlayerName(Database.Connection, player.Name);
                             }
                         }
 
@@ -85,8 +95,6 @@ namespace SlippiStats.Controllers
                 }
 
                 // TODO: Better duplication checking
-                //Game game = Game.GetDuplicateMatch(Database.Connection, new Game(slpReplay));
-                //game = game ?? Game.GetByHash(Database.Connection, slpReplay.Hash);
                 Game game = Game.GetByHash(Database.Connection, slpReplay.Hash);
                 if (game == null)
                 {

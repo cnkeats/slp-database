@@ -159,3 +159,5 @@ replayCache.json
 *.jfm
 
 uploader/slippi_icon.png
+
+*.7z

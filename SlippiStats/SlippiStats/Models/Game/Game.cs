@@ -75,7 +75,7 @@ namespace SlippiStats.Models
         public bool IsDeleted
         {
             get => Deleted != null;
-            set => Deleted = value ? DateTime.UtcNow : (DateTime?)null;
+            set => Deleted = value ? DateTime.Now : (DateTime?)null;
         }
 
         public Game()
@@ -299,7 +299,7 @@ namespace SlippiStats.Models
 
         private void Update(IDbConnection connection)
         {
-            Updated = DateTime.UtcNow;
+            Updated = DateTime.Now;
 
             using IDbCommand command = connection.CreateStoredProcedure(
                 $"{nameof(Game)}_{nameof(Update)}",

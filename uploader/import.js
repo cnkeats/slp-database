@@ -82,7 +82,7 @@ async function submitGame(gameData, targetFilePath, stream) {
 
     var options = {
         'method': 'POST',
-        'url': 'https://localhost:44314/Upload/SubmitReplayFile',
+        'url': 'https://localhost:44314/API/SubmitReplayFile',
         'headers': {
         },
         json: true,

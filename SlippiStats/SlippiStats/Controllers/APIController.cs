@@ -11,9 +11,9 @@ using System.Linq;
 
 namespace SlippiStats.Controllers
 {
-    public class UploadController : ApplicationController
+    public class APIController : ApplicationController
     {
-        public UploadController(ApplicationSettings settings, ApplicationDatabase database) : base(settings, database)
+        public APIController(ApplicationSettings settings, ApplicationDatabase database) : base(settings, database)
         {
 
         }

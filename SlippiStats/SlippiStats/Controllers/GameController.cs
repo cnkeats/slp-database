@@ -25,9 +25,6 @@ namespace SlippiStats.Controllers
         {
             GameSubmitResponse response = new GameSubmitResponse();
 
-
-            byte[] fileBytes = System.IO.File.ReadAllBytes("D:\\SlippiReplays\\testing\\Game_20201129T235716.7z");
-
             try
             {
                 if (slpReplay == null)

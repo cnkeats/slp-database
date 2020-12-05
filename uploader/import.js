@@ -116,10 +116,9 @@ async function submitGame(gameData, targetFilePath, stream) {
             'SlpReplay[MetaData][PlayedOn]': gameData.metadata.playedOn,
             'SlpReplay[Metadata][Players][0][Names][Netplay]': JSON.stringify(gameData.metadata.players[0].names.netplay),
             'SlpReplay[Metadata][Players][0][Names][Code]': JSON.stringify(gameData.metadata.players[0].names.code),
-            
             'SlpReplay[Metadata][Players][1][Names][Netplay]': JSON.stringify(gameData.metadata.players[1].names.netplay),
-            'SlpReplay[Metadata][Players][1][Names][Netplay]': JSON.stringify(gameData.metadata.players[1].names.code)
-            // CHARACTERS ARE NOT PASSED IN
+            'SlpReplay[Metadata][Players][1][Names][Code]': JSON.stringify(gameData.metadata.players[1].names.code)
+            // CHARACTERS ARE NOT PASSED IN YET
         }
     }
 

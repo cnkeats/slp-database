@@ -153,6 +153,24 @@ namespace SlippiStats.Models
             Deleted = dataReader.GetValue<DateTime?>(nameof(Deleted));
         }
 
+        public static Game GetById(IDbConnection connection, int id)
+        {
+            Game user = null;
+
+            using IDbCommand command = connection.CreateStoredProcedure(
+                $"{nameof(Game)}_{nameof(GetById)}",
+                new { id });
+
+            using IDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                user = new Game(reader);
+            }
+
+            return user;
+        }
+
         public static Game GetByHash(IDbConnection connection, string hash)
         {
             Game user = null;

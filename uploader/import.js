@@ -52,8 +52,6 @@ function loadGameData(file) {
         data.startingSeed = game.getFrames()[0].players[0].pre.seed
         data.filename = path.basename(file);
 
-        console.log(data.filename);
-
         const p1Character = `${data.settings.players[0].characterId}_${data.settings.players[0].characterColor}`;
         const p2Character = `${data.settings.players[1].characterId}_${data.settings.players[1].characterColor}`;
         const startingSeed = data.startingSeed;
@@ -78,7 +76,8 @@ function loadGameData(file) {
 
 async function submitGame(gameData, targetFilePath, stream) {
 
-    console.log(gameData.metadata.players);
+    //console.log(gameData.settings);
+    //console.log(gameData.settings.players);
 
     var options = {
         'method': 'POST',
@@ -111,6 +110,24 @@ async function submitGame(gameData, targetFilePath, stream) {
             'SlpReplay[Settings][StageId]': gameData.settings.stageId,
             'SlpReplay[Settings][Scene]': gameData.settings.scene,
             'SlpReplay[Settings][GameMode]': gameData.settings.gameMode,
+            'SlpReplay[Settings][Players][0][PlayerIndex]': gameData.settings.players[0].playerIndex,
+            'SlpReplay[Settings][Players][0][Port]': gameData.settings.players[0].port,
+            'SlpReplay[Settings][Players][0][CharacterId]': gameData.settings.players[0].characterId,
+            'SlpReplay[Settings][Players][0][CharacterColor]': gameData.settings.players[0].characterColor,
+            'SlpReplay[Settings][Players][0][Startstocks]': gameData.settings.players[0].startStocks,
+            'SlpReplay[Settings][Players][0][Type]': gameData.settings.players[0].type,
+            'SlpReplay[Settings][Players][0][TeamId]': gameData.settings.players[0].teamId,
+            'SlpReplay[Settings][Players][0][ControllerFix]': gameData.settings.players[0].controllerFix,
+            'SlpReplay[Settings][Players][0][Nametag]': gameData.settings.players[1].nametag,
+            'SlpReplay[Settings][Players][1][PlayerIndex]': gameData.settings.players[1].playerIndex,
+            'SlpReplay[Settings][Players][1][Port]': gameData.settings.players[1].port,
+            'SlpReplay[Settings][Players][1][CharacterId]': gameData.settings.players[1].characterId,
+            'SlpReplay[Settings][Players][1][CharacterColor]': gameData.settings.players[1].characterColor,
+            'SlpReplay[Settings][Players][1][Startstocks]': gameData.settings.players[1].startStocks,
+            'SlpReplay[Settings][Players][1][Type]': gameData.settings.players[1].type,
+            'SlpReplay[Settings][Players][1][TeamId]': gameData.settings.players[1].teamId,
+            'SlpReplay[Settings][Players][1][ControllerFix]': gameData.settings.players[1].controllerFix,
+            'SlpReplay[Settings][Players][1][Nametag]': gameData.settings.players[1].nametag,
             'SlpReplay[MetaData][StartAt]': gameData.metadata.startAt,
             'SlpReplay[MetaData][LastFrame]': gameData.metadata.lastFrame,
             'SlpReplay[MetaData][PlayedOn]': gameData.metadata.playedOn,
@@ -122,7 +139,7 @@ async function submitGame(gameData, targetFilePath, stream) {
         }
     }
 
-    console.log(options);
+    //console.log(options);
 
     request(options, function (error, response) {
         if (error) {
@@ -147,7 +164,7 @@ async function processFiles(files) {
     let goodFiles = 0;
     let badFiles = 0;
 
-    files = [files[0]];
+    //files = [files[0]];
 
     for (const file of files) {
         const gameData = loadGameData(file);

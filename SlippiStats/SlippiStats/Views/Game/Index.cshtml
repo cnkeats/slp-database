@@ -1,0 +1,10 @@
+﻿@model GameIndexViewModel
+
+@{
+    ViewData["Title"] = "Player List Page";
+}
+
+<div class="section-filters">
+    <h3>Stats Overview - @Model.Game.Id - @Model.Game.Player1Id - @Model.Game.Player2Id</h3>
+    @Model.ReplayFile.ToString()
+</div>

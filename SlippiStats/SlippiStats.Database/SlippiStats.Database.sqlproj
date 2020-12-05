@@ -64,6 +64,7 @@
     <Folder Include="Schema\MatchupResults" />
     <Folder Include="Security\" />
     <Folder Include="Schema\PlayerProfile" />
+    <Folder Include="Schema\ReplayFile" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare-Local.scmp" />
@@ -94,5 +95,9 @@
     <Build Include="Security\db_executor.sql" />
     <Build Include="Schema\PlayerProfile\PlayerProfile_GetByPlayerId.sql" />
     <Build Include="Schema\MatchupResults\MatchupResults_GetListByPlayerIdFilters.sql" />
+    <Build Include="Schema\ReplayFile\ReplayFile.sql" />
+    <Build Include="Schema\ReplayFile\ReplayFile_Insert.sql" />
+    <Build Include="Schema\ReplayFile\ReplayFile_Update.sql" />
+    <Build Include="Schema\ReplayFile\ReplayFile_GetByGameIdSubmitter.sql" />
   </ItemGroup>
 </Project>

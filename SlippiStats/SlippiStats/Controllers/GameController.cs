@@ -1,9 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using SlippiStats.Configuration;
 using SlippiStats.Models;
+using SlippiStats.Models.ReplaySubmission;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace SlippiStats.Controllers
 {
@@ -15,9 +21,30 @@ namespace SlippiStats.Controllers
         }
 
         [HttpPost]
+        public GameSubmitResponse SubmitFile(ReplaySubmission replaySubmission)
+        {
+            GameSubmitResponse response = new GameSubmitResponse();
+            response.Message = "Data recieved.";
+            response.Success = true;
+
+            return response;
+        }
+
+        private string EnsureCorrectFilename(string filename)
+        {
+            if (filename.Contains("\\"))
+                filename = filename.Substring(filename.LastIndexOf("\\") + 1);
+
+            return filename;
+        }
+
+        [HttpPost]
         public GameSubmitResponse Submit([FromBody] SlpReplay slpReplay)
         {
             GameSubmitResponse response = new GameSubmitResponse();
+
+
+            byte[] fileBytes = System.IO.File.ReadAllBytes("D:\\SlippiReplays\\testing\\Game_20201129T235716.7z");
 
             try
             {
@@ -121,6 +148,10 @@ namespace SlippiStats.Controllers
 
                     response.Message = string.Format("Existing game #{0} updated.", game.Id);
                 }
+
+
+
+
 
                 response.Success = true;
                 response.Game = game;

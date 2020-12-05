@@ -8,6 +8,9 @@ const jsonLock = require('./package-lock.json');
 const crypto = require('crypto');
 const util = require('util');
 const notifier = require('node-notifier');
+const FormData = require('form-data');
+const _7z = require('7zip-min');
+var request = require('request');
 const fetch = require('node-fetch');
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
@@ -49,6 +52,8 @@ function loadGameData(file) {
         data.startingSeed = game.getFrames()[0].players[0].pre.seed
         data.filename = path.basename(file);
 
+        console.log(data.filename);
+
         const p1Character = `${data.settings.players[0].characterId}_${data.settings.players[0].characterColor}`;
         const p2Character = `${data.settings.players[1].characterId}_${data.settings.players[1].characterColor}`;
         const startingSeed = data.startingSeed;
@@ -71,40 +76,44 @@ function loadGameData(file) {
     }
 }
 
-async function submitGame(gameData) {
+async function submitGame(gameData, targetFilePath, stream) {
 
-    //console.log(gameData);
-
-    try {
-        return await fetch('http://slippi.ventechs.net:82/Game/Submit', {
-        //return await fetch('https://localhost:44314/Game/Submit', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+    console.log(JSON.stringify(gameData));
+    
+    var options = {
+        'method': 'POST',
+        'url': 'https://localhost:44314/Game/SubmitFile',
+        'headers': {
+        },
+        formData: {
+            'File': {
+                'value': stream,
+                'options': {
+                    'filename': targetFilePath,
+                    'contentType': null
+                }
             },
-            body: JSON.stringify(gameData)
-            
-        })
-        .then(responsePromise => {
-            return responsePromise.json()
-                .then(
-                    data => {
-                        if (!data.success) {
-                            console.log(`File: ${gameData.filename}`);
-                            console.log(`Message: ${data.message}`);
-                            if (data.stackTrace != null) {
-                                console.log(`Stack Trace: ${data.stackTrace}`);
-                            }
-                        }
-                        return data.success;
-                    }
-                )
-        });
-    }
-    catch (e) {
-        console.log(e);
-        return false;
-    }
+            'Submitter': 'Krohnos',
+            'SlpReplay': JSON.stringify(gameData)
+        }
+    };
+
+    request(options, function (error, response) {
+        if (error) {
+            return false;
+        };
+
+        data = JSON.parse(response.body);
+
+        console.log(`File: ${gameData.filename}`);
+        console.log(`Message: ${data.message}`);
+        if (data.stackTrace != null) {
+            console.log(`Stack Trace: ${data.stackTrace}`);
+        }
+    });
+
+
+    return true;
 }
 
 async function processFiles(files) {
@@ -112,11 +121,20 @@ async function processFiles(files) {
     let goodFiles = 0;
     let badFiles = 0;
 
-    //files = [files[0]];
+    files = [files[0]];
 
     for (const file of files) {
         const gameData = loadGameData(file);
-        const success = await submitGame(gameData);
+
+        const dirPath = path.dirname(file);
+        const newFilePath = dirPath + "/submitted/" + path.basename(file).slice(0, -4) + ".7z";
+        _7z.pack(file, newFilePath, err => {
+            
+        });
+
+        const stream = fs.createReadStream(newFilePath);
+
+        const success = await submitGame(gameData, newFilePath, stream);
 
         if (success) {
             goodFiles++;
@@ -147,8 +165,29 @@ async function processFiles(files) {
 }
 
 // File path for replays to be processed
-const filePath = "D:/SlippiReplays/@(2020-*|replayDumps)/**/*.slp"
+const filePath = "C:/Users/Calvin/Documents/prog/slp-database/uploader/data/testing/*.slp"
 
 console.log(`${glob.sync(filePath).length} files in glob`);
 
 processFiles(glob.sync(filePath));
+
+//const f = "C:/Users/Calvin/Documents/prog/slp-database/uploader/data/testing/*.slp";
+
+/*function zipAllFiles(files) {
+
+    for (const file of files) {
+
+        zipFilePath = path.dirname(file) + "/zipped/test/etc/lol/" + path.basename(file).slice(0, -4);
+
+        console.log(zipFilePath);
+        _7z.pack(file, zipFilePath, err => {
+
+        });
+    }
+}
+
+zipAllFiles(glob.sync(filePath));
+*/
+//_7z.pack(f, "C:/Users/Calvin/Documents/prog/slp-database/uploader/data/testing/Game_20201129T235716.7z", err => {
+
+//});

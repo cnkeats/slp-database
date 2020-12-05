@@ -71,7 +71,6 @@
     <thead>
         <tr>
             <th class="align-center">Game Id</th>
-            <th class="align-center"></th>
             <th class="align-left"></th>
             <th class="align-center">Player 1</th>
             <th class="align-left"></th>
@@ -90,9 +89,8 @@
             Game game = entry.Game;
             Player player1 = entry.Player1;
             Player player2 = entry.Player2;
-            <tr class="game-entry">
+            <tr class="game-entry" onclick="goToGame(@game.Id)">
                 <td class="align-center">@game.Id</td>
-                <td class="align-center"><button class="button" onclick="downloadReplay(@game.Id)">Download</button></td>
                 <td class="align-center player-profile-opponent-name" onclick="goToProfile('@player1.Id')">@player1.Name (@player1.ConnectCode)</td>
                 <td class="align-left"><img class="stock-icon" src="@game.Character1?.GetStockIconPath()" />@game.Character1.GetDisplayName()</td>
                 @if ((bool)game.Player1Victory)
@@ -128,8 +126,8 @@
             window.location.href = '/Player/Profile/' + id;
         }
 
-        function downloadReplay(gameId) {
-            window.location.href = '/Game/DownloadReplay?gameId=' + gameId;
+        function goToGame(id) {
+            window.location.href = '/Game/Index/' + id
         }
     </script>
 }

@@ -78,13 +78,14 @@ function loadGameData(file) {
 
 async function submitGame(gameData, targetFilePath, stream) {
 
-    console.log(JSON.stringify(gameData));
-    
+    console.log(gameData.metadata.players);
+
     var options = {
         'method': 'POST',
-        'url': 'https://localhost:44314/Game/SubmitFile',
+        'url': 'https://localhost:44314/Upload/SubmitReplayFile',
         'headers': {
         },
+        json: true,
         formData: {
             'File': {
                 'value': stream,
@@ -93,17 +94,43 @@ async function submitGame(gameData, targetFilePath, stream) {
                     'contentType': null
                 }
             },
+            // TODO: Find a better way to do this
+            // This is so stupid
             'Submitter': 'Krohnos',
-            'SlpReplay': JSON.stringify(gameData)
+            'SlpReplay[FileName]': gameData.filename,
+            'SlpReplay[FileSource]': 'Krohnos',
+            'SlpReplay[StartingSeed]': gameData.startingSeed,
+            'SlpReplay[Hash]': gameData.hash,
+            'SlpReplay[Stats]': gameData.stats,
+            'SlpReplay[LatestFramePercents]': gameData.latestFramePercents,
+            'SlpReplay[GameEnd][GameEndMethod]': gameData.gameend.gameEndMethod,
+            'SlpReplay[GameEnd][LRASInitiatorIndex]': gameData.gameend.lrasInitiatorIndex,
+            'SlpReplay[Settings][SlpVersion]': gameData.settings.slpVersion,
+            'SlpReplay[Settings][IsTeams]': JSON.stringify(gameData.settings.isTeams),
+            'SlpReplay[Settings][IsPAL]': JSON.stringify(gameData.settings.isPAL),
+            'SlpReplay[Settings][StageId]': gameData.settings.stageId,
+            'SlpReplay[Settings][Scene]': gameData.settings.scene,
+            'SlpReplay[Settings][GameMode]': gameData.settings.gameMode,
+            'SlpReplay[MetaData][StartAt]': gameData.metadata.startAt,
+            'SlpReplay[MetaData][LastFrame]': gameData.metadata.lastFrame,
+            'SlpReplay[MetaData][PlayedOn]': gameData.metadata.playedOn,
+            'SlpReplay[Metadata][Players][0][Names][Netplay]': JSON.stringify(gameData.metadata.players[0].names.netplay),
+            'SlpReplay[Metadata][Players][0][Names][Code]': JSON.stringify(gameData.metadata.players[0].names.code),
+            
+            'SlpReplay[Metadata][Players][1][Names][Netplay]': JSON.stringify(gameData.metadata.players[1].names.netplay),
+            'SlpReplay[Metadata][Players][1][Names][Netplay]': JSON.stringify(gameData.metadata.players[1].names.code)
+            // CHARACTERS ARE NOT PASSED IN
         }
-    };
+    }
+
+    console.log(options);
 
     request(options, function (error, response) {
         if (error) {
             return false;
         };
 
-        data = JSON.parse(response.body);
+        data = response.body;
 
         console.log(`File: ${gameData.filename}`);
         console.log(`Message: ${data.message}`);

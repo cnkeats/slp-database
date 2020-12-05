@@ -21,24 +21,6 @@ namespace SlippiStats.Controllers
         }
 
         [HttpPost]
-        public GameSubmitResponse SubmitFile(ReplaySubmission replaySubmission)
-        {
-            GameSubmitResponse response = new GameSubmitResponse();
-            response.Message = "Data recieved.";
-            response.Success = true;
-
-            return response;
-        }
-
-        private string EnsureCorrectFilename(string filename)
-        {
-            if (filename.Contains("\\"))
-                filename = filename.Substring(filename.LastIndexOf("\\") + 1);
-
-            return filename;
-        }
-
-        [HttpPost]
         public GameSubmitResponse Submit([FromBody] SlpReplay slpReplay)
         {
             GameSubmitResponse response = new GameSubmitResponse();

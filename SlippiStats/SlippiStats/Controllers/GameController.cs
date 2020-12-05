@@ -21,14 +21,36 @@ namespace SlippiStats.Controllers
 
         }
 
-        public IActionResult Index(int id = 5428)
+        public IActionResult Index(int id)
         {
             GameIndexViewModel viewModel = new GameIndexViewModel();
             viewModel.Game = Game.GetById(Database.Connection, id);
-            viewModel.ReplayFile = ReplayFile.GetByGameIdUploaderId(Database.Connection, viewModel.Game.Id, 0);
 
-            //return View(viewModel);
-            return File(viewModel.ReplayFile.FileData, "application/x-msdownload", String.Format("replay{0}.7z", id));
+            if (viewModel.Game != null)
+            {
+                viewModel.ReplayFile = ReplayFile.GetByGameIdUploaderId(Database.Connection, viewModel.Game.Id, 0);
+            }
+
+            return View(viewModel);
+        }
+
+        public IActionResult DownloadReplay(int gameId)
+        {
+            Game game = Game.GetById(Database.Connection, gameId);
+
+            if (game == null)
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
+            ReplayFile replayFile = ReplayFile.GetByGameIdUploaderId(Database.Connection, game.Id, 0);
+
+            if (replayFile == null)
+            {
+                return RedirectToAction(nameof(Index), new { id = gameId });
+            }
+
+            return File(replayFile.FileData, "application/x-msdownload", String.Format("replay{0}.7z", gameId));
         }
     }
 }

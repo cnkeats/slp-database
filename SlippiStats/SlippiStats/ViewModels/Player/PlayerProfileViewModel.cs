@@ -23,11 +23,11 @@ namespace SlippiStats.ViewModels
 
         public List<MatchupResults> MatchupResults { get; set; }
 
-        public List<GameEntryView> Entries { get; set; }
+        public List<GameListEntry> Entries { get; set; }
 
         public PlayerProfileViewModel() : base()
         {
-            Entries = new List<GameEntryView>();
+            Entries = new List<GameListEntry>();
             PlayedCharacters = new List<Character>();
             MatchupResults = new List<MatchupResults>();
         }

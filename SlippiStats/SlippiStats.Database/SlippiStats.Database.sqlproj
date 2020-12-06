@@ -99,5 +99,8 @@
     <Build Include="Schema\ReplayFile\ReplayFile_Insert.sql" />
     <Build Include="Schema\ReplayFile\ReplayFile_Update.sql" />
     <Build Include="Schema\ReplayFile\ReplayFile_GetByGameIdSubmitter.sql" />
+    <Build Include="Schema\Player\Player_GetGamesPlayedByPlayerId.sql" />
+    <Build Include="Schema\Player\Player_GetGamesWonByPlayerId.sql" />
+    <Build Include="Schema\Player\Player_GetCharacterMainsByPlayerId.sql" />
   </ItemGroup>
 </Project>

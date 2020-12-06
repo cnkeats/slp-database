@@ -126,7 +126,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (GameEntryView entry in Model.Entries.Take(250))
+        @foreach (GameListEntry entry in Model.Entries.Take(250))
         {
             Game game = entry.Game;
             Player player1 = entry.Player1;

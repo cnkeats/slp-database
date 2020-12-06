@@ -14,8 +14,13 @@ var request = require('request');
 const fetch = require('node-fetch');
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
-function log(obj) {
-    console.log(util.inspect(obj, false, null, true));
+function tfetch(url, options, timeout = 7000) {
+    return Promise.race([
+        fetch(url, options),
+        new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('timeout')), timeout)
+        )
+    ]);
 }
 
 // Characters ordered by ID
@@ -78,14 +83,14 @@ async function submitGame(gameData) {
     //console.log(gameData);
 
     try {
-        //return await fetch('http://slippi.ventechs.net:82/API/SubmitGame', {
-        return await fetch('https://localhost:44314/API/SubmitGame', {
+        return await tfetch('http://slippi.ventechs.net:82/API/SubmitGame', {
+        //return await fetch('https://localhost:44314/API/SubmitGame', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(gameData)
-        })
+        }, 30000)
         .then(responsePromise => {
             return responsePromise.json()
                 .then(
@@ -126,7 +131,8 @@ async function submitReplay(file, gameId, uploaderId) {
         redirect: 'follow'
     };
 
-    return await fetch("https://localhost:44314/API/SubmitReplayFile", requestOptions)
+    return await tfetch('http://slippi.ventechs.net:82/API/SubmitReplayFile', requestOptions,  30000)
+    //return await fetch('https://localhost:44314/API/SubmitReplayFile', requestOptions)
     .then(responsePromise => {
         return responsePromise.json()
             .then(
@@ -149,6 +155,7 @@ async function processFiles(files, uploaderId, uploadFile) {
     console.time('Processing');
     let goodFiles = 0;
     let badFiles = 0;
+    let replays = 0;
 
     for (const file of files) {
         const gameData = loadGameData(file);
@@ -166,6 +173,7 @@ async function processFiles(files, uploaderId, uploadFile) {
                     
                     if (replayResponse.data.success) {
                         success = true;
+                        replays++;
                     }
                     else {
                     }
@@ -176,7 +184,6 @@ async function processFiles(files, uploaderId, uploadFile) {
             }
         }
         
-
         if (success) {
             goodFiles++;
         }
@@ -187,29 +194,28 @@ async function processFiles(files, uploaderId, uploadFile) {
             console.log(`${goodFiles + badFiles} of ${files.length} processed`);
             console.timeLog('Processing');
         }
-        console.log(badFiles);
     }
 
     notify = true
     if (notify && files.length > 20) {
         notifier.notify({
             title: `Finished processing`,
-            message: `${goodFiles + badFiles} replays processed.\n${badFiles} failed to submit.`,
+            message: `${goodFiles + badFiles} replays processed.\n${badFiles} failed to submit.\n${replays} replays uploaded.`,
             icon: path.join(__dirname, 'slippi_icon.png')
         });
     }
     console.log(`Finished processing`);
     console.log(`${goodFiles + badFiles} replays processed.`);
-    console.log(badFiles);
     if (badFiles > 0) {
         console.log(`${badFiles} failed to submit.`);
+        console.log(`${replays} replays uploaded.`);
     }
     console.timeEnd('Processing');
 }
 
 // File path for replays to be processed
 //const filePath = "D:/SlippiReplays/@(2020-*|replayDumps)/**/*.slp"
-const filePath = "D:/SlippiReplays/2020-06/**/*.slp"
+const filePath = "D:/SlippiReplays/2020-09/**/*.slp"
 
 // True to upload the metadata as well as .slp files
 const uploadFile = true;

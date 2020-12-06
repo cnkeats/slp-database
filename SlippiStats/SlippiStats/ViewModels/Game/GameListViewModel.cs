@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SlippiStats.ViewModels
 {
-    public class StatsIndexViewModel : SlippiStatsViewModel
+    public class GameListViewModel : SlippiStatsViewModel
     {
         public string PlayerFilter1 { get; set; }
 
@@ -17,15 +17,15 @@ namespace SlippiStats.ViewModels
 
         public Stage? StageFilter { get; set; }
 
-        public List<GameEntryView> Entries { get; set; }
+        public List<GameListEntry> Entries { get; set; }
 
-        public StatsIndexViewModel() : base()
+        public GameListViewModel() : base()
         {
-            Entries = new List<GameEntryView>();
+            Entries = new List<GameListEntry>();
         }
     }
 
-    public class GameEntryView
+    public class GameListEntry
     {
         public Game Game { get; set; }
 

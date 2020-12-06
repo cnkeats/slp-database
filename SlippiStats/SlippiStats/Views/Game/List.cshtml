@@ -1,7 +1,7 @@
-﻿@model  StatsIndexViewModel
+﻿@model  GameListViewModel
 
 @{
-    ViewData["Title"] = "Stats Page";
+    ViewData["Title"] = "Games List";
 }
 
 <div class="section-filters">
@@ -84,7 +84,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (GameEntryView entry in Model.Entries.Take(250))
+        @foreach (GameListEntry entry in Model.Entries.Take(250))
         {
             Game game = entry.Game;
             Player player1 = entry.Player1;

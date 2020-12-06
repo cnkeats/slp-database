@@ -22,14 +22,35 @@ namespace SlippiStats.Controllers
         public IActionResult List()
         {
             PlayerListViewModel viewModel = new PlayerListViewModel();
-            viewModel.Players = Player.GetList(Database.Connection);
+            List<Player> players = Player.GetList(Database.Connection);
+            viewModel.PlayerListEntries = new List<PlayerListEntry>();
+
+            foreach (Player player in players)
+            {
+                PlayerListEntry entry = new PlayerListEntry();
+                entry.Player = player;
+                entry.GamesPlayed = Player.GetGamesPlayedByPlayerId(Database.Connection, player.Id);
+                entry.GamesWon = Player.GetGamesWonByPlayerId(Database.Connection, player.Id);
+                entry.Mains = Player.GetCharacterMainsByPlayerId(Database.Connection, player.Id);
+
+                viewModel.PlayerListEntries.Add(entry);
+            }
+
             return View(viewModel);
         }
 
         [HttpPost]
         public IActionResult List(PlayerListViewModel viewModel)
         {
-            viewModel.Players = Player.GetListByFilters(Database.Connection, viewModel.PlayerFilter);
+            List<Player> players = Player.GetListByFilters(Database.Connection, viewModel.PlayerFilter);
+            viewModel.PlayerListEntries = new List<PlayerListEntry>();
+
+            foreach (Player player in players)
+            {
+                PlayerListEntry entry = new PlayerListEntry();
+                entry.Player = player;
+                viewModel.PlayerListEntries.Add(entry);
+            }
             return View(viewModel);
         }
 
@@ -57,10 +78,10 @@ namespace SlippiStats.Controllers
 
             List<Game> games = Game.GetListByPlayerIdFilters(Database.Connection, id, character, opponentFilter, opponentCharacter, stage, opponentPlayerId);
 
-            viewModel.Entries = new List<GameEntryView>();
+            viewModel.Entries = new List<GameListEntry>();
             foreach (Game game in games)
             {
-                GameEntryView entry = new GameEntryView();
+                GameListEntry entry = new GameListEntry();
                 entry.Game = game;
                 entry.Player1 = Player.GetById(Database.Connection, (int)game.Player1Id);
                 entry.Player2 = Player.GetById(Database.Connection, (int)game.Player2Id);

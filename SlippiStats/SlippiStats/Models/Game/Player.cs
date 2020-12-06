@@ -44,7 +44,6 @@ namespace SlippiStats.Models
             Deleted = dataReader.GetValue<DateTime?>(nameof(Deleted));
         }
 
-
         public static string GetPlayerName(SlpReplay slpReplay, int playerIndex)
         {
             IDictionary<string, SlpMetadataPlayer> players = slpReplay.MetaData.Players;
@@ -156,6 +155,60 @@ namespace SlippiStats.Models
             }
 
             return players;
+        }
+
+        public static int GetGamesPlayedByPlayerId(IDbConnection connection, int playerId)
+        {
+            int gamesPlayed = 0;
+
+            using IDbCommand command = connection.CreateStoredProcedure(
+                $"{nameof(Player)}_{nameof(GetGamesPlayedByPlayerId)}",
+                new { playerId });
+
+            using IDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                gamesPlayed = reader.GetValue<int>(nameof(gamesPlayed));
+            }
+
+            return gamesPlayed;
+        }
+
+        public static int GetGamesWonByPlayerId(IDbConnection connection, int playerId)
+        {
+            int gamesWon = 0;
+
+            using IDbCommand command = connection.CreateStoredProcedure(
+                $"{nameof(Player)}_{nameof(GetGamesWonByPlayerId)}",
+                new { playerId });
+
+            using IDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                gamesWon = reader.GetValue<int>(nameof(gamesWon));
+            }
+
+            return gamesWon;
+        }
+
+        public static List<Character> GetCharacterMainsByPlayerId(IDbConnection connection, int playerId)
+        {
+            List<Character> characters = new List<Character>();
+
+            using IDbCommand command = connection.CreateStoredProcedure(
+                $"{nameof(Player)}_{nameof(GetCharacterMainsByPlayerId)}",
+                new { playerId });
+
+            using IDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                characters.Add((Character)reader.GetValue<int>("Id"));
+            }
+
+            return characters;
         }
 
         public static List<Character> GetPlayedCharactersByPlayerId(IDbConnection connection, int playerId)

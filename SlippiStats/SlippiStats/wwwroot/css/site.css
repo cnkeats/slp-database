@@ -148,8 +148,9 @@ a {
     cursor: pointer;
     display: inline-block;
     font-weight: 700;
-    padding: 10px 25px;
+    padding: 5px 12px;
     text-decoration: none;
+    background-color: #CCCCCC
 }
 .button-primary {
     background-color: var(--color-primary-dark);
@@ -683,7 +684,7 @@ div[class^="section-"] {
 }
 .table-primary th,
 .table-primary td {
-    padding:12px 10px;
+    padding:8px 6px;
 }
 .table-primary th {
     background-color: var(--color-secondary);
@@ -830,8 +831,8 @@ div[class^="section-"] {
 }
 
 .stock-icon {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .stage-icon {
@@ -869,4 +870,9 @@ div[class^="section-"] {
     color: #96c3d8;
     cursor: pointer;
     margin: 0px;
+}
+
+.player-profile-opponent-name:hover {
+    background-color: var(--color-secondary-dark);
+    transition-duration: .2s;
 }

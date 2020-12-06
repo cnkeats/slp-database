@@ -20,7 +20,7 @@
     <thead>
         <tr>
             <th class="align-left" hidden>Id</th>
-            <th class="align-left">Name</th>
+            <th class="align-right">Name</th>
             <th class="align-left">Connect Code</th>
             <th class="align-center">Games Played</th>
             <th class="align-center">Win Rate</th>
@@ -33,7 +33,7 @@
             Player player = entry.Player;
             <tr onclick="location.href = '@(Url.Action("Profile", "Player", new { id = player.Id }))'">
                 <td class="align-left" hidden>@player.Id</td>
-                <td class="align-left">@player.Name</td>
+                <td class="align-right">@player.Name</td>
                 <td class="align-left">@player.ConnectCode</td>
                 <td class="align-center">@entry.GamesPlayed</td>
                 <td class="align-center">@(entry.GamesWon == 0 ? "0" : (entry.GamesWon * 100f / entry.GamesPlayed).ToString("#"))%</td>

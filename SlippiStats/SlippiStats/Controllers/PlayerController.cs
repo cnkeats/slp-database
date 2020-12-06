@@ -25,15 +25,21 @@ namespace SlippiStats.Controllers
             List<Player> players = Player.GetList(Database.Connection);
             viewModel.PlayerListEntries = new List<PlayerListEntry>();
 
+            int count = 0;
             foreach (Player player in players)
             {
                 PlayerListEntry entry = new PlayerListEntry();
                 entry.Player = player;
-                entry.GamesPlayed = Player.GetGamesPlayedByPlayerId(Database.Connection, player.Id);
-                entry.GamesWon = Player.GetGamesWonByPlayerId(Database.Connection, player.Id);
-                entry.Mains = Player.GetCharacterMainsByPlayerId(Database.Connection, player.Id);
+
+                if (count < 100)
+                {
+                    entry.GamesPlayed = Player.GetGamesPlayedByPlayerId(Database.Connection, player.Id);
+                    entry.GamesWon = Player.GetGamesWonByPlayerId(Database.Connection, player.Id);
+                    entry.Mains = Player.GetCharacterMainsByPlayerId(Database.Connection, player.Id);
+                }
 
                 viewModel.PlayerListEntries.Add(entry);
+                count++;
             }
 
             return View(viewModel);
@@ -45,11 +51,21 @@ namespace SlippiStats.Controllers
             List<Player> players = Player.GetListByFilters(Database.Connection, viewModel.PlayerFilter);
             viewModel.PlayerListEntries = new List<PlayerListEntry>();
 
+            int count = 0;
             foreach (Player player in players)
             {
                 PlayerListEntry entry = new PlayerListEntry();
                 entry.Player = player;
+
+                if (count < 100)
+                {
+                    entry.GamesPlayed = Player.GetGamesPlayedByPlayerId(Database.Connection, player.Id);
+                    entry.GamesWon = Player.GetGamesWonByPlayerId(Database.Connection, player.Id);
+                    entry.Mains = Player.GetCharacterMainsByPlayerId(Database.Connection, player.Id);
+                }
+
                 viewModel.PlayerListEntries.Add(entry);
+                count++;
             }
             return View(viewModel);
         }
@@ -59,8 +75,8 @@ namespace SlippiStats.Controllers
             PlayerProfileViewModel viewModel = new PlayerProfileViewModel();
             viewModel.OpponentFilter = opponentFilter;
             viewModel.Player = Player.GetById(Database.Connection, id);
-            //viewModel.PlayerProfile = PlayerProfile.GetByPlayerId(Database.Connection, id, character, opponentFilter, opponentCharacter);
-            viewModel.PlayerProfile = new PlayerProfile();
+            viewModel.PlayerProfile = PlayerProfile.GetByPlayerId(Database.Connection, id, character, opponentFilter, opponentCharacter);
+            //viewModel.PlayerProfile = new PlayerProfile();
 
             if (viewModel.PlayerProfile != null)
             {

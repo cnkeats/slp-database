@@ -10,7 +10,7 @@
         <input id="opponentFilter" name="opponentFilter" placeholder="Opponent Tag or Code" value="@Model.OpponentFilter" />
         <input id="characterFilter" name="character" hidden />
         <input id="opponentCharacterFilter" name="opponentCharacter" hidden />
-        <button type="submit">Filter</button>
+        <button class="button" type="submit">Filter</button>
     </form>
 </div>
 
@@ -40,7 +40,7 @@
             @if (Model.PlayerProfile.GamesPlayed > 0) {
                 <h5 hidden>Games Won: @Model.PlayerProfile.GamesWon (@(Model.PlayerProfile.GamesPlayed > 0 ? (100 * Model.PlayerProfile.GamesWon / (decimal)Model.PlayerProfile.GamesPlayed).ToString("#.##") : "0")%)</h5>
                 <h5>Winrate: @(Model.PlayerProfile.GamesPlayed > 0 ? (100 * Model.PlayerProfile.GamesWon / (decimal)Model.PlayerProfile.GamesPlayed).ToString("#.##") : "0")% (@Model.PlayerProfile.GamesWon / @Model.PlayerProfile.GamesPlayed)</h5>
-                <span>
+                <span hidden>
                     <h6>LRAS: @Model.PlayerProfile.LRASCount</h6>
                     <h6>Opp. LRAS: @Model.PlayerProfile.OpponentLRASCount</h6>
                 </span>
@@ -56,7 +56,7 @@
             }
         </div>
         <hr class="profile-header-row" />
-        <div class="profile-header-content">
+        <div class="profile-header-content" hidden>
             @if (Model.PlayerProfile.GamesPlayed > 0) {
                 <h6>First Spotted: @Model.PlayerProfile.FirstSpotted</h6>
             }
@@ -73,7 +73,7 @@
                     {
                         if (character.GetTournamentLegality())
                         {
-                            <th class="@(Model.PlayerProfile.OpponentCharacterFilter == character ? "matchup-cell-colored-sticky" : "test")" onmouseover="hoverColumn(@i)" onmouseout="unhoverColumn(@i)" onclick="filterToMatchup(null, '@character')"><img src="@character.GetStockIconPath()" /></th>
+                            <th class="@(Model.PlayerProfile.OpponentCharacterFilter == character ? "matchup-cell-colored-sticky" : "")" onmouseover="hoverColumn(@i)" onmouseout="unhoverColumn(@i)" onclick="filterToMatchup(null, '@character')"><img src="@character.GetStockIconPath()" /></th>
                         }
                     i++;
                     }
@@ -114,6 +114,7 @@
     <thead>
         <tr>
             <th class="align-left">Game Id</th>
+            <th class="align-left"></th>
             <th class="align-center">Result</th>
             <th class="align-left"></th>
             <th class="align-left"></th>
@@ -133,6 +134,7 @@
             Player player2 = entry.Player2;
             <tr class="game-entry">
                 <td class="align-left">@game.Id</td>
+                <td class="align-left"><button class="button" onclick="goToGame(@game.Id)">View</button></td>
                 @if (((bool)game.Player1Victory && game.Player1Id == Model.Player.Id) || ((bool)game.Player2Victory && game.Player2Id == Model.Player.Id))
                 {
                     <td class="result-victory align-left"></td>
@@ -215,6 +217,10 @@
 
         function goToProfile(id) {
             window.location.href = '/Player/Profile/' + id;
+        }
+
+        function goToGame(id) {
+            window.location.href = '/Game/Index/' + id
         }
 
     </script>

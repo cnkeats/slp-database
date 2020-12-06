@@ -72,6 +72,7 @@
         <tr>
             <th class="align-center">Game Id</th>
             <th class="align-left"></th>
+            <th class="align-left"></th>
             <th class="align-center">Player 1</th>
             <th class="align-left"></th>
             <th class="align-left"></th>
@@ -89,8 +90,9 @@
             Game game = entry.Game;
             Player player1 = entry.Player1;
             Player player2 = entry.Player2;
-            <tr class="game-entry" onclick="goToGame(@game.Id)">
+            <tr class="game-entry">
                 <td class="align-center">@game.Id</td>
+                <td class="align-left"><button class="button" onclick="goToGame(@game.Id)">View</button></td>
                 <td class="align-center player-profile-opponent-name" onclick="goToProfile('@player1.Id')">@player1.Name (@player1.ConnectCode)</td>
                 <td class="align-left"><img class="stock-icon" src="@game.Character1?.GetStockIconPath()" />@game.Character1.GetDisplayName()</td>
                 @if ((bool)game.Player1Victory)

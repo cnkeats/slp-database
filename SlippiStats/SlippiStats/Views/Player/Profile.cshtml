@@ -46,13 +46,13 @@
                 </span>
                 <h5>Total Playtime: @Model.PlayerProfile.FramesPlayed.ToString("N0") frames (@(Model.PlayerProfile.FramesPlayed / 60 / 60 / 60) hours)</h5>
                 @if (Model.PlayerProfile.CharacterFilter == null) {
-                    <h5>Favorite Character: <img src="@Model.PlayerProfile.FavoriteCharacter.GetStockIconPath()" /></h5>
+                    <h5>Favorite Character: <img src="@Model.PlayedCharacters.First().GetStockIconPath()" /></h5>
                 }
                 @if (Model.PlayerProfile.FavoriteOpponent != null) {
                     <h5>Favorite Opponent: <label class="player-profile-opponent-name" onclick="goToProfile('@Model.PlayerProfile.FavoriteOpponent.Id')">@Model.PlayerProfile.FavoriteOpponent.Name (@Model.PlayerProfile.FavoriteOpponent.ConnectCode)</label></h5>
                 }
-                <h5>Unique Opponents: @Model.PlayerProfile.UniqueOpponents</h5>
-                <h5>4-Stocks: @Model.PlayerProfile.FourStocks</h5>
+                <h5 hidden>Unique Opponents: @Model.PlayerProfile.UniqueOpponents</h5>
+                <h5 hidden>4-Stocks: @Model.PlayerProfile.FourStocks</h5>
             }
         </div>
         <hr class="profile-header-row" />

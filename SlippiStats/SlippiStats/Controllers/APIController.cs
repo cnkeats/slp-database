@@ -19,72 +19,31 @@ namespace SlippiStats.Controllers
         }
 
         [HttpPost]
-        public GameSubmitResponse SubmitReplayFile([FromForm] ReplaySubmission replaySubmission)
+        public ReplaySubmitResponse SubmitReplayFile([FromForm] ReplaySubmission replaySubmission)
         {
-            GameSubmitResponse response = new GameSubmitResponse();
+            ReplaySubmitResponse response = new ReplaySubmitResponse();
 
-            try
-            {
-                if (replaySubmission.SlpReplay == null)
-                {
-                    response.Success = false;
-                    response.Message = "Replay was null.";
-                    return response;
-                }
-
-                if (replaySubmission.SlpReplay.Settings?.Players?.Count != 2)
-                {
-                    response.Success = false;
-                    response.Message = "Support for games with more than 2 players is not currently available.";
-                    return response;
-                }
-
-                if (replaySubmission.SlpReplay.Stats.Count == 0)
-                {
-                    response.Success = false;
-                    response.Message = "Support for modes other than Stock is not currently available.";
-                    return response;
-                }
-
-                if (replaySubmission.SlpReplay.GameEnd == null)
-                {
-                    response.Success = false;
-                    response.Message = "Support for games without GameEnd data is not currently available.";
-                    return response;
-                }
-
-                Game game = ProcessGameFromSlpReplay(replaySubmission.SlpReplay);
-
-                if (game == null)
-                {
-                    response.Success = false;
-                    response.Message = String.Format("There was an error processing the game metadata.", game.Id);
-                    return response;
-                }
-
-                ReplayFile existingReplay = ReplayFile.GetByGameIdUploaderId(Database.Connection, game.Id, 0);
-                
-                if (existingReplay != null)
-                {
-                    response.Success = true;
-                    response.Message = String.Format("Game replay for Game #{0} already exists and was NOT updated.", game.Id);
-                    return response;
-                }
-
-                ReplayFile replayFile = new ReplayFile(replaySubmission.File, game.Id);
-                replayFile.Save(Database.Connection);
-
-                response.Success = true;
-                response.Message = String.Format("Replay successfully saved for Game #{0}", game.Id);
-                return response;
-            }
-            catch (Exception e)
+            Game game = Game.GetById(Database.Connection, replaySubmission.GameId);
+            if (game == null)
             {
                 response.Success = false;
-                response.Message = e.Message;
-                response.StackTrace = e.StackTrace;
+                response.Message = String.Format("No matching game found for that replay. Replay {0} NOT uploaded.", replaySubmission.File.FileName);
+                return response;
             }
 
+            ReplayFile replayFile = ReplayFile.GetByGameIdUploaderId(Database.Connection, game.Id, replaySubmission.UploaderId);
+            if (replayFile != null)
+            {
+                response.Success = true;
+                response.Message = String.Format("A matching replay for Game #{0} was already found. Replay {1} NOT uploaded.", game.Id, replaySubmission.File.FileName);
+                return response;
+            }
+
+            replayFile = new ReplayFile(replaySubmission.File, game.Id);
+            replayFile.Save(Database.Connection);
+
+            response.Success = true;
+            response.Message = String.Format("Replay successfully saved for Game #{0}", game.Id);
             return response;
         }
 
@@ -132,6 +91,10 @@ namespace SlippiStats.Controllers
                     return response;
                 }
 
+                response.Success = true;
+                response.Message = String.Format("Game #{0} saved successfully.", game.Id);
+                response.GameId = game.Id;
+                return response;
             }
             catch (Exception e)
             {
@@ -214,6 +177,13 @@ namespace SlippiStats.Controllers
         public bool Success { get; set; }
         public string Message { get; set; }
         public string StackTrace { get; set; }
-        public Game Game { get; set; }
+        public int GameId { get; set; }
+    }
+
+    public class ReplaySubmitResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public string StackTrace { get; set; }
     }
 }

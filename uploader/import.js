@@ -48,7 +48,6 @@ function loadGameData(file) {
         data.gameend = game.getGameEnd();
         
         data.stats = game.getStats().overall.map((o) => o.killCount);
-        
         data.startingSeed = game.getFrames()[0].players[0].pre.seed
         data.filename = path.basename(file);
 
@@ -69,115 +68,114 @@ function loadGameData(file) {
         return data
     } catch(e) {
         console.log(`Error reading metadata. Ignoring... (${file})`)
-        console.log(e);
+        //console.log(e);
         return
     }
 }
 
-async function submitGame(gameData, targetFilePath, stream) {
+async function submitGame(gameData) {
 
-    //console.log(gameData.settings);
-    //console.log(gameData.settings.players);
+    //console.log(gameData);
 
-    var options = {
-        'method': 'POST',
-        'url': 'https://localhost:44314/API/SubmitReplayFile',
-        'headers': {
-        },
-        json: true,
-        formData: {
-            'File': {
-                'value': stream,
-                'options': {
-                    'filename': targetFilePath,
-                    'contentType': null
-                }
+    try {
+        //return await fetch('http://slippi.ventechs.net:82/API/SubmitGame', {
+        return await fetch('https://localhost:44314/API/SubmitGame', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
             },
-            // TODO: Find a better way to do this
-            // This is so stupid
-            'Submitter': 'Krohnos',
-            'SlpReplay[FileName]': gameData.filename,
-            'SlpReplay[FileSource]': 'Krohnos',
-            'SlpReplay[StartingSeed]': gameData.startingSeed,
-            'SlpReplay[Hash]': gameData.hash,
-            'SlpReplay[Stats]': gameData.stats,
-            'SlpReplay[LatestFramePercents]': gameData.latestFramePercents,
-            'SlpReplay[GameEnd][GameEndMethod]': gameData.gameend.gameEndMethod,
-            'SlpReplay[GameEnd][LRASInitiatorIndex]': gameData.gameend.lrasInitiatorIndex,
-            'SlpReplay[Settings][SlpVersion]': gameData.settings.slpVersion,
-            'SlpReplay[Settings][IsTeams]': JSON.stringify(gameData.settings.isTeams),
-            'SlpReplay[Settings][IsPAL]': JSON.stringify(gameData.settings.isPAL),
-            'SlpReplay[Settings][StageId]': gameData.settings.stageId,
-            'SlpReplay[Settings][Scene]': gameData.settings.scene,
-            'SlpReplay[Settings][GameMode]': gameData.settings.gameMode,
-            'SlpReplay[Settings][Players][0][PlayerIndex]': gameData.settings.players[0].playerIndex,
-            'SlpReplay[Settings][Players][0][Port]': gameData.settings.players[0].port,
-            'SlpReplay[Settings][Players][0][CharacterId]': gameData.settings.players[0].characterId,
-            'SlpReplay[Settings][Players][0][CharacterColor]': gameData.settings.players[0].characterColor,
-            'SlpReplay[Settings][Players][0][Startstocks]': gameData.settings.players[0].startStocks,
-            'SlpReplay[Settings][Players][0][Type]': gameData.settings.players[0].type,
-            'SlpReplay[Settings][Players][0][TeamId]': gameData.settings.players[0].teamId,
-            'SlpReplay[Settings][Players][0][ControllerFix]': gameData.settings.players[0].controllerFix,
-            'SlpReplay[Settings][Players][0][Nametag]': gameData.settings.players[1].nametag,
-            'SlpReplay[Settings][Players][1][PlayerIndex]': gameData.settings.players[1].playerIndex,
-            'SlpReplay[Settings][Players][1][Port]': gameData.settings.players[1].port,
-            'SlpReplay[Settings][Players][1][CharacterId]': gameData.settings.players[1].characterId,
-            'SlpReplay[Settings][Players][1][CharacterColor]': gameData.settings.players[1].characterColor,
-            'SlpReplay[Settings][Players][1][Startstocks]': gameData.settings.players[1].startStocks,
-            'SlpReplay[Settings][Players][1][Type]': gameData.settings.players[1].type,
-            'SlpReplay[Settings][Players][1][TeamId]': gameData.settings.players[1].teamId,
-            'SlpReplay[Settings][Players][1][ControllerFix]': gameData.settings.players[1].controllerFix,
-            'SlpReplay[Settings][Players][1][Nametag]': gameData.settings.players[1].nametag,
-            'SlpReplay[MetaData][StartAt]': gameData.metadata.startAt,
-            'SlpReplay[MetaData][LastFrame]': gameData.metadata.lastFrame,
-            'SlpReplay[MetaData][PlayedOn]': gameData.metadata.playedOn,
-            'SlpReplay[Metadata][Players][0][Names][Netplay]': JSON.stringify(gameData.metadata.players[0].names.netplay),
-            'SlpReplay[Metadata][Players][0][Names][Code]': JSON.stringify(gameData.metadata.players[0].names.code),
-            'SlpReplay[Metadata][Players][1][Names][Netplay]': JSON.stringify(gameData.metadata.players[1].names.netplay),
-            'SlpReplay[Metadata][Players][1][Names][Code]': JSON.stringify(gameData.metadata.players[1].names.code)
-            // CHARACTERS ARE NOT PASSED IN YET
-        }
+            body: JSON.stringify(gameData)
+        })
+        .then(responsePromise => {
+            return responsePromise.json()
+                .then(
+                    data => {
+                        if (!data.success) {
+                            console.log(`File: ${gameData.filename}`);
+                            console.log(`Message: ${data.message}`);
+                            if (data.stackTrace != null) {
+                                console.log(`Stack Trace: ${data.stackTrace}`);
+                            }
+                        }
+                        this.data = data;
+                        return this;
+                    }
+                )
+        });
     }
-
-    //console.log(options);
-
-    request(options, function (error, response) {
-        if (error) {
-            return false;
-        };
-
-        data = response.body;
-
-        console.log(`File: ${gameData.filename}`);
-        console.log(`Message: ${data.message}`);
-        if (data.stackTrace != null) {
-            console.log(`Stack Trace: ${data.stackTrace}`);
-        }
-    });
-
-
-    return true;
+    catch (e) {
+        console.log(e);
+        this.success = false;
+        this.exception = e;
+        return this;
+    }
 }
 
-async function processFiles(files) {
+async function submitReplay(file, gameId, uploaderId) {
+
+    const stream = fs.createReadStream(file);
+
+    var formdata = new FormData();
+    formdata.append("GameId", gameId);
+    formdata.append("UploaderId", uploaderId);
+    formdata.append("File", stream, file);
+    
+    var requestOptions = {
+        method: 'POST',
+        body: formdata,
+        redirect: 'follow'
+    };
+
+    return await fetch("https://localhost:44314/API/SubmitReplayFile", requestOptions)
+    .then(responsePromise => {
+        return responsePromise.json()
+            .then(
+                data => {
+                    if (!data.success) {
+                        console.log(`File: ${gameData.filename}`);
+                        console.log(`Message: ${data.message}`);
+                        if (data.stackTrace != null) {
+                            console.log(`Stack Trace: ${data.stackTrace}`);
+                        }
+                    }
+                    this.data = data;
+                    return this;
+                }
+            )
+    });
+}
+
+async function processFiles(files, uploaderId, uploadFile) {
     console.time('Processing');
     let goodFiles = 0;
     let badFiles = 0;
 
-    //files = [files[0]];
-
     for (const file of files) {
         const gameData = loadGameData(file);
 
-        const dirPath = path.dirname(file);
-        const newFilePath = dirPath + "/submitted/" + path.basename(file).slice(0, -4) + ".7z";
-        _7z.pack(file, newFilePath, err => {
+        let success = false;
+        if (gameData) {
+        
+            const gameResponse = await submitGame(gameData);
             
-        });
-
-        const stream = fs.createReadStream(newFilePath);
-
-        const success = await submitGame(gameData, newFilePath, stream);
+            success = false;
+            if (gameResponse.data.success) {
+                
+                if (uploadFile) {
+                    const replayResponse = await submitReplay(file, gameResponse.data.gameId, uploaderId);
+                    
+                    if (replayResponse.data.success) {
+                        success = true;
+                    }
+                    else {
+                    }
+                }
+                else {
+                    success = true;
+                }
+            }
+        }
+        
 
         if (success) {
             goodFiles++;
@@ -189,6 +187,7 @@ async function processFiles(files) {
             console.log(`${goodFiles + badFiles} of ${files.length} processed`);
             console.timeLog('Processing');
         }
+        console.log(badFiles);
     }
 
     notify = true
@@ -201,6 +200,7 @@ async function processFiles(files) {
     }
     console.log(`Finished processing`);
     console.log(`${goodFiles + badFiles} replays processed.`);
+    console.log(badFiles);
     if (badFiles > 0) {
         console.log(`${badFiles} failed to submit.`);
     }
@@ -208,29 +208,12 @@ async function processFiles(files) {
 }
 
 // File path for replays to be processed
-const filePath = "C:/Users/Calvin/Documents/prog/slp-database/uploader/data/testing/*.slp"
+//const filePath = "D:/SlippiReplays/@(2020-*|replayDumps)/**/*.slp"
+const filePath = "D:/SlippiReplays/2020-06/**/*.slp"
 
+// True to upload the metadata as well as .slp files
+const uploadFile = true;
 console.log(`${glob.sync(filePath).length} files in glob`);
 
-processFiles(glob.sync(filePath));
 
-//const f = "C:/Users/Calvin/Documents/prog/slp-database/uploader/data/testing/*.slp";
-
-/*function zipAllFiles(files) {
-
-    for (const file of files) {
-
-        zipFilePath = path.dirname(file) + "/zipped/test/etc/lol/" + path.basename(file).slice(0, -4);
-
-        console.log(zipFilePath);
-        _7z.pack(file, zipFilePath, err => {
-
-        });
-    }
-}
-
-zipAllFiles(glob.sync(filePath));
-*/
-//_7z.pack(f, "C:/Users/Calvin/Documents/prog/slp-database/uploader/data/testing/Game_20201129T235716.7z", err => {
-
-//});
+processFiles(glob.sync(filePath), 0, uploadFile);

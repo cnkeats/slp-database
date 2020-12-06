@@ -50,7 +50,7 @@ namespace SlippiStats.Controllers
                 return RedirectToAction(nameof(Index), new { id = gameId });
             }
 
-            return File(replayFile.FileData, "application/x-msdownload", String.Format("replay{0}.7z", gameId));
+            return File(replayFile.FileData, "application/x-msdownload", String.Format("replay{0}.slp", gameId));
         }
     }
 }

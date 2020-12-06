@@ -10,12 +10,12 @@ namespace SlippiStats.Models.ReplaySubmission
     public class ReplaySubmission
     {
         [FromForm]
-        public string Submitter { get; set; }
-
-        [FromForm]
-        public SlpReplay SlpReplay { get; set; }
-
-        [FromForm]
         public IFormFile File { get; set; }
+
+        [FromForm]
+        public int GameId { get; set; }
+
+        [FromForm]
+        public int UploaderId { get; set; }
     }
 }

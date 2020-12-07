@@ -7,19 +7,44 @@
 <div class="section-filters">
     <h3>Stats Overview - Game#@Model.Game.Id</h3>
 </div>
-<div class="profile-overview">
-    <div>P1 ID: @Model.Game.Player1Id</div>
-    <div>P1 Character: @Model.Game.Character1.GetDisplayName()</div>
-    <div>P2 ID: @Model.Game.Player2Id</div>
-    <div>P2 Character: @Model.Game.Character2.GetDisplayName()</div>
-    <div>Stage: @Model.Game.Stage.GetDisplayName()</div>
+<div class="game-overview">
+    <div>
+        
+    </div>
+    <span class="game-overview-player">
+        @Model.Player1.Name (@Model.Player1.ConnectCode)
+        <img class="stock-icon" src="@Model.Game.Character1?.GetStockIconPath()" />
+    </span>
+    <span class="game-overview-player">
+        <img class="stock-icon" src="@Model.Game.Character2?.GetStockIconPath()" />
+        @Model.Player2.Name (@Model.Player2.ConnectCode)
+    </span>
+    <div>
+        <label>@Model.Game.Stage.GetDisplayName()</label>
+        <div>
+            <span>
+                @for (int i = 0; i < 4; i++) {
+                    <img class="stock-icon@(Model.Game.Player1EndingStocks <= i ? "-faded" : "")" src="@Model.Game.Character1?.GetStockIconPath()" />       
+                }
+            </span>
+            <span>
+                <img class="stage-icon" src="@Model.Game.Stage.GetStageIconPath()" />
+            </span>
+            <span>
+                @for (int i = 0; i < 4; i++) {
+                    <img class="stock-icon@(Model.Game.Player2EndingStocks <= i ? "-faded" : "")" src="@Model.Game.Character2?.GetStockIconPath()" />
+                }
+            </span>
+        </div>
+        <div>
+            @if (Model.ReplayFile != null)
+            {
+                <button class="button-replay button" onclick="downloadReplay()">Download Replay</button>
+            }
+        </div>
+    </div>
 </div>
-<div>
-    @if (Model.ReplayFile != null)
-    {
-        <button onclick="downloadReplay()">Download Replay</button>
-    }
-</div>
+
 
 @section Scripts
 {
@@ -27,5 +52,10 @@
     function downloadReplay(gameId) {
         window.location.href = '/Game/DownloadReplay?gameId=' + @Model.Game.Id;
     }
+
+    window.setTimeout(function () {
+        window.location.reload(true);
+    //}, 50000);
+    }, 50000000);
 </script>
 }

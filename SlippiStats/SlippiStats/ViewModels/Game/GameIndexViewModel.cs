@@ -15,6 +15,10 @@ namespace SlippiStats.ViewModels
 
         public Game Game { get; set; }
 
+        public Player Player1 { get; set; }
+
+        public Player Player2 { get; set; }
+
         public ReplayFile ReplayFile { get; set; }
 
         public GameIndexViewModel()

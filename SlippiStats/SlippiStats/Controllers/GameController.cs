@@ -65,10 +65,14 @@ namespace SlippiStats.Controllers
             GameIndexViewModel viewModel = new GameIndexViewModel();
             viewModel.Game = Game.GetById(Database.Connection, id);
 
-            if (viewModel.Game != null)
+            if (viewModel.Game == null)
             {
-                viewModel.ReplayFile = ReplayFile.GetByGameIdUploaderId(Database.Connection, viewModel.Game.Id, 0);
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
+            
+            viewModel.ReplayFile = ReplayFile.GetByGameIdUploaderId(Database.Connection, viewModel.Game.Id, 0);
+            viewModel.Player1 = Player.GetById(Database.Connection, (int)viewModel.Game.Player1Id);
+            viewModel.Player2 = Player.GetById(Database.Connection, (int)viewModel.Game.Player2Id);
 
             return View(viewModel);
         }

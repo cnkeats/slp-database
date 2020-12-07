@@ -830,9 +830,14 @@ div[class^="section-"] {
     opacity:.5;
 }
 
-.stock-icon {
+.stock-icon,
+.stock-icon-faded {
     padding-left: 5px;
     padding-right: 5px;
+}
+
+.stock-icon-faded {
+    opacity: 0.2;
 }
 
 .stage-icon {
@@ -875,4 +880,43 @@ div[class^="section-"] {
 .player-profile-opponent-name:hover {
     background-color: var(--color-secondary-dark);
     transition-duration: .2s;
+}
+
+.game-overview {
+    border: 1px solid yellow;
+    background-color: var(--color-surface-light);
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    display: block;
+    overflow: auto;
+}
+
+
+.game-overview-player {
+    border: 1px solid green;
+    background-color: var(--color-surface-lighter);
+    text-align: center;
+    margin: 1%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 48%;
+}
+
+.game-overview-player:nth-of-type(1) {
+    border: 1px solid red;
+    float: left;
+}
+
+.game-overview-player:nth-of-type(2) {
+    border: 1px solid purple;
+    float: right;
+}
+
+.button-replay {
+    margin-top: 5%;
+    margin-bottom: 2%;
 }

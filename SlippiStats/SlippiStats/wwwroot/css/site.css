@@ -840,9 +840,28 @@ div[class^="section-"] {
     opacity: 0.2;
 }
 
+.stock-icon-multiple {
+    margin: 8%;
+}
+
+.stock-icon-multiple-all {
+    width: 40%;
+    margin: auto;
+    margin-top: 2%;
+}
+
 .stage-icon {
     padding-left: 10px;
     padding-right: 10px;
+}
+
+.stage-image {
+    width:540px;
+    height: auto;
+}
+
+.stage-name {
+    font-size: 36px;
 }
 
 .game-entry {
@@ -883,7 +902,7 @@ div[class^="section-"] {
 }
 
 .game-overview {
-    border: 1px solid yellow;
+    /*border: 1px solid yellow;*/
     background-color: var(--color-surface-light);
     width: 90%;
     margin-left: auto;
@@ -895,24 +914,25 @@ div[class^="section-"] {
 
 
 .game-overview-player {
-    border: 1px solid green;
+    /*border: 1px solid green;*/
     background-color: var(--color-surface-lighter);
     text-align: center;
+    font-size: 36px;
     margin: 1%;
-    padding-top: 3%;
-    padding-bottom: 3%;
-    padding-left: 5%;
-    padding-right: 5%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    padding-left: 3%;
+    padding-right: 3%;
     width: 48%;
 }
 
 .game-overview-player:nth-of-type(1) {
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     float: left;
 }
 
 .game-overview-player:nth-of-type(2) {
-    border: 1px solid purple;
+    /*border: 1px solid purple;*/
     float: right;
 }
 
@@ -920,3 +940,7 @@ div[class^="section-"] {
     margin-top: 5%;
     margin-bottom: 2%;
 }
+
+*:hover { 
+    outline:1px #72dadd solid
+} 

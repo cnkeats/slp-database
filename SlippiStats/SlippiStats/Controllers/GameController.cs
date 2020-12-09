@@ -70,7 +70,7 @@ namespace SlippiStats.Controllers
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
             
-            viewModel.ReplayFile = ReplayFile.GetByGameIdUploaderId(Database.Connection, viewModel.Game.Id, 0);
+            viewModel.ReplayFile = ReplayFile.GetByGameId(Database.Connection, viewModel.Game.Id);
             viewModel.Player1 = Player.GetById(Database.Connection, (int)viewModel.Game.Player1Id);
             viewModel.Player2 = Player.GetById(Database.Connection, (int)viewModel.Game.Player2Id);
 
@@ -86,7 +86,7 @@ namespace SlippiStats.Controllers
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
 
-            ReplayFile replayFile = ReplayFile.GetByGameIdUploaderId(Database.Connection, game.Id, 0);
+            ReplayFile replayFile = ReplayFile.GetByGameId(Database.Connection, gameId);
 
             if (replayFile == null)
             {

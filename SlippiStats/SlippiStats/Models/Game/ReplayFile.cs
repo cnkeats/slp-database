@@ -65,6 +65,24 @@ namespace SlippiStats.Models
             Deleted = dataReader.GetValue<DateTime?>(nameof(Deleted));
         }
 
+        public static ReplayFile GetByGameId(IDbConnection connection, int gameId)
+        {
+            ReplayFile replayFile = null;
+
+            using IDbCommand command = connection.CreateStoredProcedure(
+                $"{nameof(ReplayFile)}_{nameof(GetByGameId)}",
+                new { gameId });
+
+            using IDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                replayFile = new ReplayFile(reader);
+            }
+
+            return replayFile;
+        }
+
         public static ReplayFile GetByGameIdUploaderId(IDbConnection connection, int gameId, int uploaderId)
         {
             ReplayFile replayFile = null;

@@ -38,6 +38,15 @@ namespace SlippiStats.Extensions
             return attribute?.StageIcon;
         }
 
+        public static string GetStageImagePath(this Enum @enum)
+        {
+            Type enumType = @enum.GetType();
+
+            var attribute = GetAttribute<StageImageAttribute>(@enum);
+
+            return attribute?.StageImage;
+        }
+
         public static int GetTierPlacement(this Enum @enum)
         {
             Type enumType = @enum.GetType();
@@ -106,6 +115,16 @@ namespace SlippiStats.Extensions
         public StageIconAttribute(string path)
         {
             this.StageIcon = path;
+        }
+    }
+
+    class StageImageAttribute : Attribute
+    {
+        public string StageImage { get; private set; }
+
+        public StageImageAttribute(string path)
+        {
+            this.StageImage = path;
         }
     }
 

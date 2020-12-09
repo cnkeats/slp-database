@@ -20,18 +20,20 @@
         @Model.Player2.Name (@Model.Player2.ConnectCode)
     </span>
     <div>
-        <label>@Model.Game.Stage.GetDisplayName()</label>
+        <label class="stage-name">@Model.Game.Stage.GetDisplayName()</label>
         <div>
-            <span>
-                @for (int i = 0; i < 4; i++) {
-                    <img class="stock-icon@(Model.Game.Player1EndingStocks <= i ? "-faded" : "")" src="@Model.Game.Character1?.GetStockIconPath()" />       
+            <img class="stage-image" src="@Model.Game.Stage.GetStageImagePath()" />
+        </div>
+        <div class="stock-icon-multiple-all">
+            <span class="stock-icon-multiple">
+                @for (int i = 0; i < 4; i++)
+                {
+                    <img class="stock-icon@(Model.Game.Player1EndingStocks <= i ? "-faded" : "")" src="@Model.Game.Character1?.GetStockIconPath()" />
                 }
             </span>
-            <span>
-                <img class="stage-icon" src="@Model.Game.Stage.GetStageIconPath()" />
-            </span>
-            <span>
-                @for (int i = 0; i < 4; i++) {
+            <span class="stock-icon-multiple">
+                @for (int i = 0; i < 4; i++)
+                {
                     <img class="stock-icon@(Model.Game.Player2EndingStocks <= i ? "-faded" : "")" src="@Model.Game.Character2?.GetStockIconPath()" />
                 }
             </span>

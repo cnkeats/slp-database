@@ -10,7 +10,7 @@ AS
 
 SET @opponentFilter = '%' + @opponentFilter + '%'
 
-SELECT TOP 500
+SELECT TOP 100
 	Game.Id,
 	Game.Player1Id,
 	Game.Player2Id,

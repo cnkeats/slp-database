@@ -102,5 +102,6 @@
     <Build Include="Schema\Player\Player_GetGamesPlayedByPlayerId.sql" />
     <Build Include="Schema\Player\Player_GetGamesWonByPlayerId.sql" />
     <Build Include="Schema\Player\Player_GetCharacterMainsByPlayerId.sql" />
+    <Build Include="Schema\ReplayFile\ReplayFile_GetByGameId.sql" />
   </ItemGroup>
 </Project>

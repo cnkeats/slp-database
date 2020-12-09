@@ -3,7 +3,7 @@
 
 AS
 
-SELECT TOP 500
+SELECT TOP 100
 	Game.Id,
 	Game.Player1Id,
 	Game.Player2Id,
@@ -45,6 +45,6 @@ FROM
 WHERE
 	Game.Player1Id = @playerId
 	OR Game.Player2Id = @playerId
-ORDER BY
-	Game.StartAt DESC,
-	Game.Id
+--ORDER BY
+	--Game.StartAt DESC,
+	--Game.Id

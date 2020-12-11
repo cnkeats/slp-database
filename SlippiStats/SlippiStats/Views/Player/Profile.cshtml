@@ -36,11 +36,11 @@
             <text>ALL vs </text><img src="@Model.PlayerProfile.OpponentCharacterFilter.GetStockIconPath()" />
         }
         <div class="profile-header-content">
-            <h5 hidden>Games Played: @Model.PlayerProfile.GamesPlayed</h5>
+            <h5>Games Played: @Model.PlayerProfile.GamesPlayed</h5>
             @if (Model.PlayerProfile.GamesPlayed > 0) {
-                <h5 hidden>Games Won: @Model.PlayerProfile.GamesWon (@(Model.PlayerProfile.GamesPlayed > 0 ? (100 * Model.PlayerProfile.GamesWon / (decimal)Model.PlayerProfile.GamesPlayed).ToString("#.##") : "0")%)</h5>
+                <h5>Games Won: @Model.PlayerProfile.GamesWon (@(Model.PlayerProfile.GamesPlayed > 0 ? (100 * Model.PlayerProfile.GamesWon / (decimal)Model.PlayerProfile.GamesPlayed).ToString("#.##") : "0")%)</h5>
                 <h5>Winrate: @(Model.PlayerProfile.GamesPlayed > 0 ? (100 * Model.PlayerProfile.GamesWon / (decimal)Model.PlayerProfile.GamesPlayed).ToString("#.##") : "0")% (@Model.PlayerProfile.GamesWon / @Model.PlayerProfile.GamesPlayed)</h5>
-                <span hidden>
+                <span>
                     <h6>LRAS: @Model.PlayerProfile.LRASCount</h6>
                     <h6>Opp. LRAS: @Model.PlayerProfile.OpponentLRASCount</h6>
                 </span>
@@ -51,12 +51,12 @@
                 @if (Model.PlayerProfile.FavoriteOpponent != null) {
                     <h5>Favorite Opponent: <label class="player-profile-opponent-name" onclick="goToProfile('@Model.PlayerProfile.FavoriteOpponent.Id')">@Model.PlayerProfile.FavoriteOpponent.Name (@Model.PlayerProfile.FavoriteOpponent.ConnectCode)</label></h5>
                 }
-                <h5 hidden>Unique Opponents: @Model.PlayerProfile.UniqueOpponents</h5>
-                <h5 hidden>4-Stocks: @Model.PlayerProfile.FourStocks</h5>
+                <h5>Unique Opponents: @Model.PlayerProfile.UniqueOpponents</h5>
+                <h5>4-Stocks: @Model.PlayerProfile.FourStocks</h5>
             }
         </div>
         <hr class="profile-header-row" />
-        <div class="profile-header-content" hidden>
+        <div class="profile-header-content">
             @if (Model.PlayerProfile.GamesPlayed > 0) {
                 <h6>First Spotted: @Model.PlayerProfile.FirstSpotted</h6>
             }

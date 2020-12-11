@@ -68,6 +68,7 @@
     <Folder Include="Schema\User" />
     <Folder Include="Schema\UserRole" />
     <Folder Include="Schema\UserSession" />
+    <Folder Include="Schema\Role" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare-Local.scmp" />
@@ -122,5 +123,8 @@
     <Build Include="Schema\UserSession\UserSession_GetLatestByUserId.sql" />
     <Build Include="Schema\UserSession\UserSession_Insert.sql" />
     <Build Include="Schema\UserSession\UserSession_Update.sql" />
+    <Build Include="Schema\Role\Role_GetByUserId.sql" />
+    <Build Include="Schema\Role\Role_GetList.sql" />
+    <Build Include="Schema\Role\Role.sql" />
   </ItemGroup>
 </Project>

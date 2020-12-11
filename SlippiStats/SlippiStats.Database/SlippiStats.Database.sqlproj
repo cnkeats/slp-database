@@ -65,6 +65,9 @@
     <Folder Include="Security\" />
     <Folder Include="Schema\PlayerProfile" />
     <Folder Include="Schema\ReplayFile" />
+    <Folder Include="Schema\User" />
+    <Folder Include="Schema\UserRole" />
+    <Folder Include="Schema\UserSession" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare-Local.scmp" />
@@ -103,5 +106,21 @@
     <Build Include="Schema\Player\Player_GetGamesWonByPlayerId.sql" />
     <Build Include="Schema\Player\Player_GetCharacterMainsByPlayerId.sql" />
     <Build Include="Schema\ReplayFile\ReplayFile_GetByGameId.sql" />
+    <Build Include="Schema\User\User.sql" />
+    <Build Include="Schema\User\User_GetById.sql" />
+    <Build Include="Schema\User\User_GetByUserName.sql" />
+    <Build Include="Schema\User\User_GetList.sql" />
+    <Build Include="Schema\User\User_GetListByFilters.sql" />
+    <Build Include="Schema\User\User_GetListByRole.sql" />
+    <Build Include="Schema\User\User_Insert.sql" />
+    <Build Include="Schema\User\User_IsUserNameInUse.sql" />
+    <Build Include="Schema\User\User_Update.sql" />
+    <Build Include="Schema\UserRole\UserRole.sql" />
+    <Build Include="Schema\UserRole\UserRole_GetListByUserId.sql" />
+    <Build Include="Schema\UserSession\UserSession.sql" />
+    <Build Include="Schema\UserSession\UserSession_GetById.sql" />
+    <Build Include="Schema\UserSession\UserSession_GetLatestByUserId.sql" />
+    <Build Include="Schema\UserSession\UserSession_Insert.sql" />
+    <Build Include="Schema\UserSession\UserSession_Update.sql" />
   </ItemGroup>
 </Project>

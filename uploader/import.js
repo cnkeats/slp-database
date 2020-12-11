@@ -80,11 +80,11 @@ function loadGameData(file) {
 
 async function submitGame(gameData) {
 
-    //console.log(gameData);
+    return;
 
     try {
-        return await tfetch('http://slippi.ventechs.net:82/API/SubmitGame', {
-        //return await fetch('https://localhost:44314/API/SubmitGame', {
+        //return await tfetch('http://slippi.ventechs.net:82/API/SubmitGame', {
+        return await fetch('https://localhost:44314/API/SubmitGame', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -131,8 +131,8 @@ async function submitReplay(file, gameId, uploaderId) {
         redirect: 'follow'
     };
 
-    return await tfetch('http://slippi.ventechs.net:82/API/SubmitReplayFile', requestOptions,  20000)
-    //return await fetch('https://localhost:44314/API/SubmitReplayFile', requestOptions)
+    //return await tfetch('http://slippi.ventechs.net:82/API/SubmitReplayFile', requestOptions,  20000)
+    return await fetch('https://localhost:44314/API/SubmitReplayFile', requestOptions)
     .then(responsePromise => {
         return responsePromise.json()
             .then(
@@ -159,6 +159,12 @@ async function processFiles(files, uploaderId, uploadFile) {
 
     for (const file of files) {
         const gameData = loadGameData(file);
+        
+        console.log(gameData.metadata.players[0].names)
+        console.log(gameData.metadata.players[1].names)
+        console.log(gameData.gameend);
+        console.log('------------------------');
+        continue;
 
         let success = false;
         try {
@@ -220,10 +226,9 @@ async function processFiles(files, uploaderId, uploadFile) {
 }
 
 // File path for replays to be processed
-//const filePath = "D:/SlippiReplays/@(2020-*|replayDumps)/**/*.slp"
-const filePath = "D:/SlippiReplays/2020-11/**/*.slp"
+const filePath = "D:/SlippiReplays/testing/temp/badLRAS/testing/**/*.slp"
 
-// True to upload the metadata as well as .slp files
+// True to upload the .slp files in addition to the metadata
 const uploadFile = true;
 console.log(`${glob.sync(filePath).length} files in glob`);
 

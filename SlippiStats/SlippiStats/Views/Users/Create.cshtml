@@ -1,0 +1,44 @@
+﻿@model UsersCreateViewModel
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<div class="section-heading">
+    <h2>Create User</h2>
+</div>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    @Html.ValidationSummary("", new { @class = "message message-error" })
+}
+
+<div class="section-login">
+    <form method="post">
+
+        <div class="form-group">
+            <label for="userName">Username</label>
+            <input id="userName" name="userName" type="text" value="@Model.UserName" />
+
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" />
+
+            <label for="confirmPassword">Confirm Password</label>
+            <input id="confirmPassword" name="confirmPassword" type="password" />
+
+            <hr />
+            <button class="button button-primary" type="submit">Save</button>
+            <a class="button button-secondary" onclick="goBack()">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts
+{
+    <script>
+        function goBack() {
+            // Send the browser window back a page. This preserves filters without having to pass viewmodels into other viewmodels.
+            history.back();
+        }
+    </script>
+}

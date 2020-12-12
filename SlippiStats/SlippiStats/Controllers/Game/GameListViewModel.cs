@@ -1,9 +1,8 @@
-
 using SlippiStats.GameDataEnums;
 using SlippiStats.Models;
 using System.Collections.Generic;
 
-namespace SlippiStats.ViewModels
+namespace SlippiStats.Controllers
 {
     public class GameListViewModel : SlippiStatsViewModel
     {

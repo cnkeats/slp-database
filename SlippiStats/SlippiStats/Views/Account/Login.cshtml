@@ -1,0 +1,29 @@
+﻿@model AccountLoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="section-heading">
+    <h2>Login</h2>
+</div>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    @Html.ValidationSummary("", new { @class = "message message-error" })
+}
+
+<div class="section-login">
+    <form method="post">
+        <div class="form-group form-group-full">
+            <label for="userName">Username</label>
+            <input id="userName" name="userName" type="text" value="@Model.UserName" />
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" />
+            <hr />
+            <button class="button button-primary" type="submit">Login</button>
+            <label class="form-group-checkbox" for="isPersistent">
+                <input id="isPersistent" name="isPersistent" type="checkbox" value="true" checked=@Model.IsPersistent /> Remember Me
+            </label>
+        </div>
+    </form>
+</div>

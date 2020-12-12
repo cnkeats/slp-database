@@ -1,8 +1,15 @@
 ﻿<ul class="nav-main">
-    <li>
-        <a asp-controller="Game" asp-action="List">Games</a>
-    </li>
-    <li>
-        <a asp-controller="Player" asp-action="List">Players</a>
-    </li>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <li>
+            <a asp-controller="Game" asp-action="List">Games</a>
+        </li>
+        <li>
+            <a asp-controller="Player" asp-action="List">Players</a>
+        </li>
+    }
+    else
+    {
+        <li><a asp-controller="Account" asp-action="Login">Login</a></li>
+    }
 </ul>

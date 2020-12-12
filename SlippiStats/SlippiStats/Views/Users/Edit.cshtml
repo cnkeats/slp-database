@@ -1,0 +1,58 @@
+﻿@model UsersEditViewModel
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<div class="section-heading">
+    <h2>Edit User</h2>
+</div>
+
+@if (Model.Message != null)
+{
+    <div class="message message-success">@Model.Message</div>
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    @Html.ValidationSummary("", new { @class = "message message-error" })
+}
+
+<div class="section-login">
+    <form method="post">
+        <div class="form-group">
+            <label for="userName">Username</label>
+            <input id="userName" name="userName" type="text" value="@Model.UserName" />
+
+            <label for="newPassword">New Password</label>
+            <input id="newPassword" name="newPassword" type="password" />
+
+            <label for="confirmNewPassword">Confirm New Password</label>
+            <input id="confirmNewPassword" name="confirmNewPassword" type="password" />
+
+            <button class="button button-primary" type="submit">Save</button>
+            <a class="button button-secondary" onclick="goBack()">Cancel</a>
+        </div>
+    </form>
+    @if (Model.CanDelete)
+    {
+        <div class="section-login-links pad-top">
+            <button class="button button-simple" type="button" onclick="onDeleteUserClick()"><i class="far fa-user-slash"></i> Delete User</button>
+        </div>
+    }
+</div>
+
+@section Scripts
+{
+    <script>
+        function onDeleteUserClick() {
+            if (confirm('Are you sure you want to delete this user?')) {
+                window.location = '@Url.Action(nameof(UsersController.Delete), "Users", new { id = Model.Id })';
+            }
+        }
+
+        function goBack() {
+            // Send the browser window back a page. This preserves filters without having to pass viewmodels into other viewmodels.
+            history.back();
+        }
+    </script>
+}

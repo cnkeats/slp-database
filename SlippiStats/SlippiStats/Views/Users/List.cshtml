@@ -1,0 +1,59 @@
+﻿@model UsersListViewModel
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="section-filters">
+    <h3>User List</h3>
+    <form class="form-standard" method="post">
+        <div class="form-standard-field">
+            <input id="userName" name="userName" placeholder="User Name" type="text" value="@Model.UserName" />
+        </div>
+        <div class="form-standard-field">
+            <input class="button button-secondary" type="submit" value="Filter" />
+        </div>
+        <div class="form-standard-field">
+            <a class="button button-primary" asp-route="List">Clear Filter</a>
+        </div>
+    </form>
+    <a asp-controller="Users" asp-action="Create"><i class="fas fa-plus-square"></i> New User</a>
+</div>
+
+@if (Model.Message != null)
+{
+    <div class="message message-success">@Model.Message</div>
+}
+
+@if (Model.Users.Count == 0)
+{
+    <div class="message message-warning">There are no users.</div>
+}
+else
+{
+    <table class="table-primary table-box table-xsm pad-top-lg">
+        <thead>
+            <tr class="align-left">
+                <th>Username</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Tuple<User, Role> listItem in Model.Users)
+            {
+                <tr class="align-left" onclick="onUserClick(@listItem.Item1.Id)">
+                    <td>@listItem.Item1.UserName</td>
+                    <td>@listItem.Item2?.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Scripts
+{
+    <script>
+        function onUserClick(userId) {
+            window.location = `@Url.ActionLink(nameof(UsersController.Edit), "Users")/${userId}`;
+        }
+    </script>
+}

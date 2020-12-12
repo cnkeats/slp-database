@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SlippiStats.ViewModels
+namespace SlippiStats.Controllers
 {
     public class SlippiStatsViewModel
     {

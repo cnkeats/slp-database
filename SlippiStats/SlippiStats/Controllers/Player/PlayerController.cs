@@ -2,7 +2,6 @@
 using SlippiStats.Configuration;
 using SlippiStats.GameDataEnums;
 using SlippiStats.Models;
-using SlippiStats.ViewModels;
 using System.Collections.Generic;
 
 namespace SlippiStats.Controllers

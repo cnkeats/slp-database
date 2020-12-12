@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using SlippiStats.GameDataEnums;
 using SlippiStats.Util;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
 

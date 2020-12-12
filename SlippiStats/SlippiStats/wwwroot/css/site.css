@@ -942,5 +942,5 @@ div[class^="section-"] {
 }
 
 *:hover { 
-    outline:1px #72dadd solid
+    /*outline:1px #72dadd solid*/
 } 

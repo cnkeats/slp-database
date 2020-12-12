@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SlippiStats.Configuration;
 using SlippiStats.Models;
 using SlippiStats.Models.ReplaySubmission;
-using SlippiStats.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace SlippiStats.Controllers

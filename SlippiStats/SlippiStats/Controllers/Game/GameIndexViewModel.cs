@@ -1,11 +1,6 @@
-using SlippiStats.Extensions;
-using SlippiStats.GameDataEnums;
 using SlippiStats.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace SlippiStats.ViewModels
+namespace SlippiStats.Controllers
 {
     public class GameIndexViewModel
     {

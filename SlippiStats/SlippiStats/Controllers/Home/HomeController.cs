@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using SlippiStats.Authentication;
+﻿using Microsoft.AspNetCore.Mvc;
 using SlippiStats.Configuration;
-using System.Diagnostics;
 
 namespace SlippiStats.Controllers
 {

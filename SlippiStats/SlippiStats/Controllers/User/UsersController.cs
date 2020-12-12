@@ -20,7 +20,7 @@ namespace SlippiStats.Controllers
             authenticationBusinessLogic = new AuthenticationBusinessLogic(Database.Connection, Settings);
         }
 
-        
+
         [Route("{controller=User}/{username}")]
         public IActionResult Profile(string username)
         {
@@ -41,7 +41,7 @@ namespace SlippiStats.Controllers
             viewModel.Message = (string)TempData["Message"];
             viewModel.Users = new List<Tuple<User, Role>>();
 
-            List<User> users = SlippiStats.Models.User.GetList(Database.Connection);
+            List<User> users = Models.User.GetList(Database.Connection);
             foreach (User user in users)
             {
                 Role role = Role.GetByUserId(Database.Connection, user.Id);
@@ -57,7 +57,7 @@ namespace SlippiStats.Controllers
             viewModel.Message = (string)TempData["Message"];
             viewModel.Users = new List<Tuple<User, Role>>();
 
-            List<User> users = SlippiStats.Models.User.GetList(Database.Connection);
+            List<User> users = Models.User.GetList(Database.Connection);
             foreach (User user in users)
             {
                 Role role = Role.GetByUserId(Database.Connection, user.Id);
@@ -82,7 +82,7 @@ namespace SlippiStats.Controllers
                 return View(viewModel);
             }
 
-            if (SlippiStats.Models.User.IsUserNameInUse(Database.Connection, viewModel.UserName))
+            if (Models.User.IsUserNameInUse(Database.Connection, viewModel.UserName))
             {
                 ModelState.AddModelError(nameof(UsersCreateViewModel.UserName), "Username is already in use.");
 
@@ -100,7 +100,7 @@ namespace SlippiStats.Controllers
 
         public IActionResult Edit(int id)
         {
-            User user = SlippiStats.Models.User.GetById(Database.Connection, id);
+            User user = Models.User.GetById(Database.Connection, id);
             if (user == null || user.IsDeleted)
             {
                 return NotFound();
@@ -127,13 +127,13 @@ namespace SlippiStats.Controllers
                 return View(viewModel);
             }
 
-            User user = SlippiStats.Models.User.GetById(Database.Connection, viewModel.Id);
+            User user = Models.User.GetById(Database.Connection, viewModel.Id);
             if (user == null || user.IsDeleted)
             {
                 return NotFound();
             }
 
-            if (SlippiStats.Models.User.IsUserNameInUse(Database.Connection, viewModel.UserName, viewModel.Id))
+            if (Models.User.IsUserNameInUse(Database.Connection, viewModel.UserName, viewModel.Id))
             {
                 ModelState.AddModelError(nameof(UsersEditViewModel.UserName), "Username is already in use.");
 
@@ -155,7 +155,7 @@ namespace SlippiStats.Controllers
 
         public IActionResult Delete(int id)
         {
-            User user = SlippiStats.Models.User.GetById(Database.Connection, id);
+            User user = Models.User.GetById(Database.Connection, id);
 
             if (user == null || user.IsDeleted)
             {

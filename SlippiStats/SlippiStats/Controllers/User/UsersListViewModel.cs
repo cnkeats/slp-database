@@ -1,6 +1,4 @@
 ﻿using SlippiStats.Models;
-using System;
-using System.Collections.Generic;
 
 namespace SlippiStats.Controllers
 {

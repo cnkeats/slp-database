@@ -14,7 +14,6 @@ namespace SlippiStats.Controllers
 
         }
 
-        [AllowAnonymous]
         public IActionResult List()
         {
             GameListViewModel viewModel = new GameListViewModel();
@@ -54,6 +53,7 @@ namespace SlippiStats.Controllers
             return View(viewModel);
         }
 
+        [Route("{controller}/{id}")]
         public IActionResult Index(int id)
         {
             GameIndexViewModel viewModel = new GameIndexViewModel();

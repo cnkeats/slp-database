@@ -20,8 +20,7 @@ namespace SlippiStats.Controllers
             authenticationBusinessLogic = new AuthenticationBusinessLogic(Database.Connection, Settings);
         }
 
-
-        [Route("{controller=User}/{username}")]
+        [Route("/{username}")]
         public IActionResult Profile(string username)
         {
             UsersProfileViewModel viewModel = new UsersProfileViewModel();

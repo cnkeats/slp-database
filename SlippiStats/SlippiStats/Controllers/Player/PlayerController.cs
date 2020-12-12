@@ -69,6 +69,20 @@ namespace SlippiStats.Controllers
             return View(viewModel);
         }
 
+        [Route("{controller}/{connectCode}")]
+        public IActionResult ProfileByConnectCode(string connectCode)
+        {
+            Player player = Player.GetByConnectCode(Database.Connection, connectCode);
+            player = player ?? Player.GetByConnectCode(Database.Connection, string.Format("{0}#{1}", connectCode[0..^3], connectCode.Substring(connectCode.Length - 3)));
+
+            if (player != null)
+            {
+                return RedirectToAction(nameof(Profile), new { id = player.Id });
+            }
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
         public IActionResult Profile(int id, Character? character = null, string opponentFilter = null, Character? opponentCharacter = null, Stage? stage = null, int? opponentPlayerId = null)
         {
             PlayerProfileViewModel viewModel = new PlayerProfileViewModel();

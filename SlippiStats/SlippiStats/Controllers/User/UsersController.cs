@@ -20,6 +20,21 @@ namespace SlippiStats.Controllers
             authenticationBusinessLogic = new AuthenticationBusinessLogic(Database.Connection, Settings);
         }
 
+        
+        [Route("{controller=User}/{username}")]
+        public IActionResult Profile(string username)
+        {
+            UsersProfileViewModel viewModel = new UsersProfileViewModel();
+            viewModel.User = Models.User.GetByUserName(Database.Connection, username);
+
+            if (viewModel.User == null)
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
+            return View(viewModel);
+        }
+
         public IActionResult List()
         {
             UsersListViewModel viewModel = new UsersListViewModel();

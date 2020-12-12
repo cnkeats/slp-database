@@ -1,0 +1,27 @@
+﻿@model UsersProfileViewModel
+@{
+    ViewData["Title"] = String.Format("{0} - Profile", Model.User?.UserName);
+}
+
+<div class="section-heading">
+    <h2>@String.Format("{0} - Profile", Model.User?.UserName)</h2>
+</div>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    @Html.ValidationSummary("", new { @class = "message message-error" })
+}
+
+<div class="section-login">    
+    <label>This is your profile :)</label>
+</div>
+
+@section Scripts
+{
+    <script>
+        function goBack() {
+            // Send the browser window back a page. This preserves filters without having to pass viewmodels into other viewmodels.
+            history.back();
+        }
+    </script>
+}

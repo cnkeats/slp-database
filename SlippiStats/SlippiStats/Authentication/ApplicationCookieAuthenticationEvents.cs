@@ -52,6 +52,7 @@ namespace SlippiStats.Authentication
             foreach (UserRole userRole in userRoles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, userRole.RoleName));
+                claims.Add(new Claim(ClaimTypes.Name, user.UserName));
             }
 
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

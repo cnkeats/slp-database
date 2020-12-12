@@ -4,12 +4,13 @@ using System.Collections.Generic;
 
 namespace SlippiStats.Controllers
 {
-    public class UsersListViewModel
+    public class UsersProfileViewModel : SlippiStatsViewModel
     {
-        public string Message { get; set; }
+        public User User { get; set; }
 
-        public string UserName { get; set; }
+        public UsersProfileViewModel()
+        {
 
-        public List<Tuple<SlippiStats.Models.User, Role>> Users { get; set; }
+        }
     }
 }

@@ -2,8 +2,9 @@
 {
     <ul class="nav-super">
         @if (User.IsInRole(ApplicationRoles.Admin)) {
-            <li><a asp-controller="Users" asp-action="List"><i class="fad fa-sign-out"></i> Users</a></li>
+            <li><a asp-controller="Users" asp-action="List"><i class="fad fa-sign-out"></i>Users</a></li>
         }
-        <li><a asp-controller="Account" asp-action="Logout"><i class="fad fa-sign-out"></i> Logout</a></li>
+        <li><a asp-controller="Users" asp-action="Profile" asp-route-userName="@User.Identity.Name"><i class="fad fa-sign-out"></i>Profile</a></li>
+        <li><a asp-controller="Account" asp-action="Logout"><i class="fad fa-sign-out"></i>Logout</a></li>
     </ul>
 }

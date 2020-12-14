@@ -37,6 +37,7 @@ SELECT TOP 500
 	Game.StartAt,
 	Game.StartingSeed,
 	Game.GameLength,
+	Game.Version,
 	Game.FileName,
 	Game.FileSource,
 	Game.Hash,

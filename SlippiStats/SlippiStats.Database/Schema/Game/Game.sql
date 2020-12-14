@@ -24,6 +24,7 @@
     StartAt DATETIME NOT NULL,
     StartingSeed BIGINT NULL,
     GameLength INT NOT NULL,
+    Version VARCHAR(16) NULL,
     FileName VARCHAR(32) NULL,
     FileSource VARCHAR(32) NOT NULL,
     Hash VARCHAR(32) NOT NULL,

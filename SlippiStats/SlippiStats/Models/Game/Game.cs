@@ -58,6 +58,8 @@ namespace SlippiStats.Models
 
         public int GameLength { get; set; }
 
+        public Version Version { get; set; }
+
         public string FileName { get; set; }
 
         public string FileSource { get; set; }
@@ -85,6 +87,7 @@ namespace SlippiStats.Models
 
         public Game(SlpReplay slpReplay)
         {
+            Version = new Version(slpReplay.Settings.SlpVersion);
             FileName = slpReplay.FileName;
             FileSource = slpReplay.FileSource;
             Hash = slpReplay.Hash;
@@ -144,6 +147,7 @@ namespace SlippiStats.Models
             StartAt = dataReader.GetValue<DateTime>(nameof(StartAt));
             StartingSeed = dataReader.GetValue<long?>(nameof(StartingSeed));
             GameLength = dataReader.GetValue<int>(nameof(GameLength));
+            Version = new Version(dataReader.GetValue<string>(nameof(Version)));
             FileName = dataReader.GetValue<string>(nameof(FileName));
             FileSource = dataReader.GetValue<string>(nameof(FileSource));
             Hash = dataReader.GetValue<string>(nameof(Hash));
@@ -303,6 +307,7 @@ namespace SlippiStats.Models
                     StartAt,
                     StartingSeed,
                     GameLength,
+                    Version,
                     FileName,
                     FileSource,
                     Hash,
@@ -348,6 +353,7 @@ namespace SlippiStats.Models
                     StartAt,
                     StartingSeed,
                     GameLength,
+                    Version,
                     FileName,
                     FileSource,
                     Hash,

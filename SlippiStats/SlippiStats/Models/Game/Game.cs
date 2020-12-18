@@ -147,7 +147,7 @@ namespace SlippiStats.Models
             StartAt = dataReader.GetValue<DateTime>(nameof(StartAt));
             StartingSeed = dataReader.GetValue<long?>(nameof(StartingSeed));
             GameLength = dataReader.GetValue<int>(nameof(GameLength));
-            Version = new Version(dataReader.GetValue<string>(nameof(Version)));
+            Version = dataReader.GetValue<string>(nameof(Version)) != null ? new Version(dataReader.GetValue<string>(nameof(Version))) : new Version("0.0.0.0");
             FileName = dataReader.GetValue<string>(nameof(FileName));
             FileSource = dataReader.GetValue<string>(nameof(FileSource));
             Hash = dataReader.GetValue<string>(nameof(Hash));
@@ -353,7 +353,7 @@ namespace SlippiStats.Models
                     StartAt,
                     StartingSeed,
                     GameLength,
-                    Version,
+                    Version = Version.ToString(),
                     FileName,
                     FileSource,
                     Hash,

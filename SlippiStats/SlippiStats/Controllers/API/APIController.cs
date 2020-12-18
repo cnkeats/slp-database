@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SlippiStats.Configuration;
 using SlippiStats.Models;
 using SlippiStats.Models.ReplaySubmission;
@@ -15,6 +16,7 @@ namespace SlippiStats.Controllers
 
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public ReplaySubmitResponse SubmitReplayFile([FromForm] ReplaySubmission replaySubmission)
         {
@@ -44,6 +46,7 @@ namespace SlippiStats.Controllers
             return response;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public GameSubmitResponse SubmitGame([FromBody] SlpReplay slpReplay)
         {
@@ -156,11 +159,13 @@ namespace SlippiStats.Controllers
             }
             else
             {
+                game.Version = new Version(slpReplay.Settings.SlpVersion);
                 game.FileName = slpReplay.FileName;
                 game.Hash = slpReplay.Hash;
                 game.StartAt = slpReplay.MetaData.StartAt;
                 game.StartingSeed = slpReplay.StartingSeed;
                 game.GameLength = slpReplay.MetaData.LastFrame;
+                game.Platform = slpReplay.MetaData.PlayedOn;
 
                 game.Save(Database.Connection);
             }

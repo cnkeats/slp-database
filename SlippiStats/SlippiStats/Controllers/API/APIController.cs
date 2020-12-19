@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SlippiStats.Configuration;
 using SlippiStats.Models;
@@ -65,13 +65,6 @@ namespace SlippiStats.Controllers
                 {
                     response.Success = false;
                     response.Message = "Support for games with more than 2 players is not currently available.";
-                    return response;
-                }
-
-                if (slpReplay.Stats.Count == 0)
-                {
-                    response.Success = false;
-                    response.Message = "Support for modes other than Stock is not currently available.";
                     return response;
                 }
 

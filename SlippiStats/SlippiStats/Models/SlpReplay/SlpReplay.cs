@@ -1,4 +1,7 @@
+﻿using SlippiStats.GameDataEnums;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SlippiStats.Models
 {
@@ -26,17 +29,7 @@ namespace SlippiStats.Models
 
         public static bool?[] DetermineVictories(SlpReplay slpReplay)
         {
-            // Only worry about 1v1 for now
-            if (slpReplay.Settings.Players.Count > 2)
-            {
-                return null;
-            }
-
-            // If the game doesn't have stats data, we can't determine the victor
-            if (slpReplay.Stats.Count != 2)
-            {
-                return null;
-            }
+            int playerCount = slpReplay.Settings.Players.Count;
 
             // Games that don't contain game end mthod data are not supported
             GameEndMethod gameEndMethod = slpReplay.GameEnd.GameEndMethod;
@@ -60,58 +53,59 @@ namespace SlippiStats.Models
 
         private static bool?[] DetermineVictories_LRAS(SlpReplay slpReplay)
         {
-            bool?[] output = new bool?[2];
+            bool?[] output = new bool?[4];
 
-            output[0] = slpReplay.GameEnd.LRASInitiatorIndex != LRAS.PLAYER1;
-            output[1] = slpReplay.GameEnd.LRASInitiatorIndex != LRAS.PLAYER2;
+            // In replays where the "Keep playing while paused" code is enabled before v3.7.1, LRAS index is unreliable. Return null instead.
+            if (new Version(slpReplay.Settings.SlpVersion) < new Version("3.7.1"))
+            {
+                output[0] = null;
+                output[1] = null;
+                output[2] = null;
+                output[3] = null;
+
+                return output;
+            }
+
+            int index = 0;
+            foreach (SlpSettingsPlayer player in slpReplay.Settings.Players)
+            {
+                if (slpReplay.Settings.IsTeams)
+                {
+                    // If that player's index is valid, they lose if their team matches the team of the LRAS Initiator
+                    output[index] = slpReplay.Settings.Players.Count >= index+1 && player.TeamId != slpReplay.Settings.Players.Where(p => p.PlayerIndex == (int)slpReplay.GameEnd.LRASInitiatorIndex).First().TeamId ? true : false;
+                }
+                else
+                {
+                // If not teams, players lose if they were the one to LRAS.
+                    output[index] = slpReplay.GameEnd.LRASInitiatorIndex != (LRAS)index;
+                }
+                index++;
+            }
 
             return output;
         }
 
         private static bool?[] DetermineVictories_GAME(SlpReplay slpReplay)
         {
-            bool?[] output = new bool?[2];
+            bool?[] output = new bool?[4];
 
-            int p1EndingStocks = slpReplay.Settings.Players[0].StartStocks - slpReplay.Stats[1];
-            int p2EndingStocks = slpReplay.Settings.Players[1].StartStocks - slpReplay.Stats[0];
+            // Any player that is left alive will share the same team. Use this to determine the winning team.
+            Team winningTeam = slpReplay.Settings.Players[slpReplay.Stats.Stocks.Where(s => s.DeathAnimation == null).First().PlayerIndex].TeamId;
 
-            float p1EndingPercentage = (float)slpReplay.LatestFramePercents[0];
-            float p2EndingPercentage = (float)slpReplay.LatestFramePercents[1];
-
-            // Player 1 had more stocks remaining
-            if (p1EndingStocks > p2EndingStocks)
+            int index = 0;
+            foreach (SlpSettingsPlayer player in slpReplay.Settings.Players)
             {
-                output[0] = true;
-                output[1] = false;
-            }
-            // Player 2 had more stocks remaining
-            else if (p1EndingStocks < p2EndingStocks)
-            {
-                output[0] = false;
-                output[1] = true;
-            }
-            // Player 1 had less percentage
-            // Decided by a 1v1
-            // TODO: Swap out bool? for a 4-state type
-            else if (p1EndingPercentage < p2EndingPercentage)
-            {
-                output[0] = false;
-                output[1] = false;
-            }
-            // Player 2 had less percentage
-            // Decided by a 1v1
-            // TODO: Swap out bool? for a 4-state type
-            else if (p1EndingPercentage > p2EndingPercentage)
-            {
-                output[0] = false;
-                output[1] = false;
-            }
-            // Decided by a 1v1
-            // TODO: Swap out bool? for a 4-state type
-            else
-            {
-                output[0] = false;
-                output[1] = false;
+                if (slpReplay.Settings.IsTeams)
+                {
+                    // If teams, players win if they share a team with any player that remains alive
+                    output[index] = player.TeamId == winningTeam;
+                }
+                else
+                {
+                    // If not teams, players win if they didn't die on their last stock
+                    output[index] = !slpReplay.Stats.Stocks.Any(s => s.PlayerIndex == index && s.Count == 1 && s.DeathAnimation != null);
+                }
+                index++;
             }
 
             return output;
@@ -119,44 +113,27 @@ namespace SlippiStats.Models
 
         private static bool?[] DetermineVictories_TIME(SlpReplay slpReplay)
         {
-            bool?[] output = new bool?[2];
+            bool?[] output = new bool?[4];
 
-            int p1EndingStocks = slpReplay.Settings.Players[0].StartStocks - slpReplay.Stats[1];
-            int p2EndingStocks = slpReplay.Settings.Players[1].StartStocks - slpReplay.Stats[0];
+            // The player that is left alive with the highest stock count and then lowest percent is on the winning team.
+            // In the event of a tie, I haven't worked out the actual answer and so this isn't reliable.
+            Team winningTeam = slpReplay.Settings.Players[slpReplay.Stats.Stocks.Where(s => s.DeathAnimation != null).OrderByDescending(s => s.Count).ThenBy(s => s.CurrentPercent).First().PlayerIndex].TeamId;
 
-            float p1EndingPercentage = (float)slpReplay.LatestFramePercents[0];
-            float p2EndingPercentage = (float)slpReplay.LatestFramePercents[1];
-
-            // Player 1 had more stocks remaining
-            if (p1EndingStocks > p2EndingStocks)
+            int index = 0;
+            foreach (SlpSettingsPlayer player in slpReplay.Settings.Players)
             {
-                output[0] = true;
-                output[1] = false;
-            }
-            // Player 2 had more stocks remaining
-            else if (p1EndingStocks < p2EndingStocks)
-            {
-                output[0] = false;
-                output[1] = true;
-            }
-            // Player 1 had less percentage
-            else if (p1EndingPercentage < p2EndingPercentage)
-            {
-                output[0] = true;
-                output[1] = false;
-            }
-            // Player 2 had less percentage
-            else if (p1EndingPercentage > p2EndingPercentage)
-            {
-                output[0] = false;
-                output[1] = true;
-            }
-            // Decided by a 1v1
-            // TODO: Swap out bool? for a 4-state type
-            else
-            {
-                output[0] = false;
-                output[1] = false;
+                if (slpReplay.Settings.IsTeams)
+                {
+                    // If teams, players win if they share a team with any player that remains alive
+                    output[index] = player.TeamId == winningTeam;
+                }
+                else
+                {
+                    // If not teams, players win if they are alive with the highest stock and lowest percent.
+                    // In the event of a tie, I haven't programmed it in and so this isn't reliable.
+                    output[index] = slpReplay.Stats.Stocks.Where(s => s.DeathAnimation != null).OrderByDescending(s => s.Count).ThenBy(s => s.CurrentPercent).First().PlayerIndex == index;
+                }
+                index++;
             }
 
             return output;

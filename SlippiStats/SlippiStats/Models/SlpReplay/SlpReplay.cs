@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace SlippiStats.Models
 {
@@ -16,7 +16,7 @@ namespace SlippiStats.Models
 
         public SlpMetadata MetaData { get; set; }
 
-        public List<int> Stats { get; set; }
+        public SlpStats Stats { get; set; }
 
         public List<float?> LatestFramePercents { get; set; }
 

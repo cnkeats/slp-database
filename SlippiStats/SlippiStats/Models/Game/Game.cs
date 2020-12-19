@@ -105,8 +105,8 @@ namespace SlippiStats.Models
             GameMode = slpReplay.Settings.GameMode;
 
             //GameSettingsId
-            Player1EndingStocks = slpReplay.Settings.Players[0].StartStocks - slpReplay.Stats[1];
-            Player2EndingStocks = slpReplay.Settings.Players[1].StartStocks - slpReplay.Stats[0];
+            //Player1EndingStocks = slpReplay.Settings.Players[0].StartStocks - slpReplay.StatsOld[1];
+            //Player2EndingStocks = slpReplay.Settings.Players[1].StartStocks - slpReplay.StatsOld[0];
             //Player3EndingStocks
             //Player4EndingStocks
 

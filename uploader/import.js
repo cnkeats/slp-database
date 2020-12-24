@@ -23,24 +23,6 @@ function tfetch(url, options, timeout = 7000) {
     ]);
 }
 
-// Characters ordered by ID
-const characters = ['Captain Falcon', 'Donkey Kong', 'Fox', 'Mr. Game & Watch', 'Kirby', 'Bowser',
-    'Link', 'Luigi', 'Mario', 'Marth', 'Mewtwo', 'Ness', 'Peach', 'Pikachu',
-    'Ice Climbers', 'Jigglypuff', 'Samus', 'Yoshi', 'Zelda', 'Sheik', 'Falco',
-    'Young Link', 'Dr. Mario', 'Roy', 'Pichu', 'Ganondorf'];
-
-const characters_lowercase = ['captain falcon', 'donkey kong', 'fox', 'mr. game & watch', 'kirby', 'bowser',
-    'link', 'luigi', 'mario', 'marth', 'mewtwo', 'ness', 'peach', 'pikachu',
-    'ice climbers', 'jigglypuff', 'samus', 'yoshi', 'zelda', 'sheik', 'falco',
-    'young link', 'dr. mario', 'roy', 'pichu', 'ganondorf'];
-
-// Stages ordered by ID
-const stages = [null, null, 'Fountain of Dreams', 'Pokémon Stadium', "Princess Peach's Castle", 'Kongo Jungle',
-    'Brinstar', 'Corneria', "Yoshi's Story", 'Onett', 'Mute City', 'Rainbow Cruise', 'Jungle Japes',
-    'Great Bay', 'Hyrule Temple', 'Brinstar Depths', "Yoshi's Island", 'Green Greens', 'Fourside',
-    'Mushroom Kingdom I', 'Mushroom Kingdom II', null, 'Venom', 'Poké Floats', 'Big Blue', 'Icicle Mountain',
-    'Icetop', 'Flat Zone', 'Dream Land N64', "Yoshi's Island N64", 'Kongo Jungle N64', 'Battlefield', 'Final Destination'];
-
 function loadGameData(file) {
 
     const fileSource = 'Krohnos';
@@ -52,7 +34,8 @@ function loadGameData(file) {
         data.metadata = game.getMetadata();
         data.gameend = game.getGameEnd();
         
-        data.stats = game.getStats().overall.map((o) => o.killCount);
+        data.stats = game.getStats();
+        
         data.startingSeed = game.getFrames()[0].players[0].pre.seed
         data.filename = path.basename(file);
 
@@ -66,21 +49,19 @@ function loadGameData(file) {
 
         data.hash = crypto.createHash('md5').update(`${p1Character}_${p2Character}_${startingSeed}_${stageId}_${gameLength}_${gameMode}_${scene}`).digest("hex");
         
-        const latestFrame = game.getLatestFrame();        
+        const latestFrame = game.getLatestFrame();
         if (latestFrame != null) {
             data.latestFramePercents = latestFrame.players.map((p) => p.post.percent);
         }
         return data
     } catch(e) {
         console.log(`Error reading metadata. Ignoring... (${file})`)
-        //console.log(e);
+        console.log(e);
         return
     }
 }
 
 async function submitGame(gameData) {
-
-    return;
 
     try {
         //return await tfetch('http://slippi.ventechs.net:82/API/SubmitGame', {
@@ -132,7 +113,7 @@ async function submitReplay(file, gameId, uploaderId) {
     };
 
     //return await tfetch('http://slippi.ventechs.net:82/API/SubmitReplayFile', requestOptions,  20000)
-    return await fetch('https://localhost:44314/API/SubmitReplayFile', requestOptions)
+    return await fetch('https://localhost:44314/API/SubmitReplayFile', requestOptions, 20000)
     .then(responsePromise => {
         return responsePromise.json()
             .then(
@@ -160,12 +141,6 @@ async function processFiles(files, uploaderId, uploadFile) {
     for (const file of files) {
         const gameData = loadGameData(file);
         
-        console.log(gameData.metadata.players[0].names)
-        console.log(gameData.metadata.players[1].names)
-        console.log(gameData.gameend);
-        console.log('------------------------');
-        continue;
-
         let success = false;
         try {
             if (gameData) {
@@ -226,11 +201,11 @@ async function processFiles(files, uploaderId, uploadFile) {
 }
 
 // File path for replays to be processed
-const filePath = "D:/SlippiReplays/testing/temp/badLRAS/testing/**/*.slp"
+//const filePath = "D:/SlippiReplays/testing/temp/badLRAS/testing/**/*.slp"
+const filePath = "D:/SlippiReplays/replayDumps/**/Game_20201216T183112.slp"
 
 // True to upload the .slp files in addition to the metadata
-const uploadFile = true;
+const uploadFile = false;
 console.log(`${glob.sync(filePath).length} files in glob`);
-
 
 processFiles(glob.sync(filePath), 0, uploadFile);

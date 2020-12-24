@@ -31,6 +31,12 @@ namespace SlippiStats.Models
         {
             int playerCount = slpReplay.Settings.Players.Count;
 
+            // Games with more than 2 players are missing the required stats to calculate who won
+            if (playerCount > 2)
+            {
+                return new bool?[] { null, null, null, null };
+            }
+
             // Games that don't contain game end mthod data are not supported
             GameEndMethod gameEndMethod = slpReplay.GameEnd.GameEndMethod;
 

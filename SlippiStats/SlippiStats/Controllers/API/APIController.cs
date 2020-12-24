@@ -148,7 +148,6 @@ namespace SlippiStats.Controllers
                 game.Player3Id = players.Count > 2 ? players[2]?.Id : null;
                 game.Player4Id = players.Count > 3 ? players[3]?.Id : null;
 
-                game.Save(Database.Connection);
             }
             else
             {
@@ -160,8 +159,9 @@ namespace SlippiStats.Controllers
                 game.GameLength = slpReplay.MetaData.LastFrame;
                 game.Platform = slpReplay.MetaData.PlayedOn;
 
-                game.Save(Database.Connection);
             }
+            
+            game.Save(Database.Connection);
 
             return game;
         }

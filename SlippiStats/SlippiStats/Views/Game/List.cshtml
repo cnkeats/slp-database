@@ -111,8 +111,8 @@
                 {
                     <td class="result-defeat align-left"></td>
                 }
+                <td class="align-right"><img class="stock-icon" src="@game.Character2?.GetStockIconPath()" />@game.Character2.GetDisplayName()</td>
                 <td class="align-center player-profile-opponent-name" onclick="goToProfile('@player2.Id')">@player2.Name (@player2.ConnectCode)</td>
-                <td class="align-left"><img class="stock-icon" src="@game.Character2?.GetStockIconPath()" />@game.Character2.GetDisplayName()</td>
                 <td class="align-left"><img class="stage-icon" src="@game.Stage.GetStageIconPath()" />@game.Stage.GetDisplayName()</td>
                 <td class="align-center">@game.StartAt.ToString("MM/dd/yy - HH:mm")</td>
                 <td class="align-left" hidden>@game.GameMode?.GetDisplayName()</td>

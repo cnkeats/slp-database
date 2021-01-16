@@ -147,15 +147,15 @@
                 {
                     <td class="align-center">@player1.Name</td>
                     <td class="align-left"><img class="stock-icon" src="@game.Character1?.GetStockIconPath()" />@game.Character1.GetDisplayName()</td>
-                    <td class="align-left player-profile-opponent-name" onclick="goToProfile('@player2.Id')">@player2.Name (@player2.ConnectCode)</td>
                     <td class="align-left"><img class="stock-icon" src="@game.Character2?.GetStockIconPath()" />@game.Character2.GetDisplayName()</td>
+                    <td class="align-left player-profile-opponent-name" onclick="goToProfile('@player2.Id')">@player2.Name (@player2.ConnectCode)</td>
                 }
                 else
                 {
                     <td class="align-center">@player2.Name</td>
                     <td class="align-left"><img class="stock-icon" src="@game.Character2?.GetStockIconPath()" />@game.Character2.GetDisplayName()</td>
-                    <td class="align-left player-profile-opponent-name" onclick="goToProfile('@player1.Id')">@player1.Name (@player1.ConnectCode)</td>
                     <td class="align-left"><img class="stock-icon" src="@game.Character1?.GetStockIconPath()" />@game.Character1.GetDisplayName()</td>
+                    <td class="align-left player-profile-opponent-name" onclick="goToProfile('@player1.Id')">@player1.Name (@player1.ConnectCode)</td>
                 }
                 <td class="align-left"><img class="stage-icon" src="@game.Stage.GetStageIconPath()" />@game.Stage.GetDisplayName()</td>
                 <td class="align-left">@game.StartAt.ToString("MM/dd/yy - HH:mm")</td>
@@ -220,7 +220,7 @@
         }
 
         function goToGame(id) {
-            window.location.href = '/Game/Index/' + id
+            window.location.href = '/Game/' + id
         }
 
     </script>

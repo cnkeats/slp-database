@@ -140,6 +140,10 @@ async function processFiles(files, uploaderId, uploadFile) {
 
     for (const file of files) {
         const gameData = loadGameData(file);
+
+        console.log(gameData.metadata.players);
+        console.log(gameData.settings);
+        return;
         
         let success = false;
         try {
@@ -202,7 +206,8 @@ async function processFiles(files, uploaderId, uploadFile) {
 
 // File path for replays to be processed
 //const filePath = "D:/SlippiReplays/testing/temp/badLRAS/testing/**/*.slp"
-const filePath = "D:/SlippiReplays/replayDumps/**/Game_20201216T183112.slp"
+//const filePath = "D:/SlippiReplays/replayDumps/**/Game_20201216T183112.slp"
+const filePath = "D:/SlippiReplays/testing/test3.slp"
 
 // True to upload the .slp files in addition to the metadata
 const uploadFile = false;

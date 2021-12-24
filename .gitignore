@@ -161,3 +161,9 @@ replayCache.json
 uploader/slippi_icon.png
 
 *.7z
+
+SlippiStats/SlippiStats/appsettings.Development.json
+
+SlippiStats/SlippiStats/appsettings.json
+
+key.json

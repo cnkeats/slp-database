@@ -17,14 +17,14 @@
         public SlpStatsRatio SuccessfulConversions { get; set; }
 
         public SlpStatsRatio InputsPerMinute { get; set; }
-        
+
         public SlpStatsRatio DigitalInputsPerMinute { get; set; }
 
         public SlpStatsRatio OpeningsPerKill { get; set; }
 
         public SlpStatsRatio DamagePerOpening { get; set; }
 
-       public SlpStatsRatio NeutralWinRatio { get; set; }
+        public SlpStatsRatio NeutralWinRatio { get; set; }
 
         public SlpStatsRatio CounterHitRatio { get; set; }
 

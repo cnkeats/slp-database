@@ -120,7 +120,7 @@ namespace SlippiStats.Models
             Created = DateTime.Now;
         }
 
-        private Game(IDataReader dataReader)
+        public Game(IDataReader dataReader)
         {
             Id = dataReader.GetValue<int>(nameof(Id));
             Player1Id = dataReader.GetValue<int?>(nameof(Player1Id));

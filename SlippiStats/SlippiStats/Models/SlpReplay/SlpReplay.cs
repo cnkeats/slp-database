@@ -78,11 +78,11 @@ namespace SlippiStats.Models
                 if (slpReplay.Settings.IsTeams)
                 {
                     // If that player's index is valid, they lose if their team matches the team of the LRAS Initiator
-                    output[index] = slpReplay.Settings.Players.Count >= index+1 && player.TeamId != slpReplay.Settings.Players.Where(p => p.PlayerIndex == (int)slpReplay.GameEnd.LRASInitiatorIndex).First().TeamId ? true : false;
+                    output[index] = slpReplay.Settings.Players.Count >= index + 1 && player.TeamId != slpReplay.Settings.Players.Where(p => p.PlayerIndex == (int)slpReplay.GameEnd.LRASInitiatorIndex).First().TeamId ? true : false;
                 }
                 else
                 {
-                // If not teams, players lose if they were the one to LRAS.
+                    // If not teams, players lose if they were the one to LRAS.
                     output[index] = slpReplay.GameEnd.LRASInitiatorIndex != (LRAS)index;
                 }
                 index++;

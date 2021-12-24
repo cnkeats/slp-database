@@ -107,7 +107,7 @@ namespace SlippiStats.Controllers
 
             List<Game> games = Game.GetListByPlayerIdFilters(Database.Connection, id, character, opponentFilter, opponentCharacter, stage, opponentPlayerId);
 
-            viewModel.Entries = new List<GameListEntry>();
+            /*viewModel.Entries = new List<GameListEntry>();
             foreach (Game game in games)
             {
                 GameListEntry entry = new GameListEntry();
@@ -116,7 +116,7 @@ namespace SlippiStats.Controllers
                 entry.Player2 = Player.GetById(Database.Connection, (int)game.Player2Id);
 
                 viewModel.Entries.Add(entry);
-            }
+            }*/
 
             return View(viewModel);
         }

@@ -33,15 +33,15 @@ namespace SlippiStats.Models
             Created = DateTime.Now;
         }
 
-        private Player(IDataReader dataReader)
+        public Player(IDataReader dataReader, string prefix = "")
         {
-            Id = dataReader.GetValue<int>(nameof(Id));
-            Name = dataReader.GetValue<string>(nameof(Name));
-            ConnectCode = dataReader.GetValue<string>(nameof(ConnectCode));
-            DiscordCode = dataReader.GetValue<string>(nameof(DiscordCode));
-            Created = dataReader.GetValue<DateTime>(nameof(Created));
-            Updated = dataReader.GetValue<DateTime?>(nameof(Updated));
-            Deleted = dataReader.GetValue<DateTime?>(nameof(Deleted));
+            Id = dataReader.GetValue<int>(prefix + nameof(Id));
+            Name = dataReader.GetValue<string>(prefix + nameof(Name));
+            ConnectCode = dataReader.GetValue<string>(prefix + nameof(ConnectCode));
+            DiscordCode = dataReader.GetValue<string>(prefix + nameof(DiscordCode));
+            Created = dataReader.GetValue<DateTime>(prefix + nameof(Created));
+            Updated = dataReader.GetValue<DateTime?>(prefix + nameof(Updated));
+            Deleted = dataReader.GetValue<DateTime?>(prefix + nameof(Deleted));
         }
 
         public static string GetPlayerName(SlpReplay slpReplay, int playerIndex)

@@ -1,5 +1,4 @@
-﻿using SlippiStats.GameDataEnums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SlippiStats.Models
 {

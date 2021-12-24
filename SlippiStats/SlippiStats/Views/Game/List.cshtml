@@ -85,7 +85,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (GameListEntry entry in Model.Entries.Take(250))
+        @foreach (GamePlayers entry in Model.Entries.Take(250))
         {
             Game game = entry.Game;
             Player player1 = entry.Player1;
@@ -93,7 +93,7 @@
             <tr class="game-entry">
                 <td class="align-center">@game.Id</td>
                 <td class="align-left"><button class="button" onclick="goToGame(@game.Id)">View</button></td>
-                <td class="align-center player-profile-opponent-name" onclick="goToProfile('@player1.Id')">@player1.Name (@player1.ConnectCode)</td>
+                <td class="align-center player-profile-opponent-name" onclick="goToProfile('@player1?.Id')">@player1?.Name (@player1?.ConnectCode)</td>
                 <td class="align-left"><img class="stock-icon" src="@game.Character1?.GetStockIconPath()" />@game.Character1.GetDisplayName()</td>
                 @if ((bool)game.Player1Victory)
                 {
@@ -112,7 +112,7 @@
                     <td class="result-defeat align-left"></td>
                 }
                 <td class="align-right"><img class="stock-icon" src="@game.Character2?.GetStockIconPath()" />@game.Character2.GetDisplayName()</td>
-                <td class="align-center player-profile-opponent-name" onclick="goToProfile('@player2.Id')">@player2.Name (@player2.ConnectCode)</td>
+                <td class="align-center player-profile-opponent-name" onclick="goToProfile('@player2?.Id')">@player2?.Name (@player2?.ConnectCode)</td>
                 <td class="align-left"><img class="stage-icon" src="@game.Stage.GetStageIconPath()" />@game.Stage.GetDisplayName()</td>
                 <td class="align-center">@game.StartAt.ToString("MM/dd/yy - HH:mm")</td>
                 <td class="align-left" hidden>@game.GameMode?.GetDisplayName()</td>

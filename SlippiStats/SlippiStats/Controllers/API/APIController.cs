@@ -158,7 +158,7 @@ namespace SlippiStats.Controllers
                 game.GameLength = slpReplay.MetaData.LastFrame;
                 game.Platform = slpReplay.MetaData.PlayedOn;
             }
-            
+
             game.Save(Database.Connection);
 
             return game;

@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SlippiStats.Configuration;
 using SlippiStats.Models;
 using System;
-using System.Collections.Generic;
 
 namespace SlippiStats.Controllers
 {
@@ -18,18 +16,7 @@ namespace SlippiStats.Controllers
         {
             GameListViewModel viewModel = new GameListViewModel();
 
-            List<Game> games = Game.GetList(Database.Connection);
-
-            viewModel.Entries = new List<GameListEntry>();
-            foreach (Game game in games)
-            {
-                GameListEntry entry = new GameListEntry();
-                entry.Game = game;
-                entry.Player1 = Player.GetById(Database.Connection, (int)game.Player1Id);
-                entry.Player2 = Player.GetById(Database.Connection, (int)game.Player2Id);
-
-                viewModel.Entries.Add(entry);
-            }
+            viewModel.Entries = GamePlayers.GetList(Database.Connection);
 
             return View(viewModel);
         }
@@ -37,18 +24,7 @@ namespace SlippiStats.Controllers
         [HttpPost]
         public IActionResult List(GameListViewModel viewModel)
         {
-            List<Game> games = Game.GetListByFilters(Database.Connection, viewModel.PlayerFilter1, viewModel.PlayerFilter2, viewModel.CharacterFilter1, viewModel.CharacterFilter2, viewModel.StageFilter);
-
-            viewModel.Entries = new List<GameListEntry>();
-            foreach (Game game in games)
-            {
-                GameListEntry entry = new GameListEntry();
-                entry.Game = game;
-                entry.Player1 = Player.GetById(Database.Connection, (int)game.Player1Id);
-                entry.Player2 = Player.GetById(Database.Connection, (int)game.Player2Id);
-
-                viewModel.Entries.Add(entry);
-            }
+            viewModel.Entries = GamePlayers.GetListByFilters(Database.Connection, viewModel.PlayerFilter1, viewModel.PlayerFilter2, viewModel.CharacterFilter1, viewModel.CharacterFilter2, viewModel.StageFilter);
 
             return View(viewModel);
         }

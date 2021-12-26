@@ -22,6 +22,14 @@ namespace SlippiStats.Models
 
         public DateTime? Deleted { get; set; }
 
+        public struct PlayerGroup
+        {
+            public Player Player1 { get; set; }
+            public Player Player2 { get; set; }
+            public Player Player3 { get; set; }
+            public Player Player4 { get; set; }
+        }
+
         public bool IsDeleted
         {
             get => Deleted != null;

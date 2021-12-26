@@ -85,11 +85,10 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (GamePlayers entry in Model.Entries.Take(250))
+        @foreach (Game game in Model.Entries.Take(50))
         {
-            Game game = entry.Game;
-            Player player1 = entry.Player1;
-            Player player2 = entry.Player2;
+            Player player1 = game.Players.Player1;
+            Player player2 = game.Players.Player2;
             <tr class="game-entry">
                 <td class="align-center">@game.Id</td>
                 <td class="align-left"><button class="button" onclick="goToGame(@game.Id)">View</button></td>

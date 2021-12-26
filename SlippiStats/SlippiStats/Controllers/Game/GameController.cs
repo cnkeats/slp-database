@@ -16,7 +16,7 @@ namespace SlippiStats.Controllers
         {
             GameListViewModel viewModel = new GameListViewModel();
 
-            viewModel.Entries = GamePlayers.GetList(Database.Connection);
+            viewModel.Entries = Game.GetList(Database.Connection);
 
             return View(viewModel);
         }
@@ -24,7 +24,7 @@ namespace SlippiStats.Controllers
         [HttpPost]
         public IActionResult List(GameListViewModel viewModel)
         {
-            viewModel.Entries = GamePlayers.GetListByFilters(Database.Connection, viewModel.PlayerFilter1, viewModel.PlayerFilter2, viewModel.CharacterFilter1, viewModel.CharacterFilter2, viewModel.StageFilter);
+            viewModel.Entries = Game.GetListByFilters(Database.Connection, viewModel.PlayerFilter1, viewModel.PlayerFilter2, viewModel.CharacterFilter1, viewModel.CharacterFilter2, viewModel.StageFilter);
 
             return View(viewModel);
         }

@@ -16,11 +16,11 @@ namespace SlippiStats.Controllers
 
         public Stage? StageFilter { get; set; }
 
-        public List<GamePlayers> Entries { get; set; }
+        public List<Game> Entries { get; set; }
 
         public GameListViewModel() : base()
         {
-            Entries = new List<GamePlayers>();
+            Entries = new List<Game>();
         }
     }
 }

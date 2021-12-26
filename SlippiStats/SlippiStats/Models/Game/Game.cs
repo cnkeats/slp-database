@@ -3,6 +3,7 @@ using SlippiStats.Util;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using static SlippiStats.Models.Player;
 
 namespace SlippiStats.Models
 {
@@ -73,6 +74,8 @@ namespace SlippiStats.Models
         public DateTime? Updated { get; set; }
 
         public DateTime? Deleted { get; set; }
+
+        public PlayerGroup Players { get; set; }
 
         public bool IsDeleted
         {
@@ -155,6 +158,15 @@ namespace SlippiStats.Models
             Created = dataReader.GetValue<DateTime>(nameof(Created));
             Updated = dataReader.GetValue<DateTime?>(nameof(Updated));
             Deleted = dataReader.GetValue<DateTime?>(nameof(Deleted));
+
+            Players = new PlayerGroup
+            {
+                Player1 = Player1Id != null ? new Player(dataReader, "p1") : null,
+                Player2 = Player2Id != null ? new Player(dataReader, "p2") : null,
+                Player3 = Player3Id != null ? new Player(dataReader, "p3") : null,
+                Player4 = Player4Id != null ? new Player(dataReader, "p4") : null,
+            };
+
         }
 
         public static Game GetById(IDbConnection connection, int id)

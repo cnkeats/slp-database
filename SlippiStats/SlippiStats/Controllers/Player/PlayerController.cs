@@ -104,19 +104,8 @@ namespace SlippiStats.Controllers
             viewModel.PlayedCharacters = Player.GetPlayedCharactersByPlayerId(Database.Connection, id);
             //viewModel.MatchupResults = MatchupResults.GetListByPlayerId(Database.Connection, id);
             viewModel.MatchupResults = MatchupResults.GetListByPlayerIdFilters(Database.Connection, id, null, opponentFilter, null);
-
-            List<Game> games = Game.GetListByPlayerIdFilters(Database.Connection, id, character, opponentFilter, opponentCharacter, stage, opponentPlayerId);
-
-            /*viewModel.Entries = new List<GameListEntry>();
-            foreach (Game game in games)
-            {
-                GameListEntry entry = new GameListEntry();
-                entry.Game = game;
-                entry.Player1 = Player.GetById(Database.Connection, (int)game.Player1Id);
-                entry.Player2 = Player.GetById(Database.Connection, (int)game.Player2Id);
-
-                viewModel.Entries.Add(entry);
-            }*/
+            viewModel.Entries = Game.GetListByPlayerIdFilters(Database.Connection, id, character, opponentFilter, opponentCharacter, stage, opponentPlayerId);
+            
 
             return View(viewModel);
         }

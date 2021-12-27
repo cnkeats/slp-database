@@ -1,0 +1,8 @@
+{
+  "version": "0.0.1",
+  "name": "slp-database",
+  "private": true,
+  "devDependencies": {
+    "@slippilab/parser": "0.0.3"
+  }
+}

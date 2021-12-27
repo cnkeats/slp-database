@@ -40,9 +40,9 @@ namespace SlippiStats.Controllers
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
 
-            viewModel.ReplayFile = ReplayFile.GetByGameId(Database.Connection, viewModel.Game.Id);
-            viewModel.Player1 = Player.GetById(Database.Connection, (int)viewModel.Game.Player1Id);
-            viewModel.Player2 = Player.GetById(Database.Connection, (int)viewModel.Game.Player2Id);
+            //viewModel.ReplayFile = ReplayFile.GetByGameId(Database.Connection, viewModel.Game.Id);
+            //viewModel.Player1 = Player.GetById(Database.Connection, (int)viewModel.Game.Player1Id);
+            //viewModel.Player2 = Player.GetById(Database.Connection, (int)viewModel.Game.Player2Id);
 
             return View(viewModel);
         }
@@ -64,6 +64,23 @@ namespace SlippiStats.Controllers
             }
 
             return File(replayFile.FileData, "application/x-msdownload", String.Format("replay{0}.slp", gameId));
+        }
+        
+        public IActionResult Upload()
+        {
+            GameUploadViewModel viewModel = new GameUploadViewModel();
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Upload(Game game)
+        {
+
+
+
+
+            return RedirectToAction(nameof(GameController.Upload), "Game");
         }
     }
 }

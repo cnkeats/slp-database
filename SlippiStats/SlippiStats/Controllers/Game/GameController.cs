@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SlippiStats.Configuration;
 using SlippiStats.Models;
 using System;
@@ -65,7 +66,8 @@ namespace SlippiStats.Controllers
 
             return File(replayFile.FileData, "application/x-msdownload", String.Format("replay{0}.slp", gameId));
         }
-        
+
+        [AllowAnonymous]
         public IActionResult Upload()
         {
             GameUploadViewModel viewModel = new GameUploadViewModel();
@@ -73,14 +75,16 @@ namespace SlippiStats.Controllers
             return View(viewModel);
         }
 
+        [AllowAnonymous]
         [HttpPost]
-        public IActionResult Upload(Game game)
+        public IActionResult Upload(SlpSettings settings)
         {
 
 
 
 
-            return RedirectToAction(nameof(GameController.Upload), "Game");
+
+            return Json(settings);
         }
     }
 }

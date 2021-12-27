@@ -9,16 +9,77 @@
 
 <div>
     <input id="replayInput" type="file" />
+
+    <form id="player1">
+        <input id="character1" disabled />
+        <input id="character2" disabled />
+        <input id="character3" disabled />
+        <input id="character4" disabled />
+    </form>
 </div>
 
 
 @section Scripts
 {
     <script type="module">
+
         import { Game } from 'https://cdn.skypack.dev/@@slippilab/parser';
+
         const input = document.querySelector('#replayInput');
+
         input.onchange = async () => {
-            console.log(new Game(await input.files[0].arrayBuffer()));
+
+            const game = new Game(await input.files[0].arrayBuffer());
+            const startBlock = game.gameStart;
+
+            console.log(game);
+
+            //const playerIndexes = startBlock
+            //const characterIds = startBlock.playerSettings.map((e) => e.externalCharacterId);
+
+            const players = startBlock.playerSettings.map((p) => {
+                return {
+                    playerIndex: p.playerIndex,
+                    characterId: p.externalCharacterId,
+                    playerType: p.playerType,
+                    startingStockCount: -99,
+                    costumeIndex: p.costumeIndex,
+                    teamShade: p.teamShade,
+                    handicap: -99,
+                    teamId: p.teamId,
+                    playerBitfield: -99,
+                    cpuLevel: -99,
+                    offenseRatio: -99,
+                    defenseRatio: -99,
+                    modelScale: -99,
+                    dashbackFix: -99,
+                    shieldDropFix: -99,
+                    nametag: p.nametag,
+                    displayName: p.displayName,
+                    connectCode: p.connectCode
+                };
+            });
+
+            console.log(players);
+
+            const url = 'https://localhost:44314/Game/Upload';
+            const request = new XMLHttpRequest();
+            request.open('POST', url);
+            request.setRequestHeader("Content-Type", "application/form-data");
+
+            let data = game
+            data =
+            {
+                test0: 432564356,
+                test1: true
+            }
+            console.log(data);
+            console.log(JSON.stringify(data));
+            
+            request.send(JSON.stringify(data));
+
+
         }
+
     </script>
 }

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE Game_GetById
+﻿CREATE PROCEDURE [dbo].[Game_GetById]
 	@id INT
 
 AS
@@ -36,8 +36,26 @@ SELECT
 	Game.Platform,
 	Game.Created,
 	Game.Updated,
-	Game.Deleted
+	Game.Deleted,
+	P1.Id AS p1Id,
+	P1.Name AS p1Name,
+	P1.ConnectCode AS p1ConnectCode,
+	P1.DiscordCode AS p1DiscordCode,
+	P1.Created AS p1Created,
+	P1.Updated AS p1Updated,
+	P1.Deleted AS p1Deleted,
+	P2.Id AS p2Id,
+	P2.Name AS p2Name,
+	P2.ConnectCode AS p2ConnectCode,
+	P2.DiscordCode AS p2DiscordCode,
+	P2.Created AS p2Created,
+	P2.Updated AS p2Updated,
+	P2.Deleted AS p2Deleted
 FROM
 	Game WITH (NOLOCK)
+	INNER JOIN Player AS P1 WITH (NOLOCK)
+		ON P1.Id = Game.Player1Id
+	INNER JOIN Player AS P2 WITH (NOLOCK)
+		ON P2.Id = Game.Player2Id
 WHERE
-	Id = @id
+	Game.Id = @id

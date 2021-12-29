@@ -69,6 +69,7 @@
     <Folder Include="Schema\UserRole" />
     <Folder Include="Schema\UserSession" />
     <Folder Include="Schema\Role" />
+    <Folder Include="Schema\GamePlayer" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare-Local.scmp" />
@@ -126,5 +127,6 @@
     <Build Include="Schema\Role\Role_GetByUserId.sql" />
     <Build Include="Schema\Role\Role_GetList.sql" />
     <Build Include="Schema\Role\Role.sql" />
+    <Build Include="Schema\GamePlayer\GamePlayer_GetList.sql" />
   </ItemGroup>
 </Project>

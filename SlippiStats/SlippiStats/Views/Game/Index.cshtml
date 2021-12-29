@@ -2,7 +2,11 @@
 
 @{
     ViewData["Title"] = "Player List Page";
+    Player player1 = Model.Game.Players.Player1;
+    Player player2 = Model.Game.Players.Player2;
 }
+
+ 
 
 <div class="section-filters">
     <h3>Stats Overview - Game#@Model.Game.Id</h3>
@@ -12,12 +16,12 @@
         
     </div>
     <span class="game-overview-player">
-        @Model.Player1.Name (@Model.Player1.ConnectCode)
+        @player1.Name (@player1.ConnectCode)
         <img class="stock-icon" src="@Model.Game.Character1?.GetStockIconPath()" />
     </span>
     <span class="game-overview-player">
         <img class="stock-icon" src="@Model.Game.Character2?.GetStockIconPath()" />
-        @Model.Player2.Name (@Model.Player2.ConnectCode)
+        @player2.Name (@player2.ConnectCode)
     </span>
     <div>
         <div>

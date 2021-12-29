@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE Game_GetListByPlayerIdFilters
+﻿CREATE PROCEDURE [dbo].[Game_GetListByPlayerIdFilters]
 	@playerId INT,
 	@character INT,
 	@opponentFilter VARCHAR(32),
@@ -10,7 +10,7 @@ AS
 
 SET @opponentFilter = '%' + @opponentFilter + '%'
 
-SELECT TOP 100
+SELECT TOP 50
 	Game.Id,
 	Game.Player1Id,
 	Game.Player2Id,
@@ -43,12 +43,30 @@ SELECT TOP 100
 	Game.Platform,
 	Game.Created,
 	Game.Updated,
-	Game.Deleted
+	Game.Deleted,
+	P1.Id AS p1Id,
+	P1.Name AS p1Name,
+	P1.ConnectCode AS p1ConnectCode,
+	P1.DiscordCode AS p1DiscordCode,
+	P1.Created AS p1Created,
+	P1.Updated AS p1Updated,
+	P1.Deleted AS p1Deleted,
+	P2.Id AS p2Id,
+	P2.Name AS p2Name,
+	P2.ConnectCode AS p2ConnectCode,
+	P2.DiscordCode AS p2DiscordCode,
+	P2.Created AS p2Created,
+	P2.Updated AS p2Updated,
+	P2.Deleted AS p2Deleted
 FROM
 	Game WITH (NOLOCK)
 	INNER JOIN Player Opponent WITH (NOLOCK)
 		ON (Opponent.Id = Game.Player1Id AND Game.Player1Id <> @playerId)
 		OR (Opponent.Id = Game.Player2Id AND Game.Player2Id <> @playerId)
+	INNER JOIN Player AS P1 WITH (NOLOCK)
+		ON P1.Id = Game.Player1Id
+	INNER JOIN Player AS P2 WITH (NOLOCK)
+		ON P2.Id = Game.Player2Id
 WHERE
 	(
 		Game.Player1Id = @playerId

@@ -161,10 +161,10 @@ namespace SlippiStats.Models
 
             Players = new PlayerGroup
             {
-                //Player1 = Player1Id != null ? new Player(dataReader, "p1") : null,
-                //Player2 = Player2Id != null ? new Player(dataReader, "p2") : null,
-                //Player3 = Player3Id != null ? new Player(dataReader, "p3") : null,
-                //Player4 = Player4Id != null ? new Player(dataReader, "p4") : null,
+                Player1 = Player1Id != null ? new Player(dataReader, "p1") : null,
+                Player2 = Player2Id != null ? new Player(dataReader, "p2") : null,
+                Player3 = Player3Id != null ? new Player(dataReader, "p3") : null,
+                Player4 = Player4Id != null ? new Player(dataReader, "p4") : null,
             };
 
         }

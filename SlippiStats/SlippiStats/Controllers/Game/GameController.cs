@@ -41,9 +41,7 @@ namespace SlippiStats.Controllers
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
 
-            //viewModel.ReplayFile = ReplayFile.GetByGameId(Database.Connection, viewModel.Game.Id);
-            //viewModel.Player1 = Player.GetById(Database.Connection, (int)viewModel.Game.Player1Id);
-            //viewModel.Player2 = Player.GetById(Database.Connection, (int)viewModel.Game.Player2Id);
+            viewModel.ReplayFile = ReplayFile.GetByGameId(Database.Connection, viewModel.Game.Id);
 
             return View(viewModel);
         }

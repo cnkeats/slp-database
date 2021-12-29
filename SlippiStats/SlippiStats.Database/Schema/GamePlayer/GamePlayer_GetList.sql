@@ -1,5 +1,6 @@
-﻿CREATE PROCEDURE [dbo].[Game_GetListByPlayerId]
-	@playerId INT
+﻿
+CREATE PROCEDURE [dbo].[GamePlayer_GetList]
+	@includeAnonymous BIT
 
 AS
 
@@ -53,13 +54,35 @@ SELECT TOP 50
 	P2.Deleted AS p2Deleted
 FROM
 	Game WITH (NOLOCK)
-	INNER JOIN Player AS P1 WITH (NOLOCK)
+	INNER JOIN Player P1 WITH (NOLOCK)
 		ON P1.Id = Game.Player1Id
-	INNER JOIN Player AS P2 WITH (NOLOCK)
+	INNER JOIN Player P2 WITH (NOLOCK)
 		ON P2.Id = Game.Player2Id
 WHERE
-	Game.Player1Id = @playerId
-	OR Game.Player2Id = @playerId
---ORDER BY
-	--Game.StartAt DESC,
-	--Game.Id
+	(@includeAnonymous = 1 OR
+		(
+			P1.Name <> 'P1'
+			AND P1.Name <> 'P2'
+			AND P1.Name <> 'P3'
+			AND P1.Name <> 'P4'
+			AND P1.Name <> 'CPU1'
+			AND P1.Name <> 'CPU2'
+			AND P1.Name <> 'CPU3'
+			AND P1.Name <> 'CPU4'
+		)
+	)
+	AND (@includeAnonymous = 1 OR
+		(
+			P2.Name <> 'P1'
+			AND P2.Name <> 'P2'
+			AND P2.Name <> 'P3'
+			AND P2.Name <> 'P4'
+			AND P2.Name <> 'CPU1'
+			AND P2.Name <> 'CPU2'
+			AND P2.Name <> 'CPU3'
+			AND P2.Name <> 'CPU4'
+		)
+	)
+ORDER BY
+	Game.StartAt DESC,
+	Game.Id

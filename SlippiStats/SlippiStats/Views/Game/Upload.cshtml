@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Upload Page";
 }
 
@@ -23,7 +23,7 @@
 {
     <script type="module">
 
-        import { Game } from 'https://cdn.skypack.dev/@@slippilab/parser';
+        import { Game } from 'https://cdn.skypack.dev/@@slippilab/parser?min';
 
         const input = document.querySelector('#replayInput');
 
@@ -33,6 +33,7 @@
             const startBlock = game.gameStart;
 
             console.log(game);
+            console.log(game.gameStart.playerSettings[0]['cpuLevel']);
 
             //const playerIndexes = startBlock
             //const characterIds = startBlock.playerSettings.map((e) => e.externalCharacterId);
@@ -47,7 +48,7 @@
                     teamShade: p.teamShade,
                     handicap: -99,
                     teamId: p.teamId,
-                    playerBitfield: -99,
+                    playerBitfield: 27,
                     cpuLevel: -99,
                     offenseRatio: -99,
                     defenseRatio: -99,
@@ -60,23 +61,27 @@
                 };
             });
 
-            console.log(players);
+            //console.log(players);
 
             const url = 'https://localhost:44314/Game/Upload';
             const request = new XMLHttpRequest();
             request.open('POST', url);
-            request.setRequestHeader("Content-Type", "application/form-data");
+            let formData = new FormData();
+            formData.append("slpVersion", startBlock.replayFormatVersion);
+            formData.append("isTeams", startBlock.isTeams);
+            formData.append("stageId", startBlock.stageId);
 
-            let data = game
-            data =
-            {
-                test0: 432564356,
-                test1: true
-            }
-            console.log(data);
-            console.log(JSON.stringify(data));
+            players.forEach((p, index) => {
+                Object.keys(p).forEach((key) => {
+                    formData.append(`players[${index}].${key}`, p[key])
+                });
+            });
+
+            console.log(formData);
+            console.log(players);
+
             
-            request.send(JSON.stringify(data));
+            request.send(formData);
 
 
         }

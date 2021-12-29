@@ -77,7 +77,7 @@ namespace SlippiStats.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Upload(SlpSettings settings)
+        public IActionResult Upload([FromForm] SlpSettings settings)
         {
 
 

@@ -9,6 +9,9 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-top: 0px;
 }
 .footer {
   position: absolute;

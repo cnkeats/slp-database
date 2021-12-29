@@ -32,7 +32,9 @@ namespace SlippiStats.Models
 
         public float ModelScale { get; set; }
 
-        public string ControllerFix { get; set; }
+        public string DashbackFix { get; set; }
+
+        public string ShieldDropFix { get; set; }
 
         public string Nametag { get; set; }
 

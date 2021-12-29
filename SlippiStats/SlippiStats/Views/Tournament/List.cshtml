@@ -1,0 +1,72 @@
+﻿@model  TournamentListViewModel
+
+@{
+    ViewData["Title"] = "Tournament List";
+}
+
+<div class="section-filters">
+    <h3>XX Tournaments in our Database</h3>
+    <form class="form-standard" method="post">
+        <div class="form-standard-field">
+            <input name="PlayerFilter1" placeholder="Player Tag or Code" type="text" value="" />
+        </div>
+        <div class="form-standard-field">
+            <input name="PlayerFilter2" placeholder="Player Tag or Code" type="text" value="" />
+        </div>
+        <div class="form-standard-field">
+            <select name="CharacterFilter1">
+                <option value="" selected="selected">Character</option>
+                
+            </select>
+        </div>
+        <div class="form-standard-field">
+            <select name="CharacterFilter2">
+                <option value="" selected="selected">Character</option>
+                
+            </select>
+        </div>
+        <div class="form-standard-field">
+            <select name="StageFilter">
+                <option selected="selected">Stage</option>
+                
+            </select>
+        </div>
+        <div class="form-standard-field">
+            <button class="button" type="submit">Filter</button>
+        </div>
+    </form>
+</div>
+
+<table class="table-game-entry table-primary">
+    <thead>
+        <tr>
+            <th class="align-center">Game Id</th>
+            <th class="align-left"></th>
+            <th class="align-left"></th>
+            <th class="align-center">Player 1</th>
+            <th class="align-left"></th>
+            <th class="align-left"></th>
+            <th class="align-center">Player 2</th>
+            <th class="align-left"></th>
+            <th class="align-center">Stage</th>
+            <th class="align-center">Date</th>
+            <th class="align-left" hidden></th>
+            <th class="align-left" hidden>File Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        function goToProfile(id) {
+            window.location.href = '/Player/Profile/' + id;
+        }
+
+        function goToGame(id) {
+            window.location.href = '/Game/' + id
+        }
+    </script>
+}

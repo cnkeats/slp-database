@@ -13,7 +13,7 @@ namespace SlippiStats.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToAction(nameof(GameController.Upload), "Game");
+            return RedirectToAction(nameof(TournamentController.List), "Tournament");
             //return View();
         }
 

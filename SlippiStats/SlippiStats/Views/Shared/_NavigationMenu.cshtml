@@ -2,6 +2,9 @@
     @if (User.Identity.IsAuthenticated)
     {
         <li>
+            <a asp-controller="Game" asp-action="Upload">Upload</a>
+        </li>
+        <li>
             <a asp-controller="Game" asp-action="List">Games</a>
         </li>
         <li>

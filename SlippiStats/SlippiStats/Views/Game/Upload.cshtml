@@ -38,23 +38,23 @@
             //const playerIndexes = startBlock
             //const characterIds = startBlock.playerSettings.map((e) => e.externalCharacterId);
 
-            const players = startBlock.playerSettings.map((p) => {
+            const players = startBlock.playerSettings.filter((p) => p.playerType != 3).map((p) => {
                 return {
                     playerIndex: p.playerIndex,
                     characterId: p.externalCharacterId,
                     playerType: p.playerType,
-                    startingStockCount: -99,
+                    startingStockCount: p.startStocks,
                     costumeIndex: p.costumeIndex,
                     teamShade: p.teamShade,
-                    handicap: -99,
+                    handicap: p.handicap,
                     teamId: p.teamId,
-                    playerBitfield: 27,
-                    cpuLevel: -99,
-                    offenseRatio: -99,
-                    defenseRatio: -99,
-                    modelScale: -99,
-                    dashbackFix: -99,
-                    shieldDropFix: -99,
+                    playerBitfield: p.playerBitfield,
+                    cpuLevel: p.cpuLevel,
+                    offenseRatio: p.offenseRatio,
+                    defenseRatio: p.defenseRatio,
+                    modelScale: p.modelScale,
+                    dashbackFix: p.controllerFix,
+                    shieldDropFix: p.controllerFix,
                     nametag: p.nametag,
                     displayName: p.displayName,
                     connectCode: p.connectCode
@@ -77,7 +77,6 @@
                 });
             });
 
-            console.log(formData);
             console.log(players);
 
             

@@ -11,9 +11,9 @@ namespace SlippiStats.Models
     {
         public int Id { get; set; }
 
-        public int? TournamentOrganizerId { get; set; }
-
         public string Name { get; set; }
+
+        public int? TournamentOrganizerId { get; set; }
 
         public DateTime StartDate { get; set; }
 
@@ -24,6 +24,17 @@ namespace SlippiStats.Models
         public DateTime? Updated { get; set; }
 
         public DateTime? Deleted { get; set; }
+
+        public bool IsDeleted
+        {
+            get => Deleted != null;
+            set => Deleted = value ? DateTime.Now : (DateTime?)null;
+        }
+
+        public Tournament()
+        {
+            Created = DateTime.Now;
+        }
 
         private Tournament(IDataReader dataReader)
         {
@@ -88,6 +99,57 @@ namespace SlippiStats.Models
             }
 
             return tournaments;
+        }
+
+        public void Save(IDbConnection connection)
+        {
+            if (Id == 0)
+            {
+                Insert(connection);
+            }
+            else
+            {
+                Update(connection);
+            }
+        }
+
+        private void Insert(IDbConnection connection)
+        {
+            using IDbCommand command = connection.CreateStoredProcedure(
+                $"{nameof(Tournament)}_{nameof(Insert)}",
+                new
+                {
+                    Name,
+                    TournamentOrganizerId,
+                    StartDate,
+                    EndDate,
+                    Created,
+                    Updated,
+                    Deleted
+                });
+
+            Id = (int)command.ExecuteScalar();
+        }
+
+        private void Update(IDbConnection connection)
+        {
+            Updated = DateTime.Now;
+
+            using IDbCommand command = connection.CreateStoredProcedure(
+                $"{nameof(Tournament)}_{nameof(Update)}",
+                new
+                {
+                    Id,
+                    Name,
+                    TournamentOrganizerId,
+                    StartDate,
+                    EndDate,
+                    Created,
+                    Updated,
+                    Deleted
+                });
+
+            command.ExecuteNonQuery();
         }
     }
 }

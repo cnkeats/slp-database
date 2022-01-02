@@ -6,8 +6,8 @@ AS
 
 SELECT
 	Tournament.Id,
-	Tournament.TournamentOrganizerId,
 	Tournament.Name,
+	Tournament.TournamentOrganizerId,
 	Tournament.StartDate,
 	Tournament.EndDate,
 	Tournament.Created,

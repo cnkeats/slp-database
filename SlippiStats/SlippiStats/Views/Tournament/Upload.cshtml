@@ -15,11 +15,11 @@
             </div>
             <div>
                 <label>Start Date</label>
-                <input type="date" name="startDate" placeholder="Start Date" />
+                <input type="date" id="startDate" placeholder="Start Date" />
             </div>
             <div>
                 <label>End Date</label>
-                <input type="date" name="endDate" placeholder="End Date" />
+                <input type="date" id="endDate" placeholder="End Date" />
             </div>
             <div>
                 <input type="file" id="files" name="files" multiple hidden />
@@ -40,7 +40,7 @@
             </div>
         </div>
         <div>
-            <button class="button" id="finishUpload" onclick="submitForm()" style="display:none">Complete Upload</button>
+            <button class="button" id="finishUpload" onclick="submitForm()" style="">Complete Upload</button>
         </div>
     </div>
 </div>
@@ -80,7 +80,31 @@
                     $("#declineUpload").show();
                 }
                 else {
-                    processFiles();
+                    const startDateString = $('#startDate').val();
+                    const endDateString = $('#endDate').val();
+
+                    const tournamentName = $('#tournamentName').val();
+                    const startDate = startDateString.length > 0 ? new Date(startDateString).toISOString() : null;
+                    const endDate = endDateString.length > 0 ? new Date(endDateString).toISOString() : null;
+
+                    const data = {
+                        tournamentName: tournamentName,
+                        startDate: startDate,
+                        endDate: endDate
+                    }
+
+                    $.ajax({
+                        url: `@Url.Action("Create")`,
+                        type: 'POST',
+                        data: data,
+                        success: function (response) {
+                            processFiles();
+                        },
+                        error: function (response) {
+                            console.error('There was an error creating the tournament.');
+                            console.error(response);
+                        }
+                    });
                 }
             });
         }
@@ -102,6 +126,28 @@
 
         function submitForm() {
 
+            const startDateString = $('#startDate').val();
+            const endDateString = $('#endDate').val();
+
+            const tournamentName = $('#tournamentName').val();
+            const startDate = startDateString.length > 0 ? new Date(startDateString).toISOString() : null;
+            const endDate = endDateString.length > 0 ? new Date(endDateString).toISOString() : null;
+
+            const data = {
+                tournamentName: tournamentName,
+                startDate: startDate,
+                endDate: endDate
+            }
+            console.log(data);
+
+            $.ajax({
+                url: '@Url.Action("UploadGame")',
+                type: 'POST',
+                data: data
+            }).done(function (response) {
+                console.log('POST done');
+                console.log(response);
+            });
         }
 
         function clearForm() {

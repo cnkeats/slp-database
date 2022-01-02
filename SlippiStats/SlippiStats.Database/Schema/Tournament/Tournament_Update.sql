@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[Tournament_GetList]
+CREATE PROCEDURE [dbo].[Tournament_Update]
 
 AS
 

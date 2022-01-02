@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SlippiStats.Configuration;
 using SlippiStats.Models;
+using System;
 using System.Collections.Generic;
 
 namespace SlippiStats.Controllers
@@ -36,14 +37,9 @@ namespace SlippiStats.Controllers
         }
 
         [HttpPost]
-        public IActionResult Upload(TournamentUploadViewModel viewModel)
+        public IActionResult Upload(string tournamentName)
         {
             //List<IFormFile> files = viewModel.Files;
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
             return View();
         }
 
@@ -53,6 +49,38 @@ namespace SlippiStats.Controllers
             Tournament tournament = Tournament.GetByName(Database.Connection, tournamentName);
 
             return tournament != null ? JsonConvert.SerializeObject(tournament) : null;
+        }
+
+        [HttpPost]
+        public Tournament Create(string tournamentName, DateTime startDate, DateTime? endDate)
+        {
+            Tournament tournament = Tournament.GetByName(Database.Connection, tournamentName);
+
+            if (tournament != null)
+            {
+                // Shouldn't happen
+                return tournament;
+            }
+
+            tournament = new Tournament();
+            tournament.Name = tournamentName;
+            tournament.StartDate = startDate;
+            tournament.EndDate = endDate;
+            tournament.Save(Database.Connection);
+
+            return tournament;
+        }
+
+        [HttpPost]
+        public Game UploadGame()
+        {
+            Game g = new Game();
+
+
+
+
+            Game game = null;
+            return game;
         }
     }
 }

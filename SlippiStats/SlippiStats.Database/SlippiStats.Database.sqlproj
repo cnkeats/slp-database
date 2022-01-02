@@ -134,5 +134,7 @@
     <Build Include="Schema\Tournament\Tournament_GetList.sql" />
     <Build Include="Schema\Tournament\Tournament_GetById.sql" />
     <Build Include="Schema\Tournament\Tournament_GetByName.sql" />
+    <Build Include="Schema\Tournament\Tournament_Insert.sql" />
+    <Build Include="Schema\Tournament\Tournament_Update.sql" />
   </ItemGroup>
 </Project>

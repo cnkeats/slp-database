@@ -70,9 +70,11 @@
     <Folder Include="Schema\UserSession" />
     <Folder Include="Schema\Role" />
     <Folder Include="Schema\GamePlayer" />
+    <Folder Include="Schema\Tournament" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SchemaCompare-Local.scmp" />
+    <None Include="SchemaCompare-Dev.scmp" />
+    <None Include="SchemaCompare-Prod.scmp" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schema\Game\Game.sql" />
@@ -128,5 +130,9 @@
     <Build Include="Schema\Role\Role_GetList.sql" />
     <Build Include="Schema\Role\Role.sql" />
     <Build Include="Schema\GamePlayer\GamePlayer_GetList.sql" />
+    <Build Include="Schema\Tournament\Tournament.sql" />
+    <Build Include="Schema\Tournament\Tournament_GetList.sql" />
+    <Build Include="Schema\Tournament\Tournament_GetById.sql" />
+    <Build Include="Schema\Tournament\Tournament_GetByName.sql" />
   </ItemGroup>
 </Project>

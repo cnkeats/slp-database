@@ -13,8 +13,7 @@ namespace SlippiStats.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToAction(nameof(TournamentController.List), "Tournament");
-            //return View();
+            return RedirectToAction(nameof(TournamentController.Upload), "Tournament");
         }
 
         public IActionResult Privacy()

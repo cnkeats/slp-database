@@ -5,22 +5,29 @@
 <div class="section-heading">
     <h2>Upload a Game</h2>
 </div>
-
-
-<div>
+<div class="upload-section">
     <input id="replayInput" type="file" />
-
-    <form id="player1">
-        <input id="character1" disabled />
-        <input id="character2" disabled />
-        <input id="character3" disabled />
-        <input id="character4" disabled />
-    </form>
+</div>
+<div class="section-heading">
+    <h2>Upload a Tournament</h2>
+</div>
+<div class="upload-section">
+    <div>
+        <button class="button" onclick="uploadTournament()">
+            Upload a Tournament
+        </button>
+    </div>
 </div>
 
 
 @section Scripts
 {
+    <script>
+        function uploadTournament() {
+            window.location.href = '/Tournament/Upload';
+        }
+    </script>
+
     <script type="module">
 
         import { Game } from 'https://cdn.skypack.dev/@@slippilab/parser?min';
@@ -79,11 +86,10 @@
 
             console.log(players);
 
-            
+
             request.send(formData);
 
 
         }
-
     </script>
 }

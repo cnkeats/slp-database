@@ -915,7 +915,6 @@ div[class^="section-"] {
     overflow: auto;
 }
 
-
 .game-overview-player {
     /*border: 1px solid green;*/
     background-color: var(--color-surface-lighter);
@@ -947,3 +946,12 @@ div[class^="section-"] {
 *:hover { 
     /*outline:1px #72dadd solid*/
 } 
+
+.upload-section {
+    text-align:center;
+}
+
+.upload-section * {
+    text-align: center;
+    margin: 5px;
+}

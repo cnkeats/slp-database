@@ -1,0 +1,183 @@
+@model TournamentUploadViewModel
+
+@{
+    ViewData["Title"] = "Tournament Upload";
+}
+
+<div class="section-heading">
+    <h2>Upload a tournament</h2>
+</div>
+<div class="upload-section">
+    <div>
+        <form enctype="multipart/form-data" method="POST">
+            <div>
+                <input type="text" name="tournamentName" id="tournamentName" placeholder="Tournament Name" />
+            </div>
+            <div>
+                <label>Start Date</label>
+                <input type="date" name="startDate" placeholder="Start Date" />
+            </div>
+            <div>
+                <label>End Date</label>
+                <input type="date" name="endDate" placeholder="End Date" />
+            </div>
+            <div>
+                <input type="file" id="files" name="files" multiple hidden />
+                <label for="files" class="button" style="color:black">
+                    Select files
+                </label>
+            </div>
+        </form>
+        <button class="button" type="button" onclick="validateForm()" id="submitButton" disablesd>Submit</button>
+        <div>
+            <label id="uploadText"></label>
+            <button class="button" style="display:none" id="confirmUpload" onclick="processFiles()">Yes</button>
+            <button class="button" style="display:none" id="declineUpload" onclick="clearForm()">No</button>
+            <div>
+                <label id="processingText"></label>
+                <br />
+                <label class="errorText" id="errorText"></label>
+            </div>
+        </div>
+        <div>
+            <button class="button" id="finishUpload" onclick="submitForm()" style="display:none">Complete Upload</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $('#files').change(function (ev) {
+            const selectedFiles = $("#files").get(0).files;
+            const fileCount = selectedFiles.length;
+
+            if (fileCount > 0) {
+                $("#uploadText").text(`${fileCount} files selected`);
+                $("#submitButton").prop('disabled', false);
+            }
+            else {
+                $("#uploadText").text('');
+                $("#submitButton").prop('disabled', true);
+            }
+        });
+
+
+        function validateForm() {
+
+            // Check for a tournament by that name already. If it's a match, we may be able to eliminate duplicate files.
+            const tournamentName = $("#tournamentName").val();
+
+            $.ajax({
+                url: `@Url.Action("Check")?tournamentName=${tournamentName}`,
+                type: 'GET',
+            }).done((data) => {
+                if (data) {
+                    const tournament = JSON.parse(data);
+
+                    $("#uploadText").text(`There is already a tournament with the name "${tournament.Name}". Do you still want to upload these replays?`);
+                    $("#confirmUpload").show();
+                    $("#declineUpload").show();
+                }
+                else {
+                    processFiles();
+                }
+            });
+        }
+
+        async function processFiles() {
+            const selectedFiles = $("#files").get(0).files;
+            const fileCount = selectedFiles.length;
+
+            const uploadText = `You are uploading ${selectedFiles.length} files.${fileCount > 10 ? ' This may take some time...' : ''}`;
+
+            $("#uploadText").text(uploadText);
+            $("#confirmUpload").hide();
+            $("#declineUpload").hide();
+
+            // Process the replays
+            await processReplays();
+            $('#finishUpload').show();
+        }
+
+        function submitForm() {
+
+        }
+
+        function clearForm() {
+            location.reload();
+        }
+
+    </script>
+    <script type="module">
+        import { Game } from 'https://cdn.skypack.dev/@@slippilab/parser?min';
+
+        async function processReplays() {
+            const files = $("#files").get(0).files;
+            if (files.length == 0) {
+                $("#uploadText").text(`Please select some replay files first.`);
+                return;
+            }
+
+            let uploadSummary = {
+                success: [],
+                duplicate: [],
+                failure: []
+            }
+
+            for (let index = 0; index < files.length; index++) {
+
+                let file;
+
+                try {
+                    file = files[index];
+                    let game = new Game(await file.arrayBuffer());
+                    let startBlock = game.gameStart;
+
+                    let players = startBlock.playerSettings.filter((p) => p.playerType != 3).map((p) => {
+                        return {
+                            playerIndex: p.playerIndex,
+                            characterId: p.externalCharacterId,
+                            playerType: p.playerType,
+                            startingStockCount: p.startStocks,
+                            costumeIndex: p.costumeIndex,
+                            teamShade: p.teamShade,
+                            handicap: p.handicap,
+                            teamId: p.teamId,
+                            playerBitfield: p.playerBitfield,
+                            cpuLevel: p.cpuLevel,
+                            offenseRatio: p.offenseRatio,
+                            defenseRatio: p.defenseRatio,
+                            modelScale: p.modelScale,
+                            dashbackFix: p.controllerFix,
+                            shieldDropFix: p.controllerFix,
+                            nametag: p.nametag,
+                            displayName: p.displayName,
+                            connectCode: p.connectCode
+                        };
+                    });
+
+                    uploadSummary.success.push({ name: file.name, startBlock: startBlock, players: players });
+                }
+                catch (exception) {
+                    console.error(`Processing file ${file.name} caused an error`);
+                    console.error(exception);
+                    uploadSummary.failure.push(file.name);
+                }
+                finally {
+                    if ((index + 1) % 10 == 0 || index == files.length - 1) {
+                        $("#processingText").text(`${uploadSummary.success.length + uploadSummary.failure.length} / ${files.length} files analyzed`);
+                    }
+                }
+            }
+
+            $('#uploadText').text('');
+            $('#processingText').text(`Finished processing ${uploadSummary.success.length} of ${files.length} files.`);
+            if (uploadSummary.failure.length > 0) {
+                $('#errorText').text(`There were some errors. ${uploadSummary.failure.length} files could not be analyzed and will not be uploaded.`);
+            }
+        }
+        window.processReplays = processReplays;
+
+    </script>
+}

@@ -41,7 +41,7 @@ namespace SlippiStats.Models
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return;
             }

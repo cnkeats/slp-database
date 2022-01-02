@@ -169,3 +169,5 @@ SlippiStats/SlippiStats/appsettings.json
 key.json
 
 SlippiStats/SlippiStats.Database/SchemaCompare-Local.scmp
+
+*.scmp

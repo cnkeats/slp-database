@@ -277,6 +277,23 @@ namespace SlippiStats.Models
             return games;
         }
 
+        public bool AssignToTournament(IDbConnection connection, int tournamentId)
+        {
+            Tournament tournament = Tournament.GetById(connection, tournamentId);
+
+            if (tournament != null)
+            {
+                TournamentGame tournamentGame = new TournamentGame();
+                tournamentGame.GameId = Id;
+                tournamentGame.TournamentId = tournament.Id;
+                tournamentGame.Save(connection);
+
+                return tournamentGame.Id != 0;
+            }
+
+            return false;
+        }
+
         public void Save(IDbConnection connection)
         {
             if (Id == 0)
@@ -319,7 +336,7 @@ namespace SlippiStats.Models
                     StartAt,
                     StartingSeed,
                     GameLength,
-                    Version,
+                    Version = Version.ToString(),
                     FileName,
                     FileSource,
                     Hash,

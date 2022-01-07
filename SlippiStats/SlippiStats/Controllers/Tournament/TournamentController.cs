@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SlippiStats.Configuration;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 
 namespace SlippiStats.Controllers
 {
+    [AllowAnonymous]
     public class TournamentController : ApplicationController
     {
         public TournamentController(ApplicationSettings settings, ApplicationDatabase database)
@@ -71,15 +73,13 @@ namespace SlippiStats.Controllers
             return tournament;
         }
 
+        [AllowAnonymous]
         [HttpPost]
-        public Game UploadGame()
+        public Game UploadGame(Game game, int tournamentId)
         {
-            Game g = new Game();
+            game.Save(Database.Connection);
+            game.AssignToTournament(Database.Connection, tournamentId);
 
-
-
-
-            Game game = null;
             return game;
         }
     }

@@ -27,7 +27,7 @@
     Version VARCHAR(16) NULL,
     FileName VARCHAR(32) NULL,
     FileSource VARCHAR(32) NOT NULL,
-    Hash VARCHAR(32) NOT NULL,
+    Hash VARCHAR(32) NULL,
     Platform VARCHAR(32) NOT NULL,
     Created DATETIME NOT NULL,
     Updated DATETIME NULL,

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,8 +9,7 @@
     <ProjectGuid>{996c6887-9069-4b17-9d1a-01d24d826210}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
-    <RootPath>
-    </RootPath>
+    <RootPath />
     <RootNamespace>WasteEnterprises.Database</RootNamespace>
     <AssemblyName>WasteEnterprises.Database</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
@@ -49,7 +48,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
-    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
     <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
     <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
   </PropertyGroup>
@@ -71,6 +69,7 @@
     <Folder Include="Schema\Role" />
     <Folder Include="Schema\GamePlayer" />
     <Folder Include="Schema\Tournament" />
+    <Folder Include="Schema\TournamentGame" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare-Dev.scmp" />
@@ -136,5 +135,8 @@
     <Build Include="Schema\Tournament\Tournament_GetByName.sql" />
     <Build Include="Schema\Tournament\Tournament_Insert.sql" />
     <Build Include="Schema\Tournament\Tournament_Update.sql" />
+    <Build Include="Schema\TournamentGame\TournamentGame.sql" />
+    <Build Include="Schema\TournamentGame\TournamentGame_Insert.sql" />
+    <Build Include="Schema\TournamentGame\TournamentGame_Update.sql" />
   </ItemGroup>
 </Project>

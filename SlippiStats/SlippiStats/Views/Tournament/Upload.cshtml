@@ -40,7 +40,7 @@
             </div>
         </div>
         <div>
-            <button class="button" id="finishUpload" onclick="submitForm()" style="">Complete Upload</button>
+            <!--<button class="button" id="finishUpload" onclick="submitForm()" style="">Complete Upload</button>-->
         </div>
     </div>
 </div>
@@ -48,6 +48,7 @@
 @section Scripts
 {
     <script>
+
         $('#files').change(function (ev) {
             const selectedFiles = $("#files").get(0).files;
             const fileCount = selectedFiles.length;
@@ -74,10 +75,12 @@
             }).done((data) => {
                 if (data) {
                     const tournament = JSON.parse(data);
+                    tournamentId = tournament.Id;
 
-                    $("#uploadText").text(`There is already a tournament with the name "${tournament.Name}". Do you still want to upload these replays?`);
-                    $("#confirmUpload").show();
-                    $("#declineUpload").show();
+                    //$("#uploadText").text(`There is already a tournament with the name "${tournament.Name}". Do you still want to upload these replays?`);
+                    //$("#confirmUpload").show();
+                    //$("#declineUpload").show();
+                    processFiles(tournamentId);
                 }
                 else {
                     const startDateString = $('#startDate').val();
@@ -98,7 +101,8 @@
                         type: 'POST',
                         data: data,
                         success: function (response) {
-                            processFiles();
+                            const tournament = JSON.stringify(response);
+                            processFiles(tournament.Id);
                         },
                         error: function (response) {
                             console.error('There was an error creating the tournament.');
@@ -109,7 +113,7 @@
             });
         }
 
-        async function processFiles() {
+        async function processFiles(tournamentId) {
             const selectedFiles = $("#files").get(0).files;
             const fileCount = selectedFiles.length;
 
@@ -120,34 +124,8 @@
             $("#declineUpload").hide();
 
             // Process the replays
-            await processReplays();
+            await processReplays(tournamentId);
             $('#finishUpload').show();
-        }
-
-        function submitForm() {
-
-            const startDateString = $('#startDate').val();
-            const endDateString = $('#endDate').val();
-
-            const tournamentName = $('#tournamentName').val();
-            const startDate = startDateString.length > 0 ? new Date(startDateString).toISOString() : null;
-            const endDate = endDateString.length > 0 ? new Date(endDateString).toISOString() : null;
-
-            const data = {
-                tournamentName: tournamentName,
-                startDate: startDate,
-                endDate: endDate
-            }
-            console.log(data);
-
-            $.ajax({
-                url: '@Url.Action("UploadGame")',
-                type: 'POST',
-                data: data
-            }).done(function (response) {
-                console.log('POST done');
-                console.log(response);
-            });
         }
 
         function clearForm() {
@@ -158,7 +136,7 @@
     <script type="module">
         import { Game } from 'https://cdn.skypack.dev/@@slippilab/parser?min';
 
-        async function processReplays() {
+        async function processReplays(tournamentId) {
             const files = $("#files").get(0).files;
             if (files.length == 0) {
                 $("#uploadText").text(`Please select some replay files first.`);
@@ -169,7 +147,7 @@
                 success: [],
                 duplicate: [],
                 failure: []
-            }
+            }            
 
             for (let index = 0; index < files.length; index++) {
 
@@ -180,7 +158,9 @@
                     let game = new Game(await file.arrayBuffer());
                     let startBlock = game.gameStart;
 
-                    let players = startBlock.playerSettings.filter((p) => p.playerType != 3).map((p) => {
+                    let players = startBlock.playerSettings.map((p) => {
+
+                        console.log(p);
                         return {
                             playerIndex: p.playerIndex,
                             characterId: p.externalCharacterId,
@@ -203,12 +183,68 @@
                         };
                     });
 
-                    uploadSummary.success.push({ name: file.name, startBlock: startBlock, players: players });
+                    const data = {
+                        Character1: players[0] ? players[0].characterId : null,
+                        Character2: players[1] ? players[1].characterId : null,
+                        Character3: players[2] ? players[2].characterId : null,
+                        Character4: players[3] ? players[3].characterId : null,
+                        Stage: startBlock.stageId,
+                        GameMode: startBlock.GameMode,
+                        GameSettingsId: null,
+                        Player1EndingStocks: players[0] ? game.frames[game.frames.length - 1].players.find((p) => {
+                            console.log(p);
+                            return p ? p.post[0].playerIndex == 0 : false;
+                        }).post[0].stocksRemaining : null,
+                        Player2EndingStocks: players[1] ? game.frames[game.frames.length - 1].players.find((p) => {
+                            console.log(p);
+                            return p ? p.post[0].playerIndex == 1 : false;
+                        }).post[0].stocksRemaining : null,
+                        Player3EndingStocks: players[2] ? game.frames[game.frames.length - 1].players.find((p) => {
+                            console.log(p);
+                            return p ? p.post[0].playerIndex == 2 : false;
+                        }).post[0].stocksRemaining : null,
+                        Player4EndingStocks: players[3] ? game.frames[game.frames.length - 1].players.find((p) => {
+                            console.log(p);
+                            return p ? p.post[0].playerIndex == 3 : false;
+                        }).post[0].stocksRemaining : null,
+                        GameEndMethod: game.gameEnd.gameEndMethod,
+                        LRASInitiatorIndex: game.gameEnd.quitInitiator,
+                        StartAt: game.metadata.startAt,
+                        StartingSeed: game.frames[-123].start.randomSeed,
+                        GameLength: game.frames.length,
+                        //Version: JSON.stringify(game.formatVersion),
+                        Version: game.formatVersion,
+                        FileName: file.name,
+                        FileSource: 'Tournament Upload',
+                        Hash: null,
+                        Platform: game.metadata?.playedOn,
+                        Players: null,
+                        TournamentId: tournamentId
+                    }
+
+                    console.log(`uploading a game with data ${data}`);
+
+                    $.ajax({
+                        url: '@Url.Action("UploadGame")',
+                        type: 'POST',
+                        data: data,
+                        success: function (response) {
+                            uploadSummary.success.push({ name: file.name, startBlock: startBlock, players: players });
+                        },
+                        failure: function (response) {
+                            uploadSummary.failure.push(file.name);
+                        }
+                    }).done(function (response) {
+                        console.log('POST done');
+                        console.log(response);
+                    });
+
                 }
                 catch (exception) {
                     console.error(`Processing file ${file.name} caused an error`);
                     console.error(exception);
                     uploadSummary.failure.push(file.name);
+                    return;
                 }
                 finally {
                     if ((index + 1) % 10 == 0 || index == files.length - 1) {

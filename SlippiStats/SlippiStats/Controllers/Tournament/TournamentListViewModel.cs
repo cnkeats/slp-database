@@ -4,13 +4,15 @@ using System.Collections.Generic;
 
 namespace SlippiStats.Controllers
 {
-    public class TournamentListViewModel : SlippiStatsViewModel
+    public class TournamentIndexViewModel : SlippiStatsViewModel
     {
-        public List<Tournament> Entries { get; set; }
+        public Tournament Tournament { get; set; }
 
-        public TournamentListViewModel() : base()
+        public List<Game> Entries { get; set; }
+
+        public TournamentIndexViewModel() : base()
         {
-            Entries = new List<Tournament>();
+            Entries = new List<Game>();
         }
     }
 }

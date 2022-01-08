@@ -5,7 +5,7 @@
 }
 
 <div class="section-filters">
-    <h3>XX Tournaments in our Database</h3>
+    <h3>@Model.Entries.Count Tournaments in our Database</h3>
     <form class="form-standard" method="post">
         <div class="form-standard-field">
             <input name="TournamentNameFilter" placeholder="Name" type="text" value="" />
@@ -18,17 +18,17 @@
         <tr>
             <th class="align-center">Tournament Id</th>
             <th class="align-center">Name</th>
-            <th class="align-center">Date</th>
+            <th class="align-center" colspan="2">Date</th>
         </tr>
     </thead>
     <tbody>
         @foreach (Tournament tournament in Model.Entries)
         {
-            <tr class="">
+            <tr class="" onclick="goToTournament(@tournament.Id)">
                 <td class="align-center">@tournament.Id</td>
                 <td class="align-center">@tournament.Name</td>
-                <td class="align-center">@tournament.StartDate.ToString("MM/dd/yy - HH:mm")</td>
-                <td class="align-center">@tournament.EndDate?.ToString("MM/dd/yy - HH:mm")</td>
+                <td class="align-center">@tournament.StartDate.ToString("MMM. dd, yyyy")</td>
+                <!--<td class="align-center">@tournament.EndDate?.ToString("MMM. dd, yyyy")</td>-->
             </tr>
         }
     </tbody>
@@ -36,12 +36,8 @@
 
 @section Scripts {
     <script>
-        function goToProfile(id) {
-            window.location.href = '/Player/Profile/' + id;
-        }
-
-        function goToGame(id) {
-            window.location.href = '/Game/' + id
+        function goToTournament(id) {
+            window.location.href = '/Tournament/' + id
         }
     </script>
 }

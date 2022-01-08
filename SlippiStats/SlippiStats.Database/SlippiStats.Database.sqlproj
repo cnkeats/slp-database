@@ -138,5 +138,6 @@
     <Build Include="Schema\TournamentGame\TournamentGame.sql" />
     <Build Include="Schema\TournamentGame\TournamentGame_Insert.sql" />
     <Build Include="Schema\TournamentGame\TournamentGame_Update.sql" />
+    <Build Include="Schema\Tournament\Tournament_GetGames.sql" />
   </ItemGroup>
 </Project>

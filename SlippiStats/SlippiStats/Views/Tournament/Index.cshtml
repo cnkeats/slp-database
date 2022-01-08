@@ -1,0 +1,97 @@
+﻿@model TournamentIndexViewModel
+
+@{
+    ViewData["Title"] = "Player List Page";
+    Tournament tournament = Model.Tournament;
+}
+
+
+
+<div class="section-filters">
+    <h3>Stats Overview - @tournament.Name - @Model.Entries.Count games found</h3>
+    <form class="form-standard" method="post">
+        <div class="form-standard-field">
+        </div>
+        <div class="form-standard-field">
+        </div>
+        <div class="form-standard-field">
+            <select name="CharacterFilter1">
+                <option value="" selected="selected">Character</option>
+            </select>
+        </div>
+        <div class="form-standard-field">
+            <select name="CharacterFilter2">
+                <option value="" selected="selected">Character</option>
+            </select>
+        </div>
+        <div class="form-standard-field">
+            <select name="StageFilter">
+                <option selected="selected">Stage</option>
+            </select>
+        </div>
+        <div class="form-standard-field">
+            <button class="button" type="submit">Filter</button>
+        </div>
+    </form>
+</div>
+
+<table class="table-game-entry table-primary">
+    <thead>
+        <tr>
+            <th class="align-center">Game Id</th>
+            <th class="align-left"></th>
+            <th class="align-left"></th>
+            <th class="align-center">Player 1</th>
+            <th class="align-left"></th>
+            <th class="align-left"></th>
+            <th class="align-center">Player 2</th>
+            <th class="align-left"></th>
+            <th class="align-center">Stage</th>
+            <th class="align-center">Date</th>
+            <th class="align-left" hidden></th>
+            <th class="align-left" hidden>File Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Game game in Model.Entries.Take(20))
+        {
+            Player player1 = game.Players.Player1;
+            Player player2 = game.Players.Player2;
+            <tr class="game-entry">
+                <td class="align-center">@game.Id</td>
+                <td class="align-left"><button class="button" onclick="goToGame(@game.Id)">View</button></td>
+                <td class="align-center player-profile-opponent-name" onclick="goToProfile('@player1?.Id')">@player1?.Name (@player1?.ConnectCode)</td>
+                <td class="align-left"><img class="stock-icon" src="@game.Character1?.GetStockIconPath()" />@game.Character1.GetDisplayName()</td>
+                @if (game.Player1Victory ?? false)
+                {
+                    <td class="result-victory align-left"></td>
+                }
+                else
+                {
+                    <td class="result-defeat align-left"></td>
+                }
+                @if (game.Player2Victory ?? false)
+                {
+                    <td class="result-victory align-left"></td>
+                }
+                else
+                {
+                    <td class="result-defeat align-left"></td>
+                }
+                <td class="align-right"><img class="stock-icon" src="@game.Character2?.GetStockIconPath()" />@game.Character2.GetDisplayName()</td>
+                <td class="align-center player-profile-opponent-name" onclick="goToProfile('@player2?.Id')">@player2?.Name (@player2?.ConnectCode)</td>
+                <td class="align-left"><img class="stage-icon" src="@game.Stage.GetStageIconPath()" />@game.Stage.GetDisplayName()</td>
+                <td class="align-center">@game.StartAt.ToString("MM/dd/yy - HH:mm")</td>
+                <td class="align-left" hidden>@game.GameMode?.GetDisplayName()</td>
+                <td class="align-left" hidden>@game.FileName</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@section Scripts
+{
+    <script>
+    </script>
+}

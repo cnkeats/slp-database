@@ -18,9 +18,15 @@ namespace SlippiStats.Controllers
 
         }
 
-        public IActionResult Index()
+
+        [Route("{controller}/{id}")]
+        public IActionResult Index(int id)
         {
-            return View();
+            TournamentIndexViewModel viewModel = new TournamentIndexViewModel();
+            viewModel.Tournament = Tournament.GetById(Database.Connection, id);
+            viewModel.Entries = Tournament.GetGames(Database.Connection, id);
+
+            return View(viewModel);
         }
 
         public IActionResult List()

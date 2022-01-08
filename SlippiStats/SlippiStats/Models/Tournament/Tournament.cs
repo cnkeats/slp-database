@@ -101,6 +101,24 @@ namespace SlippiStats.Models
             return tournaments;
         }
 
+        public static List<Game> GetGames(IDbConnection connection, int tournamentId)
+        {
+            List<Game> games = new List<Game>();
+
+            using IDbCommand command = connection.CreateStoredProcedure(
+                $"{nameof(Tournament)}_{nameof(GetGames)}",
+                new { tournamentId });
+
+            using IDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                games.Add(new Game(reader));
+            }
+
+            return games;
+        }
+
         public void Save(IDbConnection connection)
         {
             if (Id == 0)
